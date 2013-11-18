@@ -32,6 +32,22 @@ and the following files:
 The copyright information for the included plugins is listed below:
 
 
+check_bgp:
+
+The plugin was downloaded from: 
+https://www.monitoringexchange.org/inventory/Check-Plugins/Software/SNMP/check_bgp
+
+  Copyright (c) 2006 Larry Low <llow0@yahoo.com>
+  
+  License: GPL v2
+  
+    On Debian systems, the complete text of the GNU General
+    Public License version 2 can be found in "/usr/share/common-licenses/GPL-2".
+  
+  
+
+------------------------------------------------------------------------------
+
 check_file:
 
   Copyright 2007-2009, Tevfik Karagulle, ITeF!x Consulting (http://itefix.no)
@@ -70,4 +86,20 @@ https://raw.github.com/liquidat/nagios-icinga-checks/master/check_openvpn
   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
+  
+
+------------------------------------------------------------------------------
+
+check_tomcat:
+
+The plugin was downloaded from: 
+https://www.monitoringexchange.org/inventory/Check-Plugins/Software/Java/check_tomcat-pl
+
+  Copyright (c) George Hansper <george@hansper.id.au>
+  
+  License: GPL v3
+  
+    On Debian systems, the complete text of the GNU General
+    Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
+  
   
