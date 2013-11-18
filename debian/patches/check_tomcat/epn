@@ -1,0 +1,8 @@
+--- a/check_tomcat/check_tomcat
++++ b/check_tomcat/check_tomcat
+@@ -1,4 +1,5 @@
+ #!/usr/bin/perl 
++# nagios: -epn
+ 
+ #############################################################################
+ #                                                                           #
