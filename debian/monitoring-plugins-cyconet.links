@@ -1,0 +1,2 @@
+# get our configs loaded without adjusting the nagios/icinga config for now
+etc/monitoring-plugins/config etc/nagios-plugins/config/monitoring-plugins
