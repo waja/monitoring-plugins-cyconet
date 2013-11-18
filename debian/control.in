@@ -1,7 +1,7 @@
 Source: monitoring-plugins-cyconet
 Section: net
 Priority: extra
-Maintainer: Debian Nagios Maintainer Group <pkg-nagios-devel@lists.alioth.debian.org>
+Maintainer: Jan Wagner <waja@cyconet.org>
 Uploaders: #AUTO_UPDATE_Uploaders#
 Build-Depends: debhelper (>= 8.0.0), python, python-debian, quilt (>= 0.46-7), autotools-dev, #AUTO_UPDATE_Build-Depends#
 Standards-Version: 3.9.4
