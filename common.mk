@@ -6,10 +6,10 @@ CXXFLAGS += $(shell dpkg-buildflags --get CXXFLAGS)
 LDFLAGS += $(shell dpkg-buildflags --get LDFLAGS)
 
 # define common directories
-PLUGINDIR := /usr/lib/nagios/plugins
+PLUGINDIR := /usr/lib/monitoring-plugins/
 CRONJOBDIR := /usr/lib/nagios/cronjobs
-CONFIGDIR := /etc/nagios-plugins/config
-INIDIR := /etc/nagios-plugins
+CONFIGDIR := /etc/monitoring-plugins/config
+INIDIR := /etc/monitoring-plugins
 CONFIGFILES := $(wildcard *.cfg)
 
 # guess the name of the plugin to build if not defined
@@ -18,7 +18,7 @@ ifndef PLUGIN
 PLUGIN := $(PLUGINNAME)
 endif
 
-DOCDIR := /usr/share/doc/nagios-plugins-contrib/$(PLUGINNAME)
+DOCDIR := /usr/share/doc/monitoring-plugins-cyconet/$(PLUGINNAME)
 
 # add some default files to clean
 # we actually need strip here. make is weird sometimes.
