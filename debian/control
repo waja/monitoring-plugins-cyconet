@@ -1,158 +1,25 @@
-Source: nagios-plugins-contrib
+Source: monitoring-plugins-cyconet
 Section: net
 Priority: extra
 Maintainer: Debian Nagios Maintainer Group <pkg-nagios-devel@lists.alioth.debian.org>
-Uploaders: Bernd Zeimetz <bzed@debian.org>, Jan Wagner <waja@cyconet.org>
-Build-Depends: debhelper (>= 8.0.0), python, python-debian, quilt (>= 0.46-7), autotools-dev,  autotools-dev, flex, libmemcached-dev, libvarnishapi-dev, pkg-config
+Uploaders: 
+Build-Depends: debhelper (>= 8.0.0), python, python-debian, quilt (>= 0.46-7), 
 Standards-Version: 3.9.4
-Vcs-Git: git://git.debian.org/pkg-nagios/pkg-nagios-plugins-contrib
-Vcs-Browser: http://git.debian.org/?p=pkg-nagios/pkg-nagios-plugins-contrib;a=summary
+Vcs-Git: git://github.com/waja/blah
+Vcs-Browser: http://github.com/waja/blah
 
-Package: nagios-plugins-contrib
+Package: monitoring-plugins-cyconet
 Architecture: any
 Depends: ${misc:Depends}
-Recommends: ${shlibs:Depends}, ${python:Depends}, libsocket-perl, libnagios-plugin-perl, nagios-plugins-basic, libnet-dns-perl, libdate-manip-perl, libnagios-plugin-perl (>= 0.31), libnet-cups-perl, libio-socket-ssl-perl, libmail-imapclient-perl, libnet-smtp-tls-perl, libnet-ssleay-perl, python, liblocale-gettext-perl, liblwp-useragent-determined-perl, snmp, freeipmi-tools, libipc-run-perl, lsof, libyaml-syck-perl, libdbd-mysql-perl, libreadonly-perl, libnet-snmp-perl, openssl, libwebinject-perl, libnet-dns-sec-perl, ruby | ruby-interpreter, ${perl:Depends}
-Suggests: backuppc, perl-doc, cciss-vol-status, mpt-status, expect, nagios-plugin-check-multi, moreutils
+Recommends: ${shlibs:Depends}, ${python:Depends}, , ${perl:Depends}
+Suggests: 
 Enhances: nagios-plugins, nagios-plugins-basic, nagios-plugins-standard
 Description: Plugins for nagios compatible monitoring systems
  This package provides various plugins for Nagios compatible monitoring
  systems like Nagios and Icinga.
  It contains the following plugins:
  .
-   * check_ajp (1): plugin to monitor the AJP ping response time
-     Should work with all application servers (Tomcat, JBoss,....)
-     which provide an AJPv13 connector.
-   * check_backuppc (1.1.0): plugin for checking on the status of
-     BackupPC backups
-   * check_checksums (20130611): plugin to verify file checksums
-     against (local, not 100% secure) lists.
-     Supports md5 sha1 sha224 sha256 sha384 sha512 checksums.
-   * check_clamav (1.2): plugin to check for clamav signature freshness
-     This script is used to compare the version and signature
-     level of the currently running clamd daemon with the latest
-     available versions listed in the TXT record for
-     current.cvd.clamav.net.
-   * check_cups (0.2): plugin to check queues on a remote CUPS server
-     This plugin is monitoring of queues on a remote CUPS server,
-     which means that it doesn't need to be installed on the print
-     server and run via NRPE.
-   * check_email_delivery (0.7.1b): plugin to monitor email delivery
-     Some typical uses of this plugin include:
-       - check SMTP server
-       - check messages and quota on IMAP server
-       - check email delivery loop
-       - check auto-responder function
-       - keep an eye on email lag
-       - monitor automated mailboxes
-       - check email-to-FTP or other special email gateways
-   * check_graphite: Plugin to monitor graphite metrics
-   * check_haproxy (rev135): plugin check the HAProxy statistics url
-   * check_hpasm (4.6.3.2): plugin to check the hardware health of
-     HP Proliant Servers
-     It either uses snmp or - if installed - the hpasm package locally.
-     The plugin checks the health of
-       * Processors
-       * Power supplies
-       * Memory modules
-       * Fans
-       * CPU- and board-temperatures
-       * Raids
-     and alerts you if one of these components is faulty or operates
-     outside its normal parameters.
-   * check_httpd_status (rev140): plugin checking Apache or Lighthttpd
-     server-status page (using mod_status)
-   * check_ipmi_sensor (3.1): IPMI Sensor Monitoring Plugin
-     Plugin to monitor the hardware status (fan speed, temperaturs,
-     voltages, power usage, ...) of a server using IPMI.
-   * check_libs (520): plugin to report the usage of no longer existing
-     libraries by running processes
-   * check_lm_sensors (3.1.1): plugin to monitor hardware sensors
-     and disk temperatures
-   * check_memcached (1.3): plugin to check memcached instances
-     It will give a critical message if a partiular memcached host is
-     inaccessible and generate a warning if the hit/miss ratio falls
-     below a given threshold or the number of evictions exceeds a given
-     limit.
-     Hit/miss and evictions are measured over a 30 minute interval,
-     using a memcached object to store the earlier statistics.
-   * check_memory (1.0): plugin to check for free memory
-     This plugin excludes the system cache and buffer, because
-     on some system with very stable memory usage it is perfectly
-     normal for system cache to fill in all available memory.
-   * check_multipath (0.1.9): plugin to monitor the number of available and
-     failed paths of multipath devices
-   * check_mysql_health (2.1.8.2): plugin to check various parameters of a
-     MySQL database
-   * check_nfsmounts: checks whether there are stale NFS mounts on the host
-   * check_printer: plugin to check printer supply levels using SNMP
-     It outputs performance data for all supplies
-     found, for example toner and drum.
-   * check_raid (3.0.1+ba57f5f): plugin to check sw/hw RAID status
-     The plugin looks for any known types of RAID configurations,
-     and checks them all.
-     .
-     Supports:
-     - Adaptec AAC RAID via aaccli or afacli or arcconf
-     - AIX software RAID via lsvg
-     - HP/Compaq Smart Array via cciss_vol_status (hpsa supported too)
-     - HP Smart Array Controllers and MSA Controllers via hpacucli
-     - HP Smart Array (MSA1500) via serial line
-     - Linux 3ware SATA RAID via tw_cli
-     - Linux DPT/I2O hardware RAID controllers via /proc/scsi/dpt_i2o
-     - Linux GDTH hardware RAID controllers via /proc/scsi/gdth
-     - Linux LSI MegaRaid hardware RAID via CmdTool2
-     - Linux LSI MegaRaid hardware RAID via megarc
-     - Linux LSI MegaRaid hardware RAID via /proc/megaraid
-     - Linux MegaIDE hardware RAID controllers via /proc/megaide
-     - Linux MPT hardware RAID via mpt-status
-     - Linux software RAID (md) via /proc/mdstat
-     - LSI Logic MegaRAID SAS series via MegaCli
-     - LSI MegaRaid via lsraid
-     - Serveraid IPS via ipssend
-     - Solaris software RAID via metastat
-     - Areca SATA RAID Support via cli64/cli32
-   * check_rbl (1.3.0): plugin to check if a server is blacklisted
-   * check_snmp_environment (0.7): plugin to check various hardware statuses
-     Using snmp the plugin is able to retrieve Fan, power-supply,
-     voltage, temperature, card and module status and various other
-     information from Cisco, Nokia, Blue Coat, IronPort,
-     Foundry Network, Linux (using lm-sensors), Extreme Networks,
-     Juniper Networks, HP ProCurve, Netscreen, Citrix NetScaler
-     and Transmode Systems hardware.
-   * check_ssl_cert (1.15.0): plugin to check the CA and validity of an
-     X.509 certificate
-   * check_varnish (1.1): plugin to monitor varnish instances
-   * check_webinject (1.80): plugin for testing web services
-     It uses the WebInject Perl module for automated testing of
-     web applications and web services. It can be used to check
-     individual system components that have HTTP interfaces
-     (JSP, ASP, CGI, PHP, AJAX, Servlets, HTML Forms,
-     XML/SOAP Web Services, REST, etc).
-   * check_whois (1.14): plugin to check for the expiration of a domain.
-     The plugin may not yet work with all registrars, since their
-     output formats differ or there is no expiration date in the
-     whois output.
-   * check_zone_auth (1.13): plugin to ensure that the authoritative nameservers
-     for a given zone remain in sync.
-   * check_zone_rrsig_expiration (1.10): plugin to check for expiration of
-     signatures in dnssec-enabled zones.
-   * dsa: plugins from the Debian System Administrators
-     nagios plugins repository.
-     * check_cert_expire: check for certificate expiration
-       using openssl on the certificate file
-     * check_dnssec_delegation: check for correct DNSSEC
-       delegation
-     * check_entropy: check if there is enough entropy available.
-     * check_packages: replacement for check_apt; needs a cronjob
-       to update the apt database regularily
-     * check_running_kernel: check if a system was rebooted after
-       a kernel upgrade
-     * check_soas: check SOA records
-     * check_statusfile: deliver the content of a status file
-       as check result
-   * extras (1): various scripts and extras
-     Not a plugin, but a collection of various useful
-     event/obsession handlers and similar scripts.
+
  .
  Some scripts and binaries need more packages installed to work, which is
  implemented as recommends.
