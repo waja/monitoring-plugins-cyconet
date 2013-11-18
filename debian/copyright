@@ -32,4 +32,14 @@ and the following files:
 The copyright information for the included plugins is listed below:
 
 
+check_disks_snmp:
 
+The plugin was downloaded from: 
+https://www.monitoringexchange.org/inventory/Check-Plugins/Hardware/Devices/check_disks_snmp
+
+  Copyright (c) 2009, Daniel Siechniewicz <daniel@siechniewicz.com>
+  License: BSD
+  
+  On Debian systems, a copy of the BSD License can be found in
+  /usr/share/common-licenses/BSD
+  
