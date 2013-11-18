@@ -1,0 +1,815 @@
+
+The Debian packaging is Copyright © 2012 Bernd Zeimetz <bzed@debian.org> and
+is licensed under der GPL, either version 3 of the License, or
+(at your option) any later version.
+
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ .
+ This package is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ .
+ You should have received a copy of the GNU General Public License
+ along with this program. If not, see <http://www.gnu.org/licenses/>.
+ .
+ On Debian systems, the complete text of the GNU General
+ Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
+
+
+Part of the Debian packaging is the content of the debian directory,
+and the following files:
+  common*.mk
+  */control
+  */copyright
+  */Makefile
+
+
+The copyright information for the included plugins is listed below:
+
+
+check_ajp:
+
+The plugin was downloaded from: 
+http://blog.devnu11.net/projects/
+
+  Comment: Please send bug fixes and enhancements to <rmichel@devnu11.net>
+  
+  check_ajp - nagios plugin for jboss monitoring
+  Copyright (C) 2010  Michel Rode <rmichel@devnu11.net>
+  
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  
+
+------------------------------------------------------------------------------
+
+check_backuppc:
+
+The plugin was downloaded from: 
+http://n-backuppc.sourceforge.net/
+
+  Copyright (C) 2006,2007       Seneca Cunningham
+  
+  License: GPL v2
+  
+    On Debian systems, the complete text of the GNU General
+    Public License version 2 can be found in "/usr/share/common-licenses/GPL-2".
+  
+
+------------------------------------------------------------------------------
+
+check_checksums:
+
+  Copyright (C) 2013 Bernd Zeimetz <b.zeimetz@conova.com>
+  
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  
+  
+
+------------------------------------------------------------------------------
+
+check_clamav:
+
+The plugin was downloaded from: 
+http://exchange.nagios.org/directory/Plugins/Anti-2DVirus/ClamAV/ClamAV-check-plugin/details
+
+  Copyright (c) 2005-2008 Darren Spruell <phatbuckett@gmail.com>
+  
+  Permission to use, copy, modify, and distribute this software for any
+  purpose with or without fee is hereby granted, provided that the above
+  copyright notice and this permission notice appear in all copies.
+  
+  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  
+  
+
+------------------------------------------------------------------------------
+
+check_cups:
+
+The plugin was downloaded from: 
+https://www.monitoringexchange.org/inventory/Check-Plugins/Hardware/Devices/Printer/check_cups
+
+  Copyright (C) Steve Huff <shuff@hmdc.harvard.edu>
+  
+  This Nagios plugin is free software, and comes with ABSOLUTELY NO WARRANTY. 
+  It may be used, redistributed and/or modified under the terms of the GNU 
+  General Public Licence (see http://www.fsf.org/licensing/licenses/gpl.txt).
+  
+  
+
+------------------------------------------------------------------------------
+
+check_email_delivery:
+
+The plugin was downloaded from: 
+http://buhacoff.net/software/check_email_delivery/
+
+  Copyright (C) 2005-2011 Jonathan Buhacoff
+  
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 3 of the License, or
+  (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  
+  
+
+------------------------------------------------------------------------------
+
+check_graphite:
+
+The plugin was downloaded from: 
+https://github.com/disqus/nagios-plugins
+
+  Copyright: (c) 2012 DISQUS.
+  License: Apache License 2.0, see LICENSE for more details.
+  
+  On Debian systems, a copy of the Apache License 2.0 can be found in
+  /usr/share/common-licenses/Apache-2.0
+  
+
+------------------------------------------------------------------------------
+
+check_haproxy:
+
+The plugin was downloaded from: 
+http://cvs.orion.education.fr/viewvc/viewvc.cgi/nagios-plugins-perl/trunk/plugins/check_haproxy.pl?view=log
+
+  2010 Stéphane Urbanovski <stephane.urbanovski@ac-nancy-metz.fr>
+  
+  License: GPL v2
+  
+    On Debian systems, the complete text of the GNU General
+    Public License version 2 can be found in "/usr/share/common-licenses/GPL-2".
+  
+  
+  
+
+------------------------------------------------------------------------------
+
+check_hpasm:
+
+The plugin was downloaded from: 
+http://labs.consol.de/lang/en/nagios/check_hpasm/
+
+  AUTHOR: Gerhard Lausser <gerhard.lausser@consol.de>
+  
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License along
+  with this program; if not, write to the Free Software Foundation, Inc.,
+  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+  
+  
+
+------------------------------------------------------------------------------
+
+check_httpd_status:
+
+The plugin was downloaded from: 
+http://cvs.orion.education.fr/viewvc/viewvc.cgi/nagios-plugins-perl/trunk/plugins/check_httpd_status.pl?view=log
+
+  Dennis D. Spreen (dennis at spreendigital.de)
+  De Bodt Lieven (Lieven dot DeBodt at gmail.com)
+  Karsten Behrens (karsten at behrens dot in)
+  Geoff McQueen (geoff dot mcqueen at hiivesystems dot com )
+  Dave Steinberg (dave at redterror dot net)
+  Gerhard Lausser (gerhard dot lausser at consol dot de)
+  Stéphane Urbanovski <stephane.urbanovski@ac-nancy-metz.fr>
+  
+  License: GPL v2
+  
+    On Debian systems, the complete text of the GNU General
+    Public License version 2 can be found in "/usr/share/common-licenses/GPL-2".
+  
+  
+  
+
+------------------------------------------------------------------------------
+
+check_ipmi_sensor:
+
+The plugin was downloaded from: 
+http://www.thomas-krenn.com/en/oss/ipmi-plugin.html
+
+  Copyright (C) 2009-2011 Thomas-Krenn.AG (written by Werner Fischer),
+  additional contributors see changelog.txt
+  
+  This program is free software; you can redistribute it and/or modify it under
+  the terms of the GNU General Public License as published by the Free Software
+  Foundation; either version 3 of the License, or (at your option) any later
+  version.
+  
+  This program is distributed in the hope that it will be useful, but WITHOUT
+  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+  details.
+  
+  You should have received a copy of the GNU General Public License along with
+  this program; if not, see <http://www.gnu.org/licenses/>.
+  
+  
+  
+  License and copyright for contrib/default-combinedgraph.template:
+  
+  Author: Andy Spiegl <pnp4nagios.andy@spiegl.de>
+  
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License version 2 as
+  published by the Free Software Foundation.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  
+  
+
+------------------------------------------------------------------------------
+
+check_libs:
+
+The plugin was downloaded from: 
+http://svn.noreply.org/cgi-bin/viewvc.cgi/weaselutils/trunk/?logsort=cvs&diff_format=s&sortby=file#dirlist
+
+  Copyright (C) 2005, 2006, 2007, 2008, 2012 Peter Palfrader <peter@palfrader.org>
+                2012 Uli Martens <uli@youam.net>
+  
+  Permission is hereby granted, free of charge, to any person obtaining
+  a copy of this software and associated documentation files (the
+  "Software"), to deal in the Software without restriction, including
+  without limitation the rights to use, copy, modify, merge, publish,
+  distribute, sublicense, and/or sell copies of the Software, and to
+  permit persons to whom the Software is furnished to do so, subject to
+  the following conditions:
+  
+  The above copyright notice and this permission notice shall be
+  included in all copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+  
+  
+
+------------------------------------------------------------------------------
+
+check_lm_sensors:
+
+The plugin was downloaded from: 
+https://trac.id.ethz.ch/projects/nagios_plugins/wiki/check_lm_sensors
+
+  Copyright (c) 2007, ETH Zurich.
+  
+  Author: Matteo Corti <matteo.corti@id.ethz.ch>
+  
+  This module is free software; you can redistribute it and/or modify it
+  under the terms of GNU general public license (gpl) version 3.
+  
+
+------------------------------------------------------------------------------
+
+check_memcached:
+
+The plugin was downloaded from: 
+http://exchange.nagios.org/directory/Plugins/Websites,-Forms-and-Transactions/check_memcached-IV/details
+
+  This program was initially developed by Lonely Planet for internal use
+  and has kindly been made available to the Open Source community for
+  redistribution and further development under the terms of the
+  GNU General Public License v3: http://www.gnu.org/licenses/gpl.html
+  
+  This program is supplied 'as-is', in the hope that it will be useful, but
+  neither Lonely Planet nor the authors make any warranties or guarantees
+  as to its correct operation, including its intended function.
+  
+  Or in other words:
+  Test it yourself, and make sure it works for YOU.
+  
+  Author: George Hansper       e-mail:  George.Hansper@lonelyplanet.com.au
+  
+  On Debian systems, the complete text of the GNU General
+  Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
+  
+
+------------------------------------------------------------------------------
+
+check_memory:
+
+The plugin was downloaded from: 
+https://www.monitoringexchange.org/inventory/Check-Plugins/Operating-Systems/Linux/check_memory
+
+  Copyright (C) 2007 Thomas Guyot-Sionnest <tguyot@gmail.com>
+  
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  as published by the Free Software Foundation; either version 2
+  of the License, or (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+  
+  
+
+------------------------------------------------------------------------------
+
+check_multipath:
+
+The plugin was downloaded from: 
+http://exchange.nagios.org/directory/Plugins/Operating-Systems/Linux/check-2Dmultipath-2Epl/details
+
+  Copyright (C) 2011 Hinnerk Rümenapf, Trond H. Amundsen, Gunther Schlegel, Matija Nalis, 
+  Bernd Zeimetz
+  
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  
+  
+
+------------------------------------------------------------------------------
+
+check_mysql_health:
+
+The plugin was downloaded from: 
+http://labs.consol.de/lang/en/nagios/check_mysql_health/
+
+  AUTHOR: Gerhard Lausser <gerhard.lausser@consol.de>
+  
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License along
+  with this program; if not, write to the Free Software Foundation, Inc.,
+  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+  
+  
+
+------------------------------------------------------------------------------
+
+check_nfsmounts:
+
+The plugin was downloaded from: 
+http://exchange.nagios.org/directory/Plugins/Operating-Systems/Linux/check_nfsmounts/details
+
+  Author: Clint Byrum <clint@adicio.com>
+  
+     Copyright 2007 Adicio, Inc.
+  
+     This program is free software; you can redistribute it and/or modify
+     it under the terms of the GNU General Public License as published by
+     the Free Software Foundation; either version 3 of the License, or
+     (at your option) any later version.
+  
+     This program is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU General Public License for more details.
+  
+     You should have received a copy of the GNU General Public License
+     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+  
+  
+
+------------------------------------------------------------------------------
+
+check_printer:
+
+The plugin was downloaded from: 
+https://www.secure-computing.net/svn/trunk/nagios/
+
+  Copyright (c) 2007,2011 Eric F Crist
+  
+  All rights reserved.
+  
+  Redistribution and use in source and binary forms, with or 
+  without modification, are permitted provided that the following 
+  conditions are met:
+  
+  Redistributions of source code must retain the above copyright 
+  notice, this list of conditions and the following disclaimer.
+  
+  Redistributions in binary form must reproduce the above copyright 
+  notice, this list of conditions and the following disclaimer in 
+  the documentation and/or other materials provided with the distribution.
+  
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  
+  
+
+------------------------------------------------------------------------------
+
+check_raid:
+
+The plugin was downloaded from: 
+https://github.com/glensc/nagios-plugin-check_raid
+
+  2004-2006 Steve Shipway, university of auckland,
+  2009-2012 Elan Ruusamäe <glen@pld-linux.org>
+  
+  License: GPL v2
+  
+    On Debian systems, the complete text of the GNU General
+    Public License version 2 can be found in "/usr/share/common-licenses/GPL-2".
+  
+  
+  
+
+------------------------------------------------------------------------------
+
+check_rbl:
+
+The plugin was downloaded from: 
+https://svn.id.ethz.ch/projects/nagios_plugins/wiki/check_rbl
+
+  Copyright (c) 2009 ETH Zurich
+  Copyright (c) 2010 Elan Ruusamae
+  
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 3 of the License, or (at
+  your option) any later version.
+  
+  This program is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
+  MA 02110-1301, USA.
+  
+
+------------------------------------------------------------------------------
+
+check_snmp_environment:
+
+The plugin was downloaded from: 
+http://exchange.nagios.org/directory/Plugins/Hardware/Network-Gear/Cisco/Check-various-hardware-environmental-sensors/details
+
+  
+  Author        : Michiel Timmers ( michiel.timmers AT gmx.net)
+  Based on      : "check_snmp_env" plugin (version 1.3) from Patrick Proy
+  
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>
+  
+  
+
+------------------------------------------------------------------------------
+
+check_ssl_cert:
+
+The plugin was downloaded from: 
+https://trac.id.ethz.ch/projects/nagios_plugins/wiki/check_ssl_cert
+
+  Copyright (c) 2007-2011 ETH Zurich
+  
+  Authors:
+  
+    Dan Wallis
+    Lawren Quigley-Jones
+    Marc Fournier
+    Marcus Rejås
+    Matteo Corti
+    Matthias Fuhrmeister
+    Raphael Thoma
+    Scott Worthington
+    Sven Nierlein
+    Tuomas Haarala
+    Wolfgang Schricker
+    Yannick Gravel
+  
+  This module is free software; you can redistribute it and/or modify it
+  under the terms of GNU general public license (gpl) version 3.
+  
+
+------------------------------------------------------------------------------
+
+check_varnish:
+
+The plugin was downloaded from: 
+http://repo.varnish-cache.org/source/
+
+  
+  Copyright (c) 2007-2009 Linpro AS
+  All rights reserved.
+  
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+  1. Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+  2. Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in the
+     documentation and/or other materials provided with the distribution.
+  
+  THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  ARE DISCLAIMED.  IN NO EVENT SHALL AUTHOR OR CONTRIBUTORS BE LIABLE
+  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+  OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+  SUCH DAMAGE.
+  
+
+------------------------------------------------------------------------------
+
+check_webinject:
+
+The plugin was downloaded from: 
+http://labs.consol.de/lang/en/nagios/check_webinject/
+
+  Copyright 2010 Sven Nierlein (nierlein@cpan.org)
+  Copyright 2004-2006 Corey Goldberg (corey@goldb.org)
+  
+  This file is part of WebInject.
+  
+  WebInject is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+  
+  WebInject is distributed in the hope that it will be useful,
+  but without any warranty; without even the implied warranty of
+  merchantability or fitness for a particular purpose.  See the
+  GNU General Public License for more details.
+  
+  
+
+------------------------------------------------------------------------------
+
+check_whois:
+
+The plugin was downloaded from: 
+http://dns.measurement-factory.com/tools/nagios-plugins/check_whois.html
+
+  Copyright (c) 2008, The Measurement Factory, Inc. All rights reserved.
+  
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+  
+  Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
+  Redistributions in binary form must reproduce the above copyright
+  notice, this list of conditions and the following disclaimer in the
+  documentation and/or other materials provided with the distribution.
+  Neither the name of The Measurement Factory nor the names of its
+  contributors may be used to endorse or promote products derived
+  from this software without specific prior written permission.
+  
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+  FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+  COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  POSSIBILITY OF SUCH DAMAGE.
+  
+
+------------------------------------------------------------------------------
+
+check_zone_auth:
+
+The plugin was downloaded from: 
+http://dns.measurement-factory.com/tools/nagios-plugins/check_zone_auth.html
+
+  Copyright (c) 2008, The Measurement Factory, Inc. All rights reserved.
+  
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+  
+  Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
+  Redistributions in binary form must reproduce the above copyright
+  notice, this list of conditions and the following disclaimer in the
+  documentation and/or other materials provided with the distribution.
+  Neither the name of The Measurement Factory nor the names of its
+  contributors may be used to endorse or promote products derived
+  from this software without specific prior written permission.
+  
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+  FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+  COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  POSSIBILITY OF SUCH DAMAGE.
+  
+
+------------------------------------------------------------------------------
+
+check_zone_rrsig_expiration:
+
+The plugin was downloaded from: 
+http://dns.measurement-factory.com/tools/nagios-plugins/check_zone_rrsig_expiration.html
+
+  Copyright (c) 2008, The Measurement Factory, Inc. All rights reserved.
+  
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+  
+  Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
+  Redistributions in binary form must reproduce the above copyright
+  notice, this list of conditions and the following disclaimer in the
+  documentation and/or other materials provided with the distribution.
+  Neither the name of The Measurement Factory nor the names of its
+  contributors may be used to endorse or promote products derived
+  from this software without specific prior written permission.
+  
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+  FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+  COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  POSSIBILITY OF SUCH DAMAGE.
+  
+
+------------------------------------------------------------------------------
+
+dsa:
+
+The plugin was downloaded from: 
+http://anonscm.debian.org/gitweb/?p=mirror/dsa-nagios.git;a=tree;f=dsa-nagios-checks;hb=HEAD
+
+  checks/dsa-check-cert-expire:# Copyright 2009 Peter Palfrader
+  checks/dsa-check-dnssec-delegation:# Copyright (c) 2010 Peter Palfrader <peter@palfrader.org>
+  checks/dsa-check-entropy:# Copyright 2011 Peter Palfrader
+  checks/dsa-check-soas:# Copyright 2006, 2012 Peter Palfrader
+  checks/dsa-check-packages:# Copyright (C) 2008, 2009 Peter Palfrader <peter@palfrader.org>
+  checks/dsa-check-statusfile:# Copyright 2008, 2012 Peter Palfrader
+  checks/dsa-check-running-kernel:# Copyright 2008,2009,2011 Peter Palfrader
+  checks/dsa-check-running-kernel:# Copyright 2009 Stephen Gran
+  checks/dsa-check-running-kernel:# Copyright 2010 Uli Martens
+  checks/dsa-check-running-kernel:# Copyright 2011 Alexander Reichle-Schmehl
+  sbin/dsa-update-apt-status:# Copyright 2009 Peter Palfrader
+  sbin/dsa-update-unowned-file-status:# Copyright 2012 Peter Palfrader
+  
+  Permission is hereby granted, free of charge, to any person obtaining
+  a copy of this software and associated documentation files (the
+  "Software"), to deal in the Software without restriction, including
+  without limitation the rights to use, copy, modify, merge, publish,
+  distribute, sublicense, and/or sell copies of the Software, and to
+  permit persons to whom the Software is furnished to do so, subject to
+  the following conditions:
+  
+  The above copyright notice and this permission notice shall be
+  included in all copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+  
+  
+
+------------------------------------------------------------------------------
+
+extras:
+
+  
+  send_nsca_host_or_service_check_result:
+  
+      Based on the example in the icinga documentation.
+      Enhanced to handle service and host checks by
+      Bernd Zeimetz <bzed@debian.org>.
+  
+      Copyright (c) 1999-2009 Ethan Galstad (nagios@nagios.org)
+      Copyright (c) 2009-2010 Icinga Development Team (info@icinga.org)
+      Copyright (c) 2012 Bernd Zeimetz <bzed@debian.org>
+      
+      License:
+       
+       This program is free software; you can redistribute it and/or modify
+       it under the terms of the GNU General Public License version 2 as
+       published by the Free Software Foundation.
+      
+       On Debian systems, the complete text of the GNU General Public
+       License, version 2, can be found in /usr/share/common-licenses/GPL-2.
+      
+  
