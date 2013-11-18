@@ -11,7 +11,7 @@ Vcs-Browser: http://github.com/waja/blah
 Package: monitoring-plugins-cyconet
 Architecture: any
 Depends: ${misc:Depends}
-Recommends: ${shlibs:Depends}, ${python:Depends}, libtime-modules-perl, ${perl:Depends}
+Recommends: ${shlibs:Depends}, ${python:Depends}, libtime-modules-perl, python-argparse, ${perl:Depends}
 Suggests: 
 Enhances: nagios-plugins, nagios-plugins-basic, nagios-plugins-standard
 Description: Plugins for nagios compatible monitoring systems
@@ -20,6 +20,7 @@ Description: Plugins for nagios compatible monitoring systems
  It contains the following plugins:
  .
    * check_file: plugin to check file count,  size and ages
+   * check_openvpn (20130904): plugin to check if an OpenVPN server runs on a given port
  .
  Some scripts and binaries need more packages installed to work, which is
  implemented as recommends.
