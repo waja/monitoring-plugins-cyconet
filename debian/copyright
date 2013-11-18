@@ -32,14 +32,12 @@ and the following files:
 The copyright information for the included plugins is listed below:
 
 
-check_disks_snmp:
+check_file:
 
-The plugin was downloaded from: 
-https://www.monitoringexchange.org/inventory/Check-Plugins/Hardware/Devices/check_disks_snmp
-
-  Copyright (c) 2009, Daniel Siechniewicz <daniel@siechniewicz.com>
-  License: BSD
+  Copyright 2007-2009, Tevfik Karagulle, ITeF!x Consulting (http://itefix.no)
+  License: Artistic
   
-  On Debian systems, a copy of the BSD License can be found in
-  /usr/share/common-licenses/BSD
+  On Debian systems, a copy of the Artistic License can be found in
+  /usr/share/common-licenses/Artistic
+  
   
