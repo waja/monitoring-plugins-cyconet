@@ -11,7 +11,7 @@ Vcs-Browser: http://github.com/waja/blah
 Package: monitoring-plugins-cyconet
 Architecture: any
 Depends: ${misc:Depends}
-Recommends: ${shlibs:Depends}, ${python:Depends}, libnet-snmp-perl, ${perl:Depends}
+Recommends: ${shlibs:Depends}, ${python:Depends}, libtime-modules-perl, ${perl:Depends}
 Suggests: 
 Enhances: nagios-plugins, nagios-plugins-basic, nagios-plugins-standard
 Description: Plugins for nagios compatible monitoring systems
@@ -19,7 +19,7 @@ Description: Plugins for nagios compatible monitoring systems
  systems like Nagios and Icinga.
  It contains the following plugins:
  .
-   * check_disks_snmp (0.1): plugin to check all the mounted disks
+   * check_file: plugin to check file count,  size and ages
  .
  Some scripts and binaries need more packages installed to work, which is
  implemented as recommends.
