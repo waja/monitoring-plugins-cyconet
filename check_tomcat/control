@@ -1,0 +1,6 @@
+Homepage: https://www.monitoringexchange.org/inventory/Check-Plugins/Software/Java/check_tomcat-pl
+Watch: https://www.monitoringexchange.org/attachment/preview/Check-Plugins/Software/Java/check_tomcat-pl/13-03-15_12-09-48_check_tomcat.pl Id: check_tomcat.pl,v ([0-9.]+)
+Uploaders: Jan Wagner <waja@cyconet.org>
+Description: plugin to check the tomcat status page.
+Recommends: libwww-perl, libxml-xpath-perl
+Version: 1.4
