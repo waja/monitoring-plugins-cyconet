@@ -1,6 +1,7 @@
+[![Build Status](https://travis-ci.org/waja/monitoring-plugins-cyconet.png)](https://travis-ci.org/waja/monitoring-plugins-cyconet)
+
 monitoring-plugins-cyconet - Plugins for nagios compatible monitoring systems
 --------------------------------------------------------------------------
-
 
 This README.source should give a short instruction about the
 way the monitoring-plugins-cyconet repository is structured
