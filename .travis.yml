@@ -2,7 +2,7 @@ language: c
 
 install:
     - sudo apt-get update -qq
-    - sudo apt-get install -qq debhelper devscripts python python-debian quilt autotools-dev
+    - sudo apt-get install -qq --no-install-recommends debhelper devscripts python python-debian quilt autotools-dev
 
 script:
     - debuild -uc -us
