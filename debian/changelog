@@ -1,3 +1,9 @@
+monitoring-plugins-cyconet (1.20140317) UNRELEASED; urgency=medium
+
+  * New release cycle
+
+ -- Jan Wagner <waja@cyconet.org>  Mon, 17 Mar 2014 21:12:01 +0100
+
 monitoring-plugins-cyconet (1.20131115) unstable; urgency=low
 
   * Initial Release.
