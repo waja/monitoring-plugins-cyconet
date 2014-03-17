@@ -1,0 +1,6 @@
+Homepage: https://raw.github.com/regilero/check_phpfpm_status/master/check_phpfpm_status.pl
+Watch: https://raw.github.com/regilero/check_phpfpm_status/master/check_phpfpm_status.pl Version\ :\ ([0-9.]+)
+Recommends: libwww-perl
+Version: 0.9
+Uploaders: Jan Wagner <waja@cyconet.org>
+Description: plugin to check the fpm-status page report from php-fpm
