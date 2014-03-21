@@ -1,1 +1,2 @@
 check_tomcat/epn
+check_phpfpm_status/10_pathes

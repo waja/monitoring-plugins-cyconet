@@ -1,0 +1,17 @@
+Author: Jan Wagner <waja@cyconet.org>
+Description:
+ Patches check_phpfpm_status to use debian specific paths.
+
+diff --git a/check_phpfpm_status/check_phpfpm_status b/check_phpfpm_status/check_phpfpm_status
+index ae2f68e..e2280a7 100644
+--- a/check_phpfpm_status/check_phpfpm_status
++++ b/check_phpfpm_status/check_phpfpm_status
+@@ -21,7 +21,7 @@ use Digest::MD5 qw(md5 md5_hex);
+ 
+ 
+ # Nagios specific
+-use lib "/usr/local/nagios/libexec";
++use lib "/usr/lib/nagios/plugins";
+ use utils qw($TIMEOUT);
+ 
+ # Globals
