@@ -1,12 +1,13 @@
-monitoring-plugins-cyconet (2.20140502~1.gbp2a82d2) unstable; urgency=medium
+monitoring-plugins-cyconet (2.20140502~1.gbp899a98) unreleased; urgency=medium
 
   * New release cycle
   * [2c398c3] Fix syntax problem in debian/rules
   * [2ed4647] Add patch /check_phpfpm_status/10_pathes to make use of utils path
   * [cc36782] Add check_tftp
   * [2a82d22] Regenerate control and copyright file for +check_tftp
+  * [899a986] Add epn patch for check_tftp
 
- -- Jan Wagner <waja@cyconet.org>  Fri, 02 May 2014 19:54:09 +0200
+ -- Jan Wagner <waja@cyconet.org>  Fri, 02 May 2014 22:26:27 +0200
 
 monitoring-plugins-cyconet (1.20131115) unstable; urgency=low
 
