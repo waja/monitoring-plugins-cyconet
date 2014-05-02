@@ -111,6 +111,22 @@ https://raw.github.com/regilero/check_phpfpm_status/master/check_phpfpm_status.p
 
 ------------------------------------------------------------------------------
 
+check_tftp:
+
+The plugin was downloaded from: 
+http://william.leibzon.org/nagios/
+
+  Copyright (c) 2006 William Leibzon <william@leibzon.org>
+  
+  License: GPL v2
+  
+    On Debian systems, the complete text of the GNU General
+    Public License version 2 can be found in "/usr/share/common-licenses/GPL-2".
+  
+  
+
+------------------------------------------------------------------------------
+
 check_tomcat:
 
 The plugin was downloaded from: 
