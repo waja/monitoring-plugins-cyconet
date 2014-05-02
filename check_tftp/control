@@ -1,0 +1,6 @@
+Homepage: http://william.leibzon.org/nagios/
+Watch: http://william.leibzon.org/nagios/plugins/check_tftp.pl Version : ([0-9.]+)
+Uploaders: Jan Wagner <waja@cyconet.org>
+Description: plugin that verifies TFTP server is working.
+Recommends: libnet-tftp-perl
+Version: 0.11
