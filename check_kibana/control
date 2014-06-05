@@ -1,5 +1,5 @@
 Uploaders: Jan Wagner <waja@cyconet.org>
-Recommends: libencode-perl, liburi-perl, libnagios-plugin-perl
+Recommends: libencode-perl, liburi-perl, libnagios-plugin-perl, libjson-xs-perl
 Version: ba6ba46693561f9b6c0f2bd416e8ae6b344e5043
 Homepage: https://github.com/lingej/nagios-scripts/blob/master/nagios-plugins/check_kibana
 Watch: https://github.com/lingej/nagios-scripts/blob/master/nagios-plugins/check_kibana data-sha="([0-9a-f]+)"
