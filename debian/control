@@ -11,7 +11,7 @@ Vcs-Browser: http://github.com/waja/blah
 Package: monitoring-plugins-cyconet
 Architecture: any
 Depends: ${misc:Depends}
-Recommends: ${shlibs:Depends}, ${python:Depends}, libnet-snmp-perl, nagios-plugins-common, libtime-modules-perl, python-argparse, libwww-perl, libnet-tftp-perl, libxml-xpath-perl, ${perl:Depends}
+Recommends: ${shlibs:Depends}, ${python:Depends}, libnet-snmp-perl, nagios-plugins-common, libtime-modules-perl, python-argparse, libwww-perl, libredis-perl, libnet-tftp-perl, libxml-xpath-perl, ${perl:Depends}
 Suggests: 
 Enhances: nagios-plugins, nagios-plugins-basic, nagios-plugins-standard
 Description: Plugins for nagios compatible monitoring systems
@@ -23,6 +23,7 @@ Description: Plugins for nagios compatible monitoring systems
    * check_file: plugin to check file count,  size and ages
    * check_openvpn (20130904): plugin to check if an OpenVPN server runs on a given port
    * check_phpfpm_status (0.9): plugin to check the fpm-status page report from php-fpm
+   * check_redis (0.72): plugin that verifies redis server is working.
    * check_tftp (0.11): plugin that verifies TFTP server is working.
    * check_tomcat (1.4): plugin to check the tomcat status page.
  .
