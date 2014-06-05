@@ -60,6 +60,22 @@ check_file:
 
 ------------------------------------------------------------------------------
 
+check_kibana:
+
+The plugin was downloaded from: 
+https://github.com/lingej/nagios-scripts/blob/master/nagios-plugins/check_kibana
+
+  Copyright (c) 2013 Joerg Linge <pitchfork@ederdrom.de>
+  
+  License: GPL v3
+  
+    On Debian systems, the complete text of the GNU General
+    Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
+  
+  
+
+------------------------------------------------------------------------------
+
 check_openvpn:
 
 The plugin was downloaded from: 
