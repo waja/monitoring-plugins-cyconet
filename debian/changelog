@@ -1,4 +1,4 @@
-monitoring-plugins-cyconet (2.20140502~1.gbp899a98) unreleased; urgency=medium
+monitoring-plugins-cyconet (2.20140502~2.gbp0659e1) unstable; urgency=medium
 
   * New release cycle
   * [2c398c3] Fix syntax problem in debian/rules
@@ -6,8 +6,9 @@ monitoring-plugins-cyconet (2.20140502~1.gbp899a98) unreleased; urgency=medium
   * [cc36782] Add check_tftp
   * [2a82d22] Regenerate control and copyright file for +check_tftp
   * [899a986] Add epn patch for check_tftp
+  * [0659e12] Adding check_redis
 
- -- Jan Wagner <waja@cyconet.org>  Fri, 02 May 2014 22:26:27 +0200
+ -- Jan Wagner <waja@cyconet.org>  Thu, 05 Jun 2014 15:08:22 +0200
 
 monitoring-plugins-cyconet (1.20131115) unstable; urgency=low
 
