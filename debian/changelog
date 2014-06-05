@@ -7,6 +7,7 @@ monitoring-plugins-cyconet (2.20140502~2.gbp0659e1) unstable; urgency=medium
   * [2a82d22] Regenerate control and copyright file for +check_tftp
   * [899a986] Add epn patch for check_tftp
   * [0659e12] Adding check_redis
+  * [5738aab] Regenerate control and copyright file for check_redis
 
  -- Jan Wagner <waja@cyconet.org>  Thu, 05 Jun 2014 15:08:22 +0200
 
