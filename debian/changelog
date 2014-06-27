@@ -1,3 +1,12 @@
+monitoring-plugins-cyconet (3.20140627~1.gbp166e43) restricted; urgency=medium
+
+  * [b8b7456] Add correct options for hostname to check_redis
+  * [7977340] check_kibana: add missing recommends libjson-xs-perl
+  * [8843ede] check_kibana: propper filename for predefined check
+  * [166e43e] check_kibana: Removed again, cause not compatible against recent kibaba versions
+
+ -- Jan Wagner <waja@cyconet.org>  Fri, 27 Jun 2014 20:28:42 +0200
+
 monitoring-plugins-cyconet (2.20140502~2.gbp6d6753) unstable; urgency=medium
 
   * New release cycle
