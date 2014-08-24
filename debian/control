@@ -3,7 +3,7 @@ Section: net
 Priority: extra
 Maintainer: Jan Wagner <waja@cyconet.org>
 Uploaders: Jan Wagner <waja@cyconet.org>
-Build-Depends: debhelper (>= 8.0.0), python, python-debian, quilt (>= 0.46-7), autotools-dev, 
+Build-Depends: debhelper (>= 8.0.0), python, python-debian, quilt (>= 0.46-7), autotools-dev, autotools-dev
 Standards-Version: 3.9.4
 Vcs-Git: git://github.com/waja/monitoring-plugins-cyconet
 Vcs-Browser: http://github.com/waja/monitoring-plugins-cyconet
@@ -21,6 +21,8 @@ Description: Plugins for nagios compatible monitoring systems
  .
    * check_bgp (0.4): plugin to check BGP peer status via SNMP.
    * check_file: plugin to check file count,  size and ages
+   * check_nwc_health (3.0.3.5): This plugin checks the hardware health and interface metrics
+     of network components like switches and routers.
    * check_openvpn (20130904): plugin to check if an OpenVPN server runs on a given port
    * check_phpfpm_status (0.9): plugin to check the fpm-status page report from php-fpm
    * check_redis (0.72): plugin that verifies redis server is working.
