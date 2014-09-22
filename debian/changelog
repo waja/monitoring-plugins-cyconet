@@ -1,3 +1,11 @@
+monitoring-plugins-cyconet (4.20140922~1) restricted; urgency=medium
+
+  * [e95e2a8] Adding check_nwc_health
+  * [15a3d1f] check_nwc_health: Updating to 3.0.3.7
+  * [5e81c86] check_nwc_health: Fixing regex for disabling epn
+
+ -- Jan Wagner <waja@cyconet.org>  Mon, 22 Sep 2014 19:44:52 +0200
+
 monitoring-plugins-cyconet (3.20140627~1.gbp166e43) restricted; urgency=medium
 
   * [b8b7456] Add correct options for hostname to check_redis
