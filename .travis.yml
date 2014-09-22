@@ -6,7 +6,7 @@ before_install:
 
 install:
     # install build dependencies
-    - sudo apt-get install -qq --no-install-recommends debhelper devscripts python python-debian quilt autotools-dev
+    - sudo apt-get install -qq --no-install-recommends debhelper devscripts python python-debian quilt autotools-dev automake
 
 script:
     # build the debian package
