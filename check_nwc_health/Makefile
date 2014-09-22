@@ -8,7 +8,7 @@ check_nwc_health:
 	cp /usr/share/misc/config.* src
 	cd src && ./configure --prefix=/usr --with-nagios-user=nagios --with-nagios-group=nagios
 	make -C src
-	sed 's,^# nagios: +epn$,# nagios: -epn\n,' src/plugins-scripts/check_nwc_health > $@
+	sed 's,^# nagios: +epn,# nagios: -epn\n,' src/plugins-scripts/check_nwc_health > $@
 	#cp src/plugins-scripts/check_nwc_health $@
 
 clean::
