@@ -1,8 +1,10 @@
-monitoring-plugins-cyconet (4.20140922~2) UNRELEASED; urgency=medium
+monitoring-plugins-cyconet (5.20140924~1) restricted; urgency=medium
 
-  * 
+  * [36d07c6] travis-ci: Install automake
+  * [b0ce667] Adding check_nginx_status
+  * [b49136d] Generating README.Debian.plugins
 
- -- Jan Wagner <waja@cyconet.org>  Mon, 22 Sep 2014 19:47:15 +0200
+ -- Jan Wagner <waja@cyconet.org>  Wed, 24 Sep 2014 15:43:18 +0200
 
 monitoring-plugins-cyconet (4.20140922~1) restricted; urgency=medium
 
