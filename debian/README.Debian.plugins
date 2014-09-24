@@ -1,0 +1,42 @@
+monitoring-plugins-cyconet
+======================
+
+Some plugins require additional libraries. To prevent you from having to
+install dozens of further packages that you don't actually need, there is no
+strict dependency on those libraries. Rather, they are listed as recommenda-
+tions or suggestions.
+
+apt-get(8) and aptitude(8) will install recommended packages automatically by
+default. If you did not disable this feature you will have everything in place
+to operate all plugins when installing the "monitoring-plugins-cyconet" package.
+Else you have to install missing dependencies manually (see the section "Plugin
+dependencies" below).
+
+
+Plugin dependencies:
+--------------------
+
+check_bgp:
+    Required Packages: libnet-snmp-perl, nagios-plugins-common
+
+check_file:
+    Required Packages: libtime-modules-perl
+
+check_nginx_status:
+    Required Packages: libwww-perl
+
+check_openvpn:
+    Required Packages: python-argparse
+
+check_phpfpm_status:
+    Required Packages: libwww-perl
+
+check_redis:
+    Required Packages: libredis-perl
+
+check_tftp:
+    Required Packages: libnet-tftp-perl
+
+check_tomcat:
+    Required Packages: libwww-perl, libxml-xpath-perl
+
