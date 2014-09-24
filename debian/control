@@ -11,7 +11,7 @@ Vcs-Browser: http://github.com/waja/monitoring-plugins-cyconet
 Package: monitoring-plugins-cyconet
 Architecture: any
 Depends: ${misc:Depends}
-Recommends: ${shlibs:Depends}, ${python:Depends}, libnet-snmp-perl, nagios-plugins-common, libtime-modules-perl, python-argparse, libwww-perl, libredis-perl, libnet-tftp-perl, libxml-xpath-perl, ${perl:Depends}
+Recommends: ${shlibs:Depends}, ${python:Depends}, libnet-snmp-perl, nagios-plugins-common, libtime-modules-perl, libwww-perl, python-argparse, libredis-perl, libnet-tftp-perl, libxml-xpath-perl, ${perl:Depends}
 Suggests: 
 Enhances: nagios-plugins, nagios-plugins-basic, nagios-plugins-standard
 Description: Plugins for nagios compatible monitoring systems
@@ -21,7 +21,10 @@ Description: Plugins for nagios compatible monitoring systems
  .
    * check_bgp (0.4): plugin to check BGP peer status via SNMP.
    * check_file: plugin to check file count,  size and ages
-   * check_nwc_health (3.0.3.5): This plugin checks the hardware health and interface metrics
+   * check_nginx_status (0.9): plugin checking the nginx_status page report from nginx
+     Tracking Active connections processes, request per second, connections per
+     seconds, Connections status.
+   * check_nwc_health (3.0.3.7): This plugin checks the hardware health and interface metrics
      of network components like switches and routers.
    * check_openvpn (20130904): plugin to check if an OpenVPN server runs on a given port
    * check_phpfpm_status (0.9): plugin to check the fpm-status page report from php-fpm

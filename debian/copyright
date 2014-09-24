@@ -60,6 +60,22 @@ check_file:
 
 ------------------------------------------------------------------------------
 
+check_nginx_status:
+
+The plugin was downloaded from: 
+https://raw.github.com/regilero/check_nginx_status/master/check_nginx_status.pl
+
+  Copyright (c) regis.leroy at makina-corpus.com
+  
+  License: GPL v3
+  
+    On Debian systems, the complete text of the GNU General
+    Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
+  
+  
+
+------------------------------------------------------------------------------
+
 check_nwc_health:
 
 The plugin was downloaded from: 
