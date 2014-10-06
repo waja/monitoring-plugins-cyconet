@@ -1,0 +1,84 @@
+#!/usr/bin/env ruby
+#
+# Nagios plugin to monitor Redis sentinel
+#
+# Checks general connectivity to a Redis sentinel server and will go critical
+# for any of the following conditions:
+#   * Inability to connect to the sentinel server
+#   * Sentinel reports it isn't monitoring any masters
+#   * Sentinel has entered TILT mode
+#
+# Arguments:
+# -H --host HOSTNAME to connect to (defaults to 127.0.0.1)
+# -p --port PORT to connect to (defaults to 26379)
+#
+# Requires the "redis" Rubygem
+#
+# Author: Chris Boulton <chris@chrisboulton.com>
+# License: MIT (http://www.opensource.org/licenses/mit-license.php)
+#
+ 
+require 'redis'
+require 'optparse'
+ 
+STATES = {
+  :ok       => 0,
+  :warning  => 1,
+  :critical => 2,
+  :unknown  => 3,
+}
+ 
+options = {
+  :host    => '127.0.0.1',
+  :port    => 26379,
+  :timeout => 2,
+}
+ 
+$results     = []
+$exit_status = :ok
+ 
+def add_state(status, msg, should_exit = false)
+  $results.push(msg)
+  $exit_status = status if STATES[status] > STATES[$exit_status]
+  if should_exit
+    do_exit
+  end
+end
+ 
+def add_info(msg)
+  $results.push(msg)
+end
+ 
+def do_exit
+  puts "#{$exit_status.upcase} - #{$results.join('. ')}"
+  exit STATES[$exit_status]
+end
+ 
+optparse = OptionParser.new do |opts|
+  opts.on('-H', '--host HOST', 'Hostname') do |h|
+    options[:host] = h
+  end
+ 
+  opts.on('-p', '--port PORT', 'Port') do |p|
+    options[:port] = p.to_i
+  end
+end
+optparse.parse!
+ 
+begin
+  redis = Redis.new(:host => options[:host], :port => options[:port], :timeout => options[:timeout])
+ 
+  info = redis.info
+  add_state(:critical, "Redis instance is not configured as a sentinel", true)  unless info['sentinel_masters']
+  add_state(:critical, "Sentinel has entered TILT mode", true) if info['sentinel_tilt'] != '0'
+ 
+  if info['sentinel_masters'] == '0'
+    add_state(:critical, "Sentinel is not monitoring any masters", true) 
+  else
+    add_info("Monitoring #{info['sentinel_masters']} masters")
+  end
+rescue Redis::CannotConnectError => e
+  add_state(:critical, e, true)
+end
+ 
+do_exit

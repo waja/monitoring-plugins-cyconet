@@ -34,6 +34,9 @@ check_phpfpm_status:
 check_redis:
     Required Packages: libredis-perl
 
+check_sentinel:
+    Required Packages: ruby-redis
+
 check_tftp:
     Required Packages: libnet-tftp-perl
 

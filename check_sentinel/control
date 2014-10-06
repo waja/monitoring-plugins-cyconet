@@ -1,0 +1,6 @@
+Homepage: https://raw.github.com/reedox/check_sentinel/master/check_sentinel
+Watch: https://github.com/reedox/check_sentinel <span class="sha">([0-9a-f]+)</span>
+Recommends: ruby-redis
+Version: 0b8e0e388a
+Uploaders: Jan Wagner <waja@cyconet.org>
+Description: plugin to monitor Redis sentinel
