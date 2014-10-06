@@ -4,7 +4,7 @@ Priority: extra
 Maintainer: Jan Wagner <waja@cyconet.org>
 Uploaders: #AUTO_UPDATE_Uploaders#
 Build-Depends: debhelper (>= 8.0.0), python, python-debian, quilt (>= 0.46-7), autotools-dev, #AUTO_UPDATE_Build-Depends#
-Standards-Version: 3.9.4
+Standards-Version: 3.9.6
 Vcs-Git: git://github.com/waja/monitoring-plugins-cyconet
 Vcs-Browser: http://github.com/waja/monitoring-plugins-cyconet
 
