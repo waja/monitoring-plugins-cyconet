@@ -1,8 +1,12 @@
-monitoring-plugins-cyconet (5.20140924~2) UNRELEASED; urgency=medium
+monitoring-plugins-cyconet (6.20141007~1) restricted; urgency=medium
 
-  * 
+  * [9c91dfd] Adding check_sentinel
+  * [434fe20] Bump Standards-Version to 3.9.6, no changes needed
+  * [1b3695d] Adding monitoring-plugins-common or legacy as Recommend
+  * [e776f51] Adding check_smart
+  * [ce030fb] check_nginx_status: Fix version in control file
 
- -- Jan Wagner <waja@cyconet.org>  Wed, 24 Sep 2014 16:36:18 +0200
+ -- Jan Wagner <waja@cyconet.org>  Tue, 07 Oct 2014 17:14:48 +0200
 
 monitoring-plugins-cyconet (5.20140924~1) restricted; urgency=medium
 
