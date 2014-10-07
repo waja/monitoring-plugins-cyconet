@@ -1,0 +1,4 @@
+Homepage: https://exchange.icinga.org/exchange/check_smart+hwraid
+Uploaders: Jan Wagner <waja@cyconet.org>
+Description: plugin to check SMART status of ATA/SCSI disks
+Recommends: perl-modules, monitoring-plugins-common | nagios-plugins-common
