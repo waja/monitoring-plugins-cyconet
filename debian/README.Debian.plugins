@@ -17,28 +17,28 @@ Plugin dependencies:
 --------------------
 
 check_bgp:
-    Required Packages: libnet-snmp-perl, nagios-plugins-common
+    Required Packages: libnet-snmp-perl, monitoring-plugins-common | nagios-plugins-common
 
 check_file:
     Required Packages: libtime-modules-perl
 
 check_nginx_status:
-    Required Packages: libwww-perl
+    Required Packages: libwww-perl, monitoring-plugins-common | nagios-plugins-common
 
 check_openvpn:
     Required Packages: python-argparse
 
 check_phpfpm_status:
-    Required Packages: libwww-perl
+    Required Packages: libwww-perl, monitoring-plugins-common | nagios-plugins-common
 
 check_redis:
-    Required Packages: libredis-perl
+    Required Packages: libredis-perl, monitoring-plugins-common | nagios-plugins-common
 
 check_sentinel:
     Required Packages: ruby-redis
 
 check_tftp:
-    Required Packages: libnet-tftp-perl
+    Required Packages: libnet-tftp-perl, monitoring-plugins-common | nagios-plugins-common
 
 check_tomcat:
     Required Packages: libwww-perl, libxml-xpath-perl

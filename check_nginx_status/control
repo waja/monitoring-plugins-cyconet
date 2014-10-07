@@ -1,6 +1,6 @@
 Homepage: https://raw.github.com/regilero/check_nginx_status/master/check_nginx_status.pl
 Watch: https://raw.github.com/regilero/check_nginx_status/master/check_nginx_status.pl Version\ :\ ([0-9.]+)
-Recommends: libwww-perl
+Recommends: libwww-perl, monitoring-plugins-common | nagios-plugins-common
 Version: 0.9
 Uploaders: Jan Wagner <waja@cyconet.org>
 Description: plugin checking the nginx_status page report from nginx

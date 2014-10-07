@@ -2,5 +2,5 @@ Homepage: http://william.leibzon.org/nagios/
 Watch: http://william.leibzon.org/nagios/plugins/check_redis.pl Version : ([0-9.]+)
 Uploaders: Jan Wagner <waja@cyconet.org>
 Description: plugin that verifies redis server is working.
-Recommends: libredis-perl
+Recommends: libredis-perl, monitoring-plugins-common | nagios-plugins-common
 Version: 0.72
