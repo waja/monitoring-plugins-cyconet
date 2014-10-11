@@ -6,7 +6,7 @@ include ../common.mk
 check_nwc_health:
 	set -e; for i in guess sub; do if [ ! -e src/config.$$i.bak ]; then cp src/config.$$i src/config.$$i.bak; fi; done
 	cp /usr/share/misc/config.* src
-	cd src && ./configure --prefix=/usr --with-nagios-user=nagios --with-nagios-group=nagios
+	cd src && ./configure --disable-maintainer-mode --prefix=/usr --with-nagios-user=nagios --with-nagios-group=nagios
 	make -C src
 	sed 's,^# nagios: +epn,# nagios: -epn\n,' src/plugins-scripts/check_nwc_health > $@
 	#cp src/plugins-scripts/check_nwc_health $@
