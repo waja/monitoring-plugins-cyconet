@@ -37,8 +37,11 @@ check_redis:
 check_sentinel:
     Required Packages: ruby-redis
 
+check_sieve:
+    Required Packages: libio-socket-inet6-perl, monitoring-plugins-common | nagios-plugins-common
+
 check_smart:
-    Required Packages: perl-base, perl-modules, monitoring-plugins-common | nagios-plugins-common
+    Required Packages: perl-modules, monitoring-plugins-common | nagios-plugins-common
 
 check_tftp:
     Required Packages: libnet-tftp-perl, monitoring-plugins-common | nagios-plugins-common

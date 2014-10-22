@@ -201,6 +201,34 @@ https://raw.github.com/reedox/check_sentinel/master/check_sentinel
 
 ------------------------------------------------------------------------------
 
+check_sieve:
+
+The plugin was downloaded from: 
+https://raw.githubusercontent.com/alan-hicks/check_sieve/master/check_sieve.pl
+
+  Copyright (c) 2012 William Leibzon <william@leibzon.org>
+  
+  License: GPL v2
+  
+    On Debian systems, the complete text of the GNU General
+    Public License version 2 can be found in "/usr/share/common-licenses/GPL-2".
+  
+  
+
+------------------------------------------------------------------------------
+
+check_smart:
+
+The plugin was downloaded from: 
+https://exchange.icinga.org/exchange/check_smart+hwraid
+
+  Copyright (c) Kurt Yoder, Giles Westwood
+  
+  License: public-domain
+  
+
+------------------------------------------------------------------------------
+
 check_tftp:
 
 The plugin was downloaded from: 

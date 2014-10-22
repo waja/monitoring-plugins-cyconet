@@ -1,0 +1,7 @@
+Homepage: https://raw.githubusercontent.com/alan-hicks/check_sieve/master/check_sieve.pl
+Watch: https://raw.githubusercontent.com/alan-hicks/check_sieve/master/check_sieve.pl \$VERSION\ =\ '([0-9.]+)'
+Recommends: libio-socket-inet6-perl, monitoring-plugins-common | nagios-plugins-common
+Version: 1.02
+Uploaders: Jan Wagner <waja@cyconet.org>
+Description: plugin checking for a running Sieve daemon
+ Check SIEVE connections as per rfc 5804 for Nagios
