@@ -1,3 +1,14 @@
+monitoring-plugins-cyconet (7.20141024~1) restricted; urgency=medium
+
+  ** SNAPSHOT build @4832e747509d441ae8e822a5d1aa0b58041a171e **
+
+  * [34c5c8f] check_nwc_health: Prevent running autofoo again
+  * [1697637] Adding check_sieve
+  * [7978d99] Adding check_ipsec
+  * [4832e74] check_ipsec: Adding needed patches
+
+ -- Jan Wagner <waja@cyconet.org>  Thu, 23 Oct 2014 17:59:10 +0200
+
 monitoring-plugins-cyconet (6.20141007~1) restricted; urgency=medium
 
   * [9c91dfd] Adding check_sentinel
