@@ -1,0 +1,27 @@
+--- a/check_ipsec/check_ipsec
++++ b/check_ipsec/check_ipsec
+@@ -61,8 +61,7 @@
+ test -e $PROGPATH/$GATEWAYLIST
+ if [ $? -ne 0 ];
+ then
+-   echo CRITICAL - $GATEWAYLIST not exist
+-   exit $STATE_CRITICAL
++   USEGATEWAYS="0"
+ fi
+ 
+ print_usage() {
+@@ -113,8 +112,12 @@
+ 		echo "WARNING - More than $2 ($eroutes) tunnels are up an running"
+                 exit $STATE_WARNING
+ 	else
+-		echo "CRITICAL - Only $eroutes tunnels from $2 are up an running - $(location)"
+-		location
++		if [ "$USEGATEWAYS" -eq "0" ]
++	        then
++			echo "CRITICAL - Only $eroutes tunnels from $2 are up an running"
++		else
++			echo "CRITICAL - Only $eroutes tunnels from $2 are up an running - $(location)"
++		fi
+ 		exit $STATE_CRITICAL
+ 	fi
+ }
