@@ -60,6 +60,22 @@ check_file:
 
 ------------------------------------------------------------------------------
 
+check_ipsec:
+
+The plugin was downloaded from: 
+https://raw.githubusercontent.com/Inuits/monitoring-plugins/master/check_ipsec
+
+  Copyright (c) 2008 ml@nicole-haehnel.de
+  
+  License: N/A
+  
+    On Debian systems, the complete text of the GNU General
+    Public License version 2 can be found in "/usr/share/common-licenses/GPL-2".
+  
+  
+
+------------------------------------------------------------------------------
+
 check_nginx_status:
 
 The plugin was downloaded from: 

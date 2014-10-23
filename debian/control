@@ -11,7 +11,7 @@ Vcs-Browser: http://github.com/waja/monitoring-plugins-cyconet
 Package: monitoring-plugins-cyconet
 Architecture: any
 Depends: ${misc:Depends}
-Recommends: ${shlibs:Depends}, ${python:Depends}, libnet-snmp-perl, monitoring-plugins-common | nagios-plugins-common, libtime-modules-perl, libwww-perl, python-argparse, libredis-perl, ruby-redis, libio-socket-inet6-perl, perl-modules, libnet-tftp-perl, libxml-xpath-perl, ${perl:Depends}
+Recommends: ${shlibs:Depends}, ${python:Depends}, libnet-snmp-perl, monitoring-plugins-common | nagios-plugins-common, libtime-modules-perl, fping, strongswan-starter | openswan, libwww-perl, python-argparse, libredis-perl, ruby-redis, libio-socket-inet6-perl, perl-modules, libnet-tftp-perl, libxml-xpath-perl, ${perl:Depends}
 Suggests: 
 Enhances: nagios-plugins, nagios-plugins-basic, nagios-plugins-standard
 Description: Plugins for nagios compatible monitoring systems
@@ -21,6 +21,7 @@ Description: Plugins for nagios compatible monitoring systems
  .
    * check_bgp (0.4): plugin to check BGP peer status via SNMP.
    * check_file: plugin to check file count,  size and ages
+   * check_ipsec (2.0): plugin checking ipsec connections from open- or stongswan
    * check_nginx_status (0.10): plugin checking the nginx_status page report from nginx
      Tracking Active connections processes, request per second, connections per
      seconds, Connections status.
