@@ -1,5 +1,7 @@
 monitoring-plugins-cyconet (8.20141111~1) restricted; urgency=medium
 
+  * [e8302f9] Change arch to all
+  * [21632a6] Delete backup file
   * [10a0f46] Updating debian/changelog
   * [f064fe8] Change Architecture to 'all'
   * [5dba34f] check_sieve: Disable epn via debian/patches/check_sieve/epn
