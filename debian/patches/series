@@ -1,6 +1,7 @@
 check_tomcat/epn
 check_tftp/epn
 check_phpfpm_status/10_pathes
+check_sieve/epn
 check_sieve/10_pathes
 check_ipsec/10_pathes
 check_ipsec/15_fix_syntax
