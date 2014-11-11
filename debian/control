@@ -9,7 +9,7 @@ Vcs-Git: git://github.com/waja/monitoring-plugins-cyconet
 Vcs-Browser: http://github.com/waja/monitoring-plugins-cyconet
 
 Package: monitoring-plugins-cyconet
-Architecture: any
+Architecture: all
 Depends: ${misc:Depends}
 Recommends: ${shlibs:Depends}, ${python:Depends}, libnet-snmp-perl, monitoring-plugins-common | nagios-plugins-common, libtime-modules-perl, fping, strongswan-starter | openswan, libwww-perl, python-argparse, libredis-perl, ruby-redis, libio-socket-inet6-perl, perl-modules, libnet-tftp-perl, libxml-xpath-perl, ${perl:Depends}
 Suggests: 
