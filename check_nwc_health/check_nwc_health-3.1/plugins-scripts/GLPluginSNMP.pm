@@ -169,7 +169,7 @@ sub init {
   my $self = shift;
   if ($self->mode =~ /device::walk/) {
     my @trees = ();
-    my $name = $0;
+    my $name = $GLPlugin::pluginname;
     $name =~ s/.*\///g;
     $name = sprintf "/tmp/snmpwalk_%s_%s", $name, $self->opts->hostname;
     if ($self->opts->oids) {
@@ -859,7 +859,7 @@ sub check_snmp_and_model {
         $self->add_message(UNKNOWN,
             'could not contact snmp agent, timeout during snmp-get sysUptime');
       } else {
-        $self->add_message(CRITICAL,
+        $self->add_message(UNKNOWN,
             'got neither sysUptime nor sysDescr, is this snmp agent working correctly?');
       }
       $GLPlugin::SNMP::session->close if $GLPlugin::SNMP::session;
@@ -1635,11 +1635,9 @@ sub get_entries_by_walk {
       }
     } else {
       $params{-maxrepetitions} = 200;
-          printf "bratta %s\n", Data::Dumper::Dumper(\@baseoids);
       foreach my $baseoid (@baseoids) {
         $params{-varbindlist} = [$baseoid];
         while (my $result = $GLPlugin::SNMP::session->get_bulk_request(%params)) {
-          printf "hoi %s\n", Data::Dumper::Dumper($result);
           my @names = $GLPlugin::SNMP::session->var_bind_names();
           my @oids = $self->sort_oids(\@names);
           $params{-varbindlist} = [pop @oids];

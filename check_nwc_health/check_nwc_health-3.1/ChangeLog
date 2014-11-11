@@ -2,6 +2,21 @@
 # Changelog of the check_nwc_health plugin #
 ############################################
 
+2014-09-26 3.1
+- add Clavister Firewall (Thanks Dirk Goetz)
+- fix GLPluginSNMP, all timeout-like errors are UNKNOWN
+- allow warningx/criticalx to override cisco sensor thresholds
+
+2014-09-55 3.0.4
+- bugfix in glplugin (tmp-file-paths wrong under epn) (Thanks Sven Nierlein)
+
+2014-09-15 3.0.3.9
+- bugfix in bgp error states (Thanks Matthias Gallinger)
+- bugfix in f5 pools (Thanks Sven Nierlein)
+
+2014-08-28 3.0.3.8
+- bugfix in interface-usage/ifspeed (Thanks Matthias Gallinger)
+
 2014-08-26 3.0.3.7
 - bugfix in glpluginsnmp (undef errors with loadbalacer index)
 
