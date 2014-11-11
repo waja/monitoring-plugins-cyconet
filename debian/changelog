@@ -1,6 +1,15 @@
-monitoring-plugins-cyconet (7.20141024~1) restricted; urgency=medium
+monitoring-plugins-cyconet (8.20141111~1) restricted; urgency=medium
 
-  ** SNAPSHOT build @4832e747509d441ae8e822a5d1aa0b58041a171e **
+  * [10a0f46] Updating debian/changelog
+  * [f064fe8] Change Architecture to 'all'
+  * [5dba34f] check_sieve: Disable epn via debian/patches/check_sieve/epn
+  * [10325a1] check_nwc_health: Import new upstream 3.1
+  * [7053799] check_nwc_health: Update packaging for latest upstream
+  * [a185728] check_sieve: Refresh patches
+
+ -- Jan Wagner <waja@cyconet.org>  Tue, 11 Nov 2014 13:40:15 +0100
+
+monitoring-plugins-cyconet (7.20141024~1) restricted; urgency=medium
 
   * [34c5c8f] check_nwc_health: Prevent running autofoo again
   * [1697637] Adding check_sieve
