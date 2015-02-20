@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 # check_phpfpm_status.pl
-# Version : 0.9
+# Version : 0.10
 # Author  : regis.leroy at makina-corpus.com
 #           based on previous apache status work by Dennis D. Spreen (dennis at spreendigital.de)
 #						Based on check_apachestatus.pl v1.4 by 
@@ -21,11 +21,12 @@ use Digest::MD5 qw(md5 md5_hex);
 
 
 # Nagios specific
+# Update Nagios Plugin path according to your platform/installation
 use lib "/usr/local/nagios/libexec";
 use utils qw($TIMEOUT);
 
 # Globals
-my $Version='0.9';
+my $Version='0.10';
 my $Name=$0;
 
 my $o_host =        undef;  # hostname 
@@ -98,7 +99,7 @@ sub help {
 -p, --port=PORT
    Http port
 -u, --url=URL
-   Specific URL to use, instead of the default "http://<hostname or IP>/fpm-status"
+   Specific URL (only the path part of it in fact) to use, instead of the default "/fpm-status"
 -s, --servername=SERVERNAME
    ServerName, (host header of HTTP request) use it if you specified an IP in -H to match the good Virtualhost in your target
 -S, --ssl
@@ -113,7 +114,7 @@ sub help {
    Debug mode (show http request response)
 -t, --timeout=INTEGER
    timeout in seconds (Default: $o_timeout)
--w, --warn=REQPERSEC,PROC_MAX_REACHED,QUEUE_MAX_REACHED
+-w, --warn=MIN_AVAILABLE_PROCESSES,PROC_MAX_REACHED,QUEUE_MAX_REACHED
    number of available workers, or max states reached that will cause a warning
    -1 for no warning
 -c, --critical=MIN_AVAILABLE_PROCESSES,PROC_MAX_REACHED,QUEUE_MAX_REACHED
@@ -164,8 +165,8 @@ sub check_options {
       'r:s'   => \$o_realm,        'realm:s'       => \$o_realm,
       'p:i'   => \$o_port,         'port:i'        => \$o_port,
       'V'     => \$o_version,      'version'       => \$o_version,
-      'w:s'   => \$o_warn_thresold,'warn:s'        => \$o_warn_thresold,
-      'c:s'   => \$o_crit_thresold,'critical:s'    => \$o_crit_thresold,
+      'w=s'   => \$o_warn_thresold,'warn=s'        => \$o_warn_thresold,
+      'c=s'   => \$o_crit_thresold,'critical=s'    => \$o_crit_thresold,
       't:i'   => \$o_timeout,      'timeout:i'     => \$o_timeout,
     );
 
