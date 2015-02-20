@@ -1,3 +1,12 @@
+monitoring-plugins-cyconet (9.20150221~1) restricted; urgency=medium
+
+  * [712a20a] Adding check_mysql_slave
+  * [1703852] check_phpfpm_status: Import new upstream 0.10
+  * [b964123] check_nwc_health: Import new upstream 3.4.2.2
+  * [46aaf76] check_tomcat: Update watch URL
+
+ -- Jan Wagner <waja@cyconet.org>  Sat, 21 Feb 2015 00:18:48 +0100
+
 monitoring-plugins-cyconet (8.20141111~1) restricted; urgency=medium
 
   * [e8302f9] Change arch to all
