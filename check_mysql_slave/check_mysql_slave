@@ -1,0 +1,402 @@
+#!/usr/bin/perl
+use strict;
+my $VERSION = '0.1.1';
+my $COPYRIGHT = 'Copyright (C) 2008 Jonathan Buhacoff <jonathan@buhacoff.net>';
+my $LICENSE = 'http://www.gnu.org/licenses/gpl.txt';
+my %status = ( 'OK' => 0, 'WARNING' => 1, 'CRITICAL' => 2, 'UNKNOWN' => 3 );
+my $SERVICE = "MYSQL SLAVE";
+
+# look for required modules
+exit $status{UNKNOWN} unless load_modules(qw/Getopt::Long DBI DBD::mysql/);
+
+Getopt::Long::Configure("bundling");
+my $verbose = 0;
+my $help = "";
+my $help_usage = "";
+my $show_version = "";
+my $mysql_server = "";
+my $default_mysql_port = "3306";
+my $mysql_port = "";
+my $warntime = 15;
+my $criticaltime = 30;
+my $timeout = 60;
+my $username = "";
+my $password = "";
+my $ok;
+$ok = Getopt::Long::GetOptions(
+	"V|version"=>\$show_version,
+	"v|verbose+"=>\$verbose,"h|help"=>\$help,"usage"=>\$help_usage,
+	"w|warning=i"=>\$warntime,"c|critical=i"=>\$criticaltime,"t|timeout=i"=>\$timeout,
+	# mysql settings
+	"H|hostname=s"=>\$mysql_server,"p|port=i"=>\$mysql_port,
+	"U|username=s"=>\$username,"P|password=s"=>\$password,
+	);
+
+if( $show_version ) {
+	print "$VERSION\n";
+	if( $verbose ) {
+		print "Default warning threshold: $warntime seconds\n";
+		print "Default critical threshold: $criticaltime seconds\n";
+		print "Default timeout: $timeout seconds\n";
+	}
+	exit $status{UNKNOWN};
+}
+
+if( $help ) {
+	exec "perldoc", $0 or print "Try `perldoc $0`\n";
+	exit $status{UNKNOWN};
+}
+
+$help_usage = 1 unless $mysql_server and $username;
+if( $help_usage ) {
+	print "Usage: $0 -H host [-p port] [-U username] [-P password] [-w <seconds>] [-c <seconds>]\n";
+	exit $status{UNKNOWN};
+}
+
+# initialize
+my $report = new PluginReport;
+my $time_start = time;
+my $actual_response = undef;
+
+# connect to MySQL server
+$mysql_port = $default_mysql_port unless $mysql_port;
+
+eval {
+	local $SIG{ALRM} = sub { die "exceeded timeout $timeout seconds\n" }; # NB: \n required, see `perldoc -f alarm`
+	alarm $timeout;
+
+	my $dbh = DBI->connect("DBI:mysql:host=$mysql_server;port=$mysql_port",$username,$password);
+	# get mysql version
+	my $version = undef;
+	my $sth_version = $dbh->prepare("SHOW VARIABLES LIKE 'version'");
+	$sth_version->execute;
+	while( my ($name,$value) = $sth_version->fetchrow_array) {
+		$version = $value if $name eq "version";
+	}
+	$report->{version} = $version || "";
+	$sth_version->finish;
+	# get slave status (should only be 1 result row)
+	my $sth_status = $dbh->prepare("SHOW SLAVE STATUS");
+	$sth_status->execute;
+	while( my $status = $sth_status->fetchrow_hashref) {
+		if( $verbose > 1 ) {		
+			foreach( keys %$status ) {
+				print "$_ = $status->{$_} \n";
+			}
+		}
+		# mysql 3.23 has "Slave_Running" while 4.1 and above have "Slave_IO_Running" and "Slave_SQL_Running"
+		$report->{Running} = "No";
+		if( $version lt "4" ) {
+			$report->{Running} = "Yes" if $status->{Slave_Running};
+			$report->{file} = $status->{Log_File};
+			$report->{position} = $status->{Pos};
+		}
+		else {
+			$report->{Running} = "Yes" if $status->{Slave_IO_Running} eq "Yes" and $status->{Slave_SQL_Running} eq "Yes";
+			$report->{file} = $status->{Master_Log_File};
+			$report->{position} = $status->{Exec_Master_Log_Pos} . '/' . $status->{Read_Master_Log_Pos};
+		}
+		$report->{behind} = $status->{Seconds_Behind_Master};
+		# put the master host and its bin log file and position in the report
+		foreach( keys %$status ) {
+			$report->{$_} = $status->{$_};
+		}
+	}
+	$sth_status->finish;
+	# threshold for seconds behind master etc.
+	# $report->{behind} = ...
+	$report->{behind} ||= 0;
+	# $report->{saomethaisdf} ...
+	$dbh->disconnect;
+};
+if( $@ ) {
+	$@ = $DBI::errstr if $DBI::errstr; # these can be more helpful than "Can't call method prepare on an undefined value"
+	$@ =~ s/\n/ /g; # the error message can be multiline but we want our output to be just one line
+	print "$SERVICE CRITICAL - $@\n";
+	exit $status{CRITICAL};	
+}
+
+my @warning = ();
+my @critical = ();
+
+# overall warnings/critical cerrors
+push @critical, "not running $report->{Last_Error}" if $report->{Running} ne "Yes";
+push @critical, "$report->{behind} secs behind master" if $report->{behind} > 30;
+push @warning, "$report->{behind} secs behind master" if $report->{behind} > 0;
+#push @warning, "connection time more than $warntime" if( $time_connected - $time_start > $warntime );
+#push @critical, "connection time more than $criticaltime" if( $time_connected - $time_start > $criticaltime );
+#push @critical, "response was $actual_response but expected $expect_response" if ( $actual_response ne $expect_response );
+# on the number line, we need to test 6 cases:
+# 0-----w-----c----->
+# 0, 0<lag<w, w, w<lag<c, c, c<lag
+# which we simplify to 
+# lag>=c, w<=lag<c, 0<=lag<warn
+
+
+# print report and exit with known status
+my $short_report = $report->text(qw/file position/);
+my $long_report = join("", map { "$_: $report->{$_}\n" } qw/version Master_Host Log_File Pos/ );
+if( scalar @critical ) {
+	my $crit_alerts = join(", ", @critical);
+	print "$SERVICE CRITICAL - $crit_alerts; $short_report\n";
+	print $long_report if $verbose;
+	exit $status{CRITICAL};
+}
+if( scalar @warning ) {
+	my $warn_alerts = join(", ", @warning);
+	print "$SERVICE WARNING - $warn_alerts; $short_report\n";
+	print $long_report if $verbose;
+	exit $status{WARNING};
+}
+print "$SERVICE OK - $short_report\n";
+print $long_report if $verbose;
+exit $status{OK};
+
+
+# utility to load required modules. exits if unable to load one or more of the modules.
+sub load_modules {
+	my @missing_modules = ();
+	foreach( @_ ) {
+		eval "require $_";
+		push @missing_modules, $_ if $@;	
+	}
+	if( @missing_modules ) {
+		print "Missing perl modules: @missing_modules\n";
+		return 0;
+	}
+	return 1;
+}
+
+
+# NAME
+#	PluginReport
+# SYNOPSIS
+#	$report = new PluginReport;
+#   $report->{label1} = "value1";
+#   $report->{label2} = "value2";
+#	print $report->text(qw/label1 label2/);
+package PluginReport;
+
+sub new {
+	my ($proto,%p) = @_;
+	my $class = ref($proto) || $proto;
+	my $self  = bless {}, $class;
+	$self->{$_} = $p{$_} foreach keys %p;
+	return $self;
+}
+
+sub text {
+	my ($self,@labels) = @_;
+	my @report = map { "$_ $self->{$_}" } grep { defined $self->{$_} } @labels;
+	my $text = join(", ", @report);
+	return $text;
+}
+
+package main;
+1;
+
+__END__
+
+=pod
+
+=head1 NAME
+
+check_mysql_slave - connects to a mysql replication slave and checks its status
+
+=head1 SYNOPSIS
+
+ check_mysql_slave -H slave.server.net -U nagios -P passwd
+ check_mysql_slave -H slave.server.net -U nagios -P passwd -p 3306
+ check_mysql_slave --help
+
+=head1 OPTIONS
+
+=over
+
+=item --warning <seconds>
+
+Currently not used. There are other nagios plugins that will check if a server is responding to connections. 
+May be used in the future to specify how many bytes or seconds behind the master a slave may be.
+Also known as: -w <seconds>
+
+=item --critical <seconds>
+
+Currently not used. There are other nagios plugins that will check if a server is responding to connections. 
+May be used in the future to specify how many bytes or seconds behind the master a slave may be.
+Also known as: -c <seconds> 
+
+=item --timeout <seconds>
+
+Abort with critical status if it takes longer than <seconds> to connect to the mysql server. Default is 60 seconds.
+Also known as: -t <seconds> 
+
+=item --hostname <server>
+
+Address or name of the MySQL slave server. Examples: mysql5.server.net, localhost, 192.168.1.100
+Also known as: -H <server>
+
+=item --port <number>
+
+Service port on the MySQL server. Default is 3306.
+Also known as: -p <number>
+
+=item --username <username>
+
+=item --password <password>
+
+Username and password to use when connecting to the MySQL server.
+Also known as: -U <username> -P <password>
+
+=item --verbose
+
+Display additional information. Useful for troubleshooting. Use together with --version to see the default
+warning and critical timeout values.
+Also known as: -v
+
+=item --version
+
+Display plugin version and exit.
+Also known as: -V
+
+=item --help
+
+Display this documentation and exit. Does not work in the ePN version. 
+Also known as: -h
+
+=item --usage
+
+Display a short usage instruction and exit. 
+
+=back
+
+=head1 EXAMPLES
+
+=head2 Command line example
+
+Check a slave listening on the standard MySQL port from the command line:
+
+$ check_mysql_slave -H slave.server.net -U nagios -P 'password'
+
+MYSQL SLAVE OK - file bin.000003, position 41267/41267
+
+=head2 Nagios configuration example
+
+I prefer to define this service on each slave:
+
+ define command {
+     command_name           check_mysql_slave
+     command_line           $USER1$/check_mysql_slave -H $HOSTADDRESS$ -p 3306 -U $ARG1$ -P $ARG2$
+ }
+
+ define service {
+     use                    your-service-template
+     host_name              slave.server.net
+     service_description    MySQL Replication Slave
+     check_command          check_mysql_slave!nagios!password
+ }
+
+But of course you could make the port number an argument and even define all your
+slave replication services on the master mysql host and use the slave server's 
+hostname as an argument instead of HOSTADDRESS, like this:
+
+ command_line           $USER1$/check_mysql_slave -H $ARG1$ -p $ARG2$ -U $ARG3$ -P $ARG4$
+
+ check_command          check_mysql_slave!slave.server.net!3306!nagios!password
+
+=head2 Nagios Embedded-Perl (ePN) example
+
+The usage is the same, but use the embedded-perl version of the plugin:
+
+ command_line           $USER1$/check_mysql_slave_epn -H $ARG1$ -p $ARG2$ -U $ARG3$ -P $ARG4$
+
+=head1 EXIT CODES
+
+This plugin complies with the Nagios plug-in specification:
+
+ 0		OK		The plugin was able to check the service and it appeared to be functioning properly
+ 1		Warning		The plugin was able to check the service, but it appeared to be above some "warning" threshold or did not appear to be working properly
+ 2		Critical	The plugin detected that either the service was not running or it was above some "critical" threshold
+ 3		Unknown		Invalid command line arguments were supplied to the plugin or the plugin was unable to check the status of the given hosts/service
+
+=head1 NAGIOS PLUGIN NOTES
+
+Nagios plugin reference: http://nagiosplug.sourceforge.net/developer-guidelines.html
+
+This plugin does NOT use Nagios DEFAULT_SOCKET_TIMEOUT (provided by utils.pm as $TIMEOUT) because
+the path to utils.pm must be specified completely in this program and forces users to edit the source
+code if their install location is different (if they realize this is the problem). You can view
+the default timeout for this module by using the --verbose and --version options together.  The
+short form is -vV.
+
+Other than that, it attempts to follow published guidelines for Nagios plugins.
+
+=head1 SECURITY AND MYSQL PRIVILEGES
+
+This section concerns mysql administrators who want to grant only minimal privileges to
+the nagios plugin (since its username and password are stored in the nagios config!).
+
+The plugin executes the following commands on slave servers:
+
+ SHOW VARIABLES LIKE 'version';
+ SHOW SLAVE STATUS;
+
+I recommend using the following minimal grants for the nagios plugin:
+
+=head2 MySQL version 3.23
+
+ GRANT PROCESS ON *.* TO 'nagios'@'nagios.server.net' identified by 'password';
+
+=head2 MySQL version 4.1
+
+ GRANT SUPER,REPLICATION CLIENT ON *.* TO 'nagios'@'nagios.server.net' identified by 'password';
+
+=head2 MySQL version 5.0
+
+ GRANT SUPER,REPLICATION CLIENT ON *.* TO 'nagios'@'nagios.server.net' identified by 'password';
+
+=head1 PERL MODULE NOTES
+
+This plugin requires the following perl modules:
+
+ Getopt::Long
+ DBI
+ DBD::mysql
+
+The manual for DBD::mysql states that a database is required in the connection string.
+This is not true if you are only using global privileges such as usage, process, super,
+or replication client without trying to open a specific database.
+
+=head1 CHANGES
+
+ Tue Aug 19 17:46:02 PDT 2008
+ + version 0.1
+ Wed Aug 20 07:58:16 PDT 2008
+ + added helpful DBI error messages (access denied, incompatible versions, etc)
+ + version 0.1.1
+
+=head1 AUTHOR
+
+Jonathan Buhacoff <jonathan@buhacoff.net>
+
+=head1 COPYRIGHT AND LICENSE
+
+ Copyright (C) 2008 Jonathan Buhacoff
+
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+ http://www.gnu.org/licenses/gpl.txt
+
+=cut
+

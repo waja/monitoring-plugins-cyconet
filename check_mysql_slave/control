@@ -1,0 +1,6 @@
+Homepage: https://gist.github.com/natedaiger/48457
+Watch: https://gist.github.com/natedaiger/48457/raw/check_mysql_slave.pl \$VERSION\ =\ '([0-9.]+)'
+Uploaders: Jan Wagner <waja@cyconet.org>
+Description: plugin that connects to a mysql replication slave and checks its status
+Recommends: libdbd-mysql-perl
+Version: 0.1.1

@@ -22,6 +22,12 @@ check_bgp:
 check_file:
     Required Packages: libtime-modules-perl
 
+check_ipsec:
+    Required Packages: monitoring-plugins-common | nagios-plugins-common, fping, strongswan-starter | openswan
+
+check_mysql_slave:
+    Required Packages: libdbd-mysql-perl
+
 check_nginx_status:
     Required Packages: libwww-perl, monitoring-plugins-common | nagios-plugins-common
 
