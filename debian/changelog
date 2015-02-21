@@ -1,3 +1,9 @@
+monitoring-plugins-cyconet (9.20150221~2) restricted; urgency=medium
+
+  * [608c53e] Fix CR after installing plugins
+
+ -- Jan Wagner <waja@cyconet.org>  Sat, 21 Feb 2015 14:00:15 +0100
+
 monitoring-plugins-cyconet (9.20150221~1) restricted; urgency=medium
 
   * [712a20a] Adding check_mysql_slave
