@@ -63,7 +63,14 @@ dh_auto_install-%:
 	   if [ -n "$$opts" ]; then \
 	   	dpkg-shlibdeps -O $$opts | grep shlibs:Depends > debian/$*/substvars ;\
 	   fi
-       
+	# remove CR from plugins
+	set -e; \
+	for fix in `grep -lIUr '$$' $(CURDIR)/debian/$*/usr/lib/monitoring-plugins | xargs`; do \
+	   if [ -n "$$fix" ]; then \
+		sed -i 's/$$//' $$fix ;\
+	   fi ;\
+	done
+
 dh_auto_%:
 	set -e; \
 	    export auto_command=`echo $* | sed 's,-.*,,;s,^,dh_auto_,'` ;\
