@@ -1,5 +1,5 @@
-Homepage: https://www.monitoringexchange.org/inventory/Check-Plugins/Software/SNMP/check_bgp
-Watch: https://www.monitoringexchange.org/attachment/preview/Check-Plugins/Software/SNMP/check_bgp/check_bgp.0.4.pl Revision: ([0-9.]+)
+Homepage: https://exchange.icinga.org/exchange/check_bgp
+Watch: https://exchange.icinga.org/exchange/check_bgp/files/657/check_bgp.0.4.pl Revision: ([0-9.]+)
 Uploaders: Jan Wagner <waja@cyconet.org>
 Description: plugin to check BGP peer status via SNMP.
 Recommends: libnet-snmp-perl, monitoring-plugins-common | nagios-plugins-common
