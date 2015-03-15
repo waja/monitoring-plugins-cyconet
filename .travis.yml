@@ -14,6 +14,9 @@ install:
     - sudo apt-get autoremove -qq
 
 script:
+    # run autoreconf on ubuntu 12.04
+    - sudo apt-get install -qq --no-install-recommends base-files
+    - source /etc/os-release; if [ "$VERSION_ID" = "12.04" ]; then sudo apt-get -qq --no-install-recommends install automake libtool && cd check_nwc_health/src/ && autoreconf -f; cd ../..; sudo apt-get purge -qq automake libtool && sudo apt-get autoremove -qq; fi
     # build the debian package
     - dpkg-buildpackage -uc -us
 
