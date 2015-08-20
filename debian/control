@@ -3,7 +3,12 @@ Section: net
 Priority: extra
 Maintainer: Jan Wagner <waja@cyconet.org>
 Uploaders: Jan Wagner <waja@cyconet.org>
-Build-Depends: debhelper (>= 8.0.0), python, python-debian, quilt (>= 0.46-7), autotools-dev, autotools-dev
+Build-Depends: autotools-dev,
+               debhelper (>= 8.0.0),
+               python,
+               python-debian,
+               quilt (>= 0.46-7),
+               autotools-dev
 Standards-Version: 3.9.6
 Vcs-Git: git://github.com/waja/monitoring-plugins-cyconet
 Vcs-Browser: http://github.com/waja/monitoring-plugins-cyconet
@@ -11,7 +16,10 @@ Vcs-Browser: http://github.com/waja/monitoring-plugins-cyconet
 Package: monitoring-plugins-cyconet
 Architecture: any
 Depends: ${misc:Depends}
-Recommends: ${shlibs:Depends}, ${python:Depends}, libnet-snmp-perl, monitoring-plugins-common | nagios-plugins-common, libtime-modules-perl, fping, strongswan-starter | openswan, libdbd-mysql-perl, libwww-perl, python-argparse, libredis-perl, ruby-redis, libio-socket-inet6-perl, perl-modules, libnet-tftp-perl, libxml-xpath-perl, ${perl:Depends}
+Recommends: libnet-snmp-perl, monitoring-plugins-common | nagios-plugins-common, libtime-modules-perl, fping, strongswan-starter | openswan, libdbd-mysql-perl, libwww-perl, python-argparse, libredis-perl, ruby-redis, libio-socket-inet6-perl, perl-modules, libnet-tftp-perl, libxml-xpath-perl,
+            ${perl:Depends},
+            ${python:Depends},
+            ${shlibs:Depends}
 Suggests: 
 Enhances: nagios-plugins, nagios-plugins-basic, nagios-plugins-standard
 Description: Plugins for nagios compatible monitoring systems
@@ -26,10 +34,10 @@ Description: Plugins for nagios compatible monitoring systems
    * check_nginx_status (0.10): plugin checking the nginx_status page report from nginx
      Tracking Active connections processes, request per second, connections per
      seconds, Connections status.
-   * check_nwc_health (3.1): This plugin checks the hardware health and interface metrics
+   * check_nwc_health (3.4.2.2): This plugin checks the hardware health and interface metrics
      of network components like switches and routers.
    * check_openvpn (20130904): plugin to check if an OpenVPN server runs on a given port
-   * check_phpfpm_status (0.9): plugin to check the fpm-status page report from php-fpm
+   * check_phpfpm_status (0.10): plugin to check the fpm-status page report from php-fpm
    * check_redis (0.72): plugin that verifies redis server is working.
    * check_sentinel (0b8e0e388a): plugin to monitor Redis sentinel
    * check_sieve (1.02): plugin checking for a running Sieve daemon
