@@ -284,6 +284,23 @@ https://exchange.icinga.org/exchange/check_smart+hwraid
 
 ------------------------------------------------------------------------------
 
+check_ssl_cert:
+
+The plugin was downloaded from: 
+https://github.com/matteocorti/check_ssl_cert/blob/master/check_ssl_cert
+
+  Copyright (c) 2007-2013 ETH Zurich
+  Copyright (c) 2007-2016 Matteo Corti
+  
+  License: GPL v3
+  
+    On Debian systems, the complete text of the GNU General
+    Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
+  
+  
+
+------------------------------------------------------------------------------
+
 check_tftp:
 
 The plugin was downloaded from: 
