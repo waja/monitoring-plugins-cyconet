@@ -1,3 +1,32 @@
+monitoring-plugins-cyconet (10.20160713) restricted; urgency=medium
+
+  * [de08de4] check_bgp: Updating Homepage and Watch headers
+  * [808b174] travis-ci: don't install build-deps manual
+  * [413e6bb] travis-ci: build package with dpkg-buildpackage
+  * [3a4746f] travis-ci: Initial support for uploading releases to github
+  * [cf95c23] Move sync.sh to debian/bin/
+  * [1638ce8] travis-ci: autoreconf check_nwc_health on ubuntu 12.04
+  * [1bcaa1e] Merging upstream changes of github-release.sh
+  * [4721bb1] Updating copyright and author of debian/bin/github-release.sh
+  * [cd7660c] debian/control.in: reformating with warp-and-sort
+  * [04cf19d] Rebuild debian/control
+  * [8a1cb84] travis-ci: Adding required arguments for trusty
+  * [02dd6a7] travis-ci: automatically install dependencies
+  * [00d5ca9] check_nginx_status/control: Update Watch detection
+  * [a2f5e5e] check_nginx_status: Updating to 0.20
+  * [3155447] check_openvpn/control: Addjust Recommends
+  * [7eb6cc0] check_openvpn: Update to 20151106
+  * [f7e67c0] check_phpfpm_status: Update to 0.11
+  * [54a6376] check_phpfpm_status: Drop unneeded path patch
+  * [96914b6] check_nwc_health: Update to 5.7.1
+  * [4c86b39] check_nwc_health: Update to 5.7.1.3
+  * [f07e400] Adding check_ssl_cert
+  * [2e46237] Update README.Debian.plugins
+  * [77bc646] Update control file
+  * [7ce4ca5] Update copyright file
+
+ -- Jan Wagner <waja@cyconet.org>  Wed, 13 Jul 2016 20:44:06 +0200
+
 monitoring-plugins-cyconet (9.20150221~2) restricted; urgency=medium
 
   * [608c53e] Fix CR after installing plugins
