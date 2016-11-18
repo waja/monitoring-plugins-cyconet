@@ -1,41 +1,39 @@
 sudo: required
-dist: trusty
-language: c
-
-before_install:
-    # update package list
-    - sudo apt-get update -qq
-
-install:
-    # install packages needed for mk-build-deps
-    - sudo apt-get install -qq --no-install-recommends devscripts equivs
-    # pull build deps from debian/control
-    - sudo mk-build-deps -ir -t "apt-get --yes --no-install-recommends"
-    # remove packages needed for mk-build-deps
-    - sudo apt-get purge -qq equivs
-    - sudo apt-get autoremove -qq
-
-script:
-    # run autoreconf on ubuntu 12.04
-    - sudo apt-get install -qq --no-install-recommends base-files
-    - source /etc/os-release; if [ "$VERSION_ID" = "12.04" ]; then sudo apt-get -qq --no-install-recommends install automake libtool && cd check_nwc_health/src/ && autoreconf -f; cd ../..; sudo apt-get purge -qq automake libtool && sudo apt-get autoremove -qq; fi
-    # build the debian package
-    - dpkg-buildpackage -uc -us
-
-after_script:
-    # run lintian after build
-    - sudo apt-get install -qq --no-install-recommends lintian
-    - lintian --info --display-info --display-experimental --pedantic --show-overrides ../*.deb && lintian --info --display-info --display-experimental --pedantic --show-overrides ../*.dsc
 
 env:
   global:
     # travis encrypt -r waja/monitoring-plugins-cyconet GITHUBTOKEN=XXXXXX (https://help.github.com/articles/creating-an-access-token-for-command-line-use / http://docs.travis-ci.com/user/encryption-keys/)
-    secure: "G/f08BKWorfnej6309TiTzESH/HPQlA8AJwpPTWcDkf5X0/9UcpouuajrXBayu0Km3pN0jMzJXOU3S5mQvuebNHCWY1ehVkL4h+z0bDXxFG0SZBLuy0dJ+NPyd7iTp/tlRUfencxymAmaRQQa4zFkLndT0W0MH88NNsYgh/eCBw="
+    - secure: "G/f08BKWorfnej6309TiTzESH/HPQlA8AJwpPTWcDkf5X0/9UcpouuajrXBayu0Km3pN0jMzJXOU3S5mQvuebNHCWY1ehVkL4h+z0bDXxFG0SZBLuy0dJ+NPyd7iTp/tlRUfencxymAmaRQQa4zFkLndT0W0MH88NNsYgh/eCBw="
+  matrix:
+    - TRAVIS_DEBIAN_DISTRIBUTION=unstable TRAVIS_DEBIAN_MIRROR="http://httpredir.debian.org/debian/" TRAVIS_DEBIAN_SECURITY_UPDATES=false
+    - TRAVIS_DEBIAN_DISTRIBUTION=testing  TRAVIS_DEBIAN_MIRROR="http://httpredir.debian.org/debian/"
+    - TRAVIS_DEBIAN_DISTRIBUTION=stable   TRAVIS_DEBIAN_MIRROR="http://httpredir.debian.org/debian/"
+
+services:
+  - docker
+
+before_script:
+  # fetch all tags (not done due travis cloning with depth=50)
+  - git fetch --tags
+
+script:
+  # build the debian package
+  - wget -O- http://travis.debian.net/script.sh | sh -
+
+after_script:
+  # run lintian after build
+  - sudo add-apt-repository -y ppa:waja/trusty-backports
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq --no-install-recommends lintian
+  - lintian --info --display-info --display-experimental --pedantic --show-overrides ../*.deb && lintian --info --display-info --display-experimental --pedantic --show-overrides ../*.dsc
 
 after_success:
-    - mkdir -p debian/build/release/
-    - for FILE in $(dcmd ../*.changes); do cp ../$(basename $FILE) debian/build/release/; done
-    - debian/bin/github-release.sh "$TRAVIS_REPO_SLUG" "debian/`head -1 debian/changelog | awk -F'[()]' '{print $2}' | awk -F'+' '{print $1}'`" debian/build/release/*
+  - '[ "$TRAVIS_DEBIAN_DISTRIBUTION" = "stable" ] && mkdir -p debian/build/release/ && for FILE in $(dcmd $TRAVIS_DEBIAN_BUILD_DIR/*.changes); do cp ../$(basename $FILE) debian/build/release/; done'
+  - '[ "$TRAVIS_DEBIAN_DISTRIBUTION" = "stable" ] && debian/bin/github-release.sh "$TRAVIS_REPO_SLUG" "debian/`head -1 debian/changelog | awk -F"[()]" "{print $2}" | awk -F"+" "{print $1}"`" debian/build/release/*'
 
 #notifications:
 #  email: false
+
+branches:
+  except:
+    - /^debian\/\d/
