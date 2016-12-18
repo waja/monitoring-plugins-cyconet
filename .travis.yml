@@ -28,7 +28,7 @@ after_script:
   - lintian --info --display-info --display-experimental --pedantic --show-overrides ../*.deb && lintian --info --display-info --display-experimental --pedantic --show-overrides ../*.dsc
 
 after_success:
-  - '[ "$TRAVIS_DEBIAN_DISTRIBUTION" = "stable" ] && mkdir -p debian/build/release/ && for FILE in $(dcmd $TRAVIS_DEBIAN_BUILD_DIR/*.changes); do cp ../$(basename $FILE) debian/build/release/; done'
+  - '[ "$TRAVIS_DEBIAN_DISTRIBUTION" = "stable" ] && sudo apt-get install -qq --no-install-recommends devscripts && mkdir -p debian/build/release/ && for FILE in $(dcmd ../*.changes); do cp ../$(basename $FILE) debian/build/release/; done'
   - '[ "$TRAVIS_DEBIAN_DISTRIBUTION" = "stable" ] && debian/bin/github-release.sh "$TRAVIS_REPO_SLUG" "debian/`head -1 debian/changelog | awk -F"[()]" "{print $2}" | awk -F"+" "{print $1}"`" debian/build/release/*'
 
 #notifications:
