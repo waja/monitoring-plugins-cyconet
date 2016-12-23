@@ -1,6 +1,6 @@
 Homepage: https://raw.github.com/liquidat/nagios-icinga-checks/master/check_openvpn
 Watch: https://raw.github.com/liquidat/nagios-icinga-checks/master/check_openvpn Version\ ([0-9.]+)
 Recommends: libpython-stdlib
-Version: 20151106
+Version: 20160803
 Uploaders: Jan Wagner <waja@cyconet.org>
 Description: plugin to check if an OpenVPN server runs on a given port
