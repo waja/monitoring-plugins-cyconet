@@ -1,3 +1,16 @@
+monitoring-plugins-cyconet (11.20170120) restricted; urgency=medium
+
+  * [6af6c54] check_openvpn: Update to 20160803
+  * [aee28d7] check_ssl_cert: Update to 1.37.0
+  * [f5da882] check_phpfpm_status: Update to 1.1
+  * [7b229a8] check_nwc_health: Update to 5.10.0.2
+  * [c6ade24] check_sentinal: Fixing control file
+  * [69d09ac] check_nwc_health: Update to 5.12
+  * [fdcad15] d/control: Update
+  * [74c9bd7] d/control: Bump Standards-Version to 3.9.8, no changes needed
+
+ -- Jan Wagner <waja@cyconet.org>  Fri, 20 Jan 2017 11:43:19 +0100
+
 monitoring-plugins-cyconet (10.20160713) restricted; urgency=medium
 
   * [de08de4] check_bgp: Updating Homepage and Watch headers
@@ -14,7 +27,7 @@ monitoring-plugins-cyconet (10.20160713) restricted; urgency=medium
   * [02dd6a7] travis-ci: automatically install dependencies
   * [00d5ca9] check_nginx_status/control: Update Watch detection
   * [a2f5e5e] check_nginx_status: Updating to 0.20
-  * [3155447] check_openvpn/control: Addjust Recommends
+  * [3155447] check_openvpn/control: Adjust Recommends
   * [7eb6cc0] check_openvpn: Update to 20151106
   * [f7e67c0] check_phpfpm_status: Update to 0.11
   * [54a6376] check_phpfpm_status: Drop unneeded path patch
