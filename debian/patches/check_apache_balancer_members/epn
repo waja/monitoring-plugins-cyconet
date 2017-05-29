@@ -1,0 +1,10 @@
+diff --git a/check_apache_balancer_members/check_apache_balancer_members b/check_apache_balancer_members/check_apache_balancer_members
+index e83ff68..1cb63da 100644
+--- a/check_apache_balancer_members/check_apache_balancer_members
++++ b/check_apache_balancer_members/check_apache_balancer_members
+@@ -1,4 +1,5 @@
+ #!/usr/bin/perl
++# nagios: -epn
+ use strict;
+ use warnings;
+ use LWP::Simple;
