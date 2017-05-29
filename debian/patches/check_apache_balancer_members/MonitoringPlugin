@@ -1,0 +1,47 @@
+From a9a62a4c646acac9a2db826c529efcc599786a93 Mon Sep 17 00:00:00 2001
+From: Jan Wagner <waja@cyconet.org>
+Date: Mon, 29 May 2017 12:37:12 +0200
+Subject: [PATCH] Adding support for Monitoring::Plugin
+
+---
+ check_apache_balancer_members.pl | 25 +++++++++++++++++++++++--
+ 1 file changed, 23 insertions(+), 2 deletions(-)
+
+diff --git a/check_apache_balancer_members/check_apache_balancer_members b/check_apache_balancer_members/check_apache_balancer_members
+index e83ff68..3c811fd 100644
+--- a/check_apache_balancer_members/check_apache_balancer_members
++++ b/check_apache_balancer_members/check_apache_balancer_members
+@@ -3,10 +3,31 @@
+ use warnings;
+ use LWP::Simple;
+ use Data::Dump qw(dump);    #libdata-dump-perl
+-use Nagios::Plugin;         #libnagios-plugin-perl
+ use Web::Scraper;           #libweb-scraper-perl
+ 
+-my $np = Nagios::Plugin->new(
++sub load_module {
++    my @names = @_;
++    my $module;
++    for my $name (@names) {
++        my $file = $name;
++        # requires need either a bare word or a file name
++        $file =~ s{::}{/}gsxm;
++        $file .= '.pm';
++        eval {
++            require $file;
++            $name->import();
++            $module = $name;
++		};
++		last if $module;
++    }
++    return $module;
++}
++
++my $plugin_module;
++
++$plugin_module = load_module( 'Monitoring::Plugin', 'Nagios::Plugin' ); #libmonitoring-plugin-perl or libnagios-plugin-perl
++
++my $np = $plugin_module->new(
+     usage => '',
+     plugin => $0,
+     shortname => "Balancer Members",

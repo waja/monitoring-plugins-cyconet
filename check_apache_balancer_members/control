@@ -1,0 +1,6 @@
+Homepage: https://raw.github.com/mintsoft/check_apache_balancer_members/master/check_apache_balancer_members.pl
+Watch: https://github.com/mintsoft/check_apache_balancer_members <a class="commit-tease-sha"[^>]*>\s+([0-9a-f]+)\s+</a>
+Recommends: libdata-dump-perl, libweb-scraper-perl, libmonitoring-plugin-perl | libnagios-plugin-perl
+Version: a9827f1
+Uploaders: Jan Wagner <waja@cyconet.org>
+Description: plugin to monitor Apache2 balancer_manager
