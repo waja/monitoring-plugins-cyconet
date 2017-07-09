@@ -7,5 +7,6 @@ check_mysql_slave//epn
 check_sieve/epn
 check_sieve/10_pathes
 check_sieve/MonitoringPlugin
+check_sieve/BareWord
 check_tftp/epn
 check_tomcat/epn
