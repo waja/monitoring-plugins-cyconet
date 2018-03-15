@@ -1,4 +1,4 @@
-check_apache_balancer_members/MonitoringPlugin
+check_apache_balancer_members/NagiosPlugins
 check_apache_balancer_members/epn
 check_ipsec/10_pathes
 check_ipsec/15_fix_syntax

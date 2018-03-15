@@ -7,18 +7,15 @@ Subject: [PATCH] Adding support for Monitoring::Plugin
  check_apache_balancer_members.pl | 25 +++++++++++++++++++++++--
  1 file changed, 23 insertions(+), 2 deletions(-)
 
-diff --git a/check_apache_balancer_members/check_apache_balancer_members b/check_apache_balancer_members/check_apache_balancer_members
-index e83ff68..3c811fd 100644
 --- a/check_apache_balancer_members/check_apache_balancer_members
 +++ b/check_apache_balancer_members/check_apache_balancer_members
-@@ -3,10 +3,31 @@
- use warnings;
+@@ -4,9 +4,30 @@
  use LWP::Simple;
  use Data::Dump qw(dump);    #libdata-dump-perl
--use Nagios::Plugin;         #libnagios-plugin-perl
  use Web::Scraper;           #libweb-scraper-perl
+-use Monitoring::Plugin;	    #libmonitoring-plugin-perl
  
--my $np = Nagios::Plugin->new(
+-my $np = Monitoring::Plugin->new(
 +sub load_module {
 +    my @names = @_;
 +    my $module;
