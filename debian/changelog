@@ -1,8 +1,19 @@
-monitoring-plugins-cyconet (11.20170121) UNRELEASED; urgency=medium
+monitoring-plugins-cyconet (12.20180319) restricted; urgency=medium
 
-  * 
+  * [581fc6c] Adding check_apache_balancer_members
+  * [ba39a8d] Drop check_ssl_cert, is shipped by nagios-plugins-contib since
+    ages
+  * [5b545ac] check_sieve: Add support to detect perl monitoring and nagios
+    plugins
+  * [2b07b20] check_sieve: Fixing Bareword 'UNKNOWN'
+  * [36649d7] check_apache_balancer_members: Update to cfa70e2
+  * [f134dbf] check_apache_balancer_members: Update to 8e1ad17
+  * [e5a659f] check_openvpn: Update to ba01f5f
+  * [0fce1f7] check_nwc_health: Update to 7.0.1.1
+  * [2af0f6f] travis-ci: Make use of travis.d.n
+  * [6d4a73a] travis-ci: install devscripts
 
- -- Jan Wagner <waja@cyconet.org>  Fri, 20 Jan 2017 11:49:31 +0100
+ -- Jan Wagner <waja@cyconet.org>  Mon, 19 Mar 2018 08:22:22 +0100
 
 monitoring-plugins-cyconet (11.20170120) restricted; urgency=medium
 
@@ -114,7 +125,8 @@ monitoring-plugins-cyconet (3.20140627~1.gbp166e43) restricted; urgency=medium
   * [b8b7456] Add correct options for hostname to check_redis
   * [7977340] check_kibana: add missing recommends libjson-xs-perl
   * [8843ede] check_kibana: propper filename for predefined check
-  * [166e43e] check_kibana: Removed again, cause not compatible against recent kibaba versions
+  * [166e43e] check_kibana: Removed again, cause not compatible against recent
+    kibaba versions
 
  -- Jan Wagner <waja@cyconet.org>  Fri, 27 Jun 2014 20:28:42 +0200
 
