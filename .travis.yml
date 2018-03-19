@@ -34,6 +34,6 @@ after_success:
 #notifications:
 #  email: false
 
-branches:
-  except:
-    - /^debian\/\d/
+#branches:
+#  except:
+#    - /^debian\/\d/
