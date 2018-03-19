@@ -30,7 +30,7 @@ $np->getopts;
 
 my $response = get("http://".$np->opts->hostname."/".$np->opts->path);
 my $s = scraper {
-    process 'table:nth-of-type(2) tr:not(:first-child)', 'members[]' => scraper {
+    process 'table:nth-of-type(2) tr', 'members[]' => scraper {
         process 'td:nth-of-type(1)', 'worker' => 'TEXT';
         process 'td:nth-of-type(6)', 'status' => 'TEXT';
         process 'td:nth-of-type(7)', 'elected' => 'TEXT';
@@ -42,12 +42,12 @@ my $s = scraper {
 };
 
 my $results = $s->scrape($response);
-
 my @problemMembers = ();
 my $at_least_one_is_ok = 0;
 
 foreach my $member (@{$results->{'members'}})
 {
+    next unless $member->{'worker'};
     push @problemMembers, $member->{'worker'} if $member->{'status'} =~ /Err/i;
     $at_least_one_is_ok = 1 if $member->{'status'} =~ /Ok\s?$/;
     $np->add_perfdata(label => "elected-$member->{'worker'}", value => $member->{'elected'}, uom => 'c');
