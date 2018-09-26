@@ -1,8 +1,8 @@
-monitoring-plugins-cyconet (14.20180704) UNRELEASED; urgency=medium
+monitoring-plugins-cyconet (15.20180926) restricted; urgency=medium
 
-  * 
+  * [36ffda3] check_nwc_health: Update to 7.3
 
- -- Jan Wagner <waja@cyconet.org>  Tue, 03 Jul 2018 18:49:14 +0200
+ -- Jan Wagner <waja@cyconet.org>  Wed, 26 Sep 2018 13:08:19 +0200
 
 monitoring-plugins-cyconet (14.20180703) restricted; urgency=medium
 
