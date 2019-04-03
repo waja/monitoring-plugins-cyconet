@@ -9,14 +9,14 @@ Build-Depends: autotools-dev,
                python-debian,
                quilt (>= 0.46-7),
                autotools-dev
-Standards-Version: 3.9.8
+Standards-Version: 3.9.6
 Vcs-Git: git://github.com/waja/monitoring-plugins-cyconet
 Vcs-Browser: http://github.com/waja/monitoring-plugins-cyconet
 
 Package: monitoring-plugins-cyconet
 Architecture: any
 Depends: ${misc:Depends}
-Recommends: libnet-snmp-perl, monitoring-plugins-common | nagios-plugins-common, libtime-modules-perl, fping, strongswan-starter | openswan, libdbd-mysql-perl, libwww-perl, libpython-stdlib, libio-socket-ssl-perl, libredis-perl, ruby-redis, libio-socket-inet6-perl, perl-modules, ca-certificates, expect, libtimedate-perl, openssl, libnet-tftp-perl, libxml-xpath-perl,
+Recommends: libdata-dump-perl, libweb-scraper-perl, libmonitoring-plugin-perl | libnagios-plugin-perl, libnet-snmp-perl, monitoring-plugins-common | nagios-plugins-common, libtime-modules-perl, fping, strongswan-starter | openswan, libdbd-mysql-perl, python3-minimal, libwww-perl, libpython-stdlib, libio-socket-ssl-perl, libredis-perl, ruby-redis, libio-socket-inet6-perl, libmonitoring-plugin-perl | libmonitoring-plugin-perl, perl-modules, libnet-tftp-perl, libxml-xpath-perl,
             ${perl:Depends},
             ${python:Depends},
             ${shlibs:Depends}
@@ -27,14 +27,16 @@ Description: Plugins for nagios compatible monitoring systems
  systems like Nagios and Icinga.
  It contains the following plugins:
  .
+   * check_apache_balancer_members (8e1ad17): plugin to monitor Apache2 balancer_manager
    * check_bgp (0.4): plugin to check BGP peer status via SNMP.
    * check_file: plugin to check file count,  size and ages
    * check_ipsec (2.0): plugin checking ipsec connections from open- or stongswan
    * check_mysql_slave (0.1.1): plugin that connects to a mysql replication slave and checks its status
+   * check_nextcloud (b7e5755): Plugin script to monitor your nextcloud serverinfo API
    * check_nginx_status (0.20): plugin checking the nginx_status page report from nginx
      Tracking Active connections processes, request per second, connections per
      seconds, Connections status.
-   * check_nwc_health (5.12): This plugin checks the hardware health and interface metrics
+   * check_nwc_health (7.6): This plugin checks the hardware health and interface metrics
      of network components like switches and routers.
    * check_openvpn (20160803): plugin to check if an OpenVPN server runs on a given port
    * check_phpfpm_status (1.1): plugin to check the fpm-status page report from php-fpm
@@ -43,10 +45,6 @@ Description: Plugins for nagios compatible monitoring systems
    * check_sieve (1.02): plugin checking for a running Sieve daemon
      Check SIEVE connections as per rfc 5804 for Nagios
    * check_smart: plugin to check SMART status of ATA/SCSI disks
-   * check_ssl_cert (1.37.0): plugin checking an X.509 certificate
-     - checks if the server is running and delivers a valid certificate
-     - checks if the CA matches a given pattern
-     - checks the validity
    * check_tftp (0.11): plugin that verifies TFTP server is working.
    * check_tomcat (1.4): plugin to check the tomcat status page.
  .
