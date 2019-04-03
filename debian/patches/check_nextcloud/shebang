@@ -1,0 +1,8 @@
+--- a/check_nextcloud/check/check_nextcloud.py
++++ b/check_nextcloud/check/check_nextcloud.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ 
+ ###############################################################################################################
+ # Language     :  Python (3.*)

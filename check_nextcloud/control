@@ -1,0 +1,6 @@
+Uploaders: Jan Wagner <waja@cyconet.org>
+Recommends: python3-minimal
+Version: b7e5755
+Homepage: https://github.com/BornToBeRoot/check_nextcloud
+Watch: https://github.com/BornToBeRoot/check_nextcloud <a class="commit-tease-sha"[^>]*>\s+([0-9a-f]+)\s+</a>
+Description: Plugin script to monitor your nextcloud serverinfo API
