@@ -5,8 +5,9 @@ Maintainer: Jan Wagner <waja@cyconet.org>
 Uploaders: Jan Wagner <waja@cyconet.org>
 Build-Depends: autotools-dev,
                debhelper (>= 8.0.0),
-               python,
-               python-debian,
+               dh-python,
+               python3,
+               python3-debian,
                quilt (>= 0.46-7),
                autotools-dev
 Standards-Version: 3.9.6
