@@ -1,3 +1,9 @@
+monitoring-plugins-cyconet (16.20190404~3) UNRELEASED; urgency=medium
+
+  * 
+
+ -- Jan Wagner <waja@cyconet.org>  Thu, 10 Sep 2020 16:52:10 +0200
+
 monitoring-plugins-cyconet (16.20190404~2) restricted; urgency=medium
 
   * [e7b9753] Rename nextcloud.cfg into check_nextcloud.cfg
