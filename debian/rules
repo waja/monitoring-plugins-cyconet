@@ -8,7 +8,7 @@ PLUGINS := $(shell find $(CURDIR) -mindepth 1 -maxdepth 1 -name .git -prune -o -
 PKGNAME = monitoring-plugins-cyconet
 
 %:
-	dh $@ --with quilt,python2,autotools_dev --parallel
+	dh $@ --with quilt,python3,autotools_dev --parallel
 
 # Here follows a small shell snipped to call dh_auto_* for all plugins
 # Currently
@@ -27,11 +27,11 @@ DH_AUTO_CALL = 	if [ "$$auto_command" = "dh_auto_configure" ]; then \
 			echo failed to build $$plugin; exit 255 ; \
 		fi
 
-PACKAGING_HELPER = /usr/bin/python $(CURDIR)/debian/packaging-helper.py
+PACKAGING_HELPER = /usr/bin/python3 $(CURDIR)/debian/packaging-helper.py
 
 
 clean: $(PLUGINS:%=clean-%) debian/copyright debian/control
-	dh $@ --with quilt,python2,autotools_dev --parallel
+	dh $@ --with quilt,python3,autotools_dev --parallel
 	rm -f debian/$(PKGNAME).install
 	rm -f debian/README.Debian.plugins
 
@@ -91,9 +91,9 @@ override_dh_auto_install: $(PLUGINS:%=dh_auto_install-%)
 override_dh_auto_test: 
 	# nothign to do right now.
 
-override_dh_python2:
-	dh_python2
-	dh_python2 usr/lib/nagios/plugins usr/lib/nagios/cronjobs
+override_dh_python3:
+	dh_python3
+	dh_python3 usr/lib/nagios/plugins usr/lib/nagios/cronjobs
 
 CONTROL_FILES := $(shell for p in $(PLUGINS); do echo $$p/control; done)
 COPYRIGHT_FILES := $(shell for p in $(PLUGINS); do echo $$p/copyright; done)
