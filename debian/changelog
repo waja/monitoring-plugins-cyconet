@@ -1,8 +1,11 @@
-monitoring-plugins-cyconet (16.20190404~1.gbpeed5d8) UNRELEASED; urgency=medium
+monitoring-plugins-cyconet (16.20190404~2) restricted; urgency=medium
 
-  * UNRELEASED
+  * [e7b9753] Rename nextcloud.cfg into check_nextcloud.cfg
+  * [98a99aa] Updating d/packaging-helper.py from monitoring-plugins-contrib
+  * [899e096] Migrating over to python3
+  * [c5b434c] Auto update of d/control
 
- -- Jan Wagner <waja@cyconet.org>  Wed, 03 Apr 2019 17:33:57 +0200
+ -- Jan Wagner <waja@cyconet.org>  Thu, 10 Sep 2020 16:09:42 +0200
 
 monitoring-plugins-cyconet (16.20190403) restricted; urgency=medium
 
