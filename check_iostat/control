@@ -1,0 +1,5 @@
+Homepage: https://exchange.nagios.org/directory/Plugins/Operating-Systems/Linux/check_iostat--2D-I-2FO-statistics/details
+Uploaders: Jan Wagner <waja@cyconet.org>
+Description: plugin shows the I/O usage of the specified disk.
+Recommends: sysstat, bc
+Version: 0.0.9
