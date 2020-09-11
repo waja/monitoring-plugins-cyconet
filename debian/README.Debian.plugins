@@ -16,17 +16,26 @@ dependencies" below).
 Plugin dependencies:
 --------------------
 
+check_apache_balancer_members:
+    Required Packages: libdata-dump-perl, libweb-scraper-perl, libmonitoring-plugin-perl | libnagios-plugin-perl
+
 check_bgp:
     Required Packages: libnet-snmp-perl, monitoring-plugins-common | nagios-plugins-common
 
 check_file:
     Required Packages: libtime-modules-perl
 
+check_iostat:
+    Required Packages: sysstat, bc
+
 check_ipsec:
     Required Packages: monitoring-plugins-common | nagios-plugins-common, fping, strongswan-starter | openswan
 
 check_mysql_slave:
     Required Packages: libdbd-mysql-perl
+
+check_nextcloud:
+    Required Packages: python3-minimal
 
 check_nginx_status:
     Required Packages: libwww-perl, monitoring-plugins-common | nagios-plugins-common
@@ -35,7 +44,7 @@ check_openvpn:
     Required Packages: libpython-stdlib
 
 check_phpfpm_status:
-    Required Packages: libwww-perl, monitoring-plugins-common | nagios-plugins-common
+    Required Packages: libio-socket-ssl-perl, libwww-perl, monitoring-plugins-common | nagios-plugins-common
 
 check_redis:
     Required Packages: libredis-perl, monitoring-plugins-common | nagios-plugins-common
@@ -44,13 +53,10 @@ check_sentinel:
     Required Packages: ruby-redis
 
 check_sieve:
-    Required Packages: libio-socket-inet6-perl, monitoring-plugins-common | nagios-plugins-common
+    Required Packages: libio-socket-inet6-perl, libmonitoring-plugin-perl | libmonitoring-plugin-perl
 
 check_smart:
     Required Packages: perl-modules, monitoring-plugins-common | nagios-plugins-common
-
-check_ssl_cert:
-    Required Packages: ca-certificates, expect, libtimedate-perl, openssl
 
 check_tftp:
     Required Packages: libnet-tftp-perl, monitoring-plugins-common | nagios-plugins-common
