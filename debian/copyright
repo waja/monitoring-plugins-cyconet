@@ -107,6 +107,26 @@ check_file:
 
 ------------------------------------------------------------------------------
 
+check_iostat:
+
+The plugin was downloaded from: 
+https://exchange.nagios.org/directory/Plugins/Operating-Systems/Linux/check_iostat--2D-I-2FO-statistics/details
+
+  
+  
+
+------------------------------------------------------------------------------
+
+check_iostats:
+
+The plugin was downloaded from: 
+https://github.com/dnsmichi/icinga-plugins/blob/master/scripts/check_iostats
+
+  
+  
+
+------------------------------------------------------------------------------
+
 check_ipsec:
 
 The plugin was downloaded from: 
