@@ -28,6 +28,9 @@ check_file:
 check_iostat:
     Required Packages: sysstat, bc
 
+check_iostats:
+    Required Packages: sysstat
+
 check_ipsec:
     Required Packages: monitoring-plugins-common | nagios-plugins-common, fping, strongswan-starter | openswan
 
