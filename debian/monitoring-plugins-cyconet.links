@@ -1,4 +1,5 @@
 # get our configs loaded without adjusting the nagios/icinga config for now
 etc/monitoring-plugins/config etc/nagios-plugins/config/monitoring-plugins
-# providing check_iostat where it is expected by icinga2
+# providing check_* where it is expected by icinga2
 usr/lib/monitoring-plugins/check_iostat usr/lib/nagios/plugins/check_iostat
+usr/lib/monitoring-plugins/check_iostats usr/lib/nagios/plugins/check_iostats

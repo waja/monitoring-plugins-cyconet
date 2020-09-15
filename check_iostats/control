@@ -1,0 +1,6 @@
+Homepage: https://github.com/dnsmichi/icinga-plugins/blob/master/scripts/check_iostats
+Watch: https://gitlab.icare.ch/open-source/monitoring-plugins/-/raw/master/check_iostats # Version ([0-9.]+)
+Uploaders: Jan Wagner <waja@cyconet.org>
+Description: plugin shows the I/O usage of the specified disk, perl implementation.
+Recommends: sysstat
+Version: 0.1
