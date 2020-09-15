@@ -32,6 +32,7 @@ Description: Plugins for nagios compatible monitoring systems
    * check_bgp (0.4): plugin to check BGP peer status via SNMP.
    * check_file: plugin to check file count,  size and ages
    * check_iostat (0.0.9): plugin shows the I/O usage of the specified disk.
+   * check_iostats (0.1): plugin shows the I/O usage of the specified disk, perl implementation.
    * check_ipsec (2.0): plugin checking ipsec connections from open- or stongswan
    * check_mysql_slave (0.1.1): plugin that connects to a mysql replication slave and checks its status
    * check_nextcloud (b7e5755): Plugin script to monitor your nextcloud serverinfo API
