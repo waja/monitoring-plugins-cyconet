@@ -1,8 +1,18 @@
-monitoring-plugins-cyconet (16.20190404~3) UNRELEASED; urgency=medium
+monitoring-plugins-cyconet (17.20200916) restricted; urgency=medium
 
-  * 
+  * [db87188] Adding check_iostat 0.0.9
+  * [655f760] Auto update d/control
+  * [abeb1ba] Auto update d/README.Debian.plugins
+  * [a22a9e3] Adding empty check_iostat/copyright
+  * [a6b217c] Providing symlink for check_iostat, that icinga2 can find it where it is expected
+  * [f12c75b] Adding check_iostats 0.1
+  * [1a2be29] Auto update d/copyright
+  * [43d5911] Auto update d/control
+  * [7d410af] Auto update d/README.Debian.plugins
+  * [f2db6c2] Update check_nwc_health to 7.12.1.3
+  * [e132732] Auto update d/control
 
- -- Jan Wagner <waja@cyconet.org>  Thu, 10 Sep 2020 16:52:10 +0200
+ -- Jan Wagner <waja@cyconet.org>  Wed, 16 Sep 2020 12:05:32 +0200
 
 monitoring-plugins-cyconet (16.20190404~2) restricted; urgency=medium
 
