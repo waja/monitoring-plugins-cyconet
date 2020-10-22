@@ -17,7 +17,7 @@ Vcs-Browser: http://github.com/waja/monitoring-plugins-cyconet
 Package: monitoring-plugins-cyconet
 Architecture: any
 Depends: ${misc:Depends}
-Recommends: libdata-dump-perl, libweb-scraper-perl, libmonitoring-plugin-perl | libnagios-plugin-perl, libnet-snmp-perl, monitoring-plugins-common | nagios-plugins-common, libtime-modules-perl, sysstat, bc, fping, strongswan-starter | openswan, libdbd-mysql-perl, python3-minimal, libwww-perl, libpython-stdlib, libio-socket-ssl-perl, libredis-perl, ruby-redis, libio-socket-inet6-perl, libmonitoring-plugin-perl | libmonitoring-plugin-perl, perl-modules, libnet-tftp-perl, libxml-xpath-perl,
+Recommends: libdata-dump-perl, libweb-scraper-perl, libmonitoring-plugin-perl | libnagios-plugin-perl, libnet-snmp-perl, monitoring-plugins-common | nagios-plugins-common, libtime-modules-perl, sysstat, bc, fping, strongswan-starter | openswan, libdbd-mysql-perl, python3-minimal, libwww-perl, libpython-stdlib, libio-socket-ssl-perl, snmp, libredis-perl, ruby-redis, libio-socket-inet6-perl, libmonitoring-plugin-perl | libmonitoring-plugin-perl, perl-modules, libnet-tftp-perl, libxml-xpath-perl,
             ${perl:Depends},
             ${python:Depends},
             ${shlibs:Depends}
@@ -43,6 +43,7 @@ Description: Plugins for nagios compatible monitoring systems
      of network components like switches and routers.
    * check_openvpn (20160803): plugin to check if an OpenVPN server runs on a given port
    * check_phpfpm_status (1.1): plugin to check the fpm-status page report from php-fpm
+   * check_qnap3 (1.23.3): plugin to check NAS QNAP.
    * check_redis (0.72): plugin that verifies redis server is working.
    * check_sentinel (0b8e0e3): plugin to monitor Redis sentinel
    * check_sieve (1.02): plugin checking for a running Sieve daemon
