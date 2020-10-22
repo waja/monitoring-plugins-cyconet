@@ -1,3 +1,9 @@
+monitoring-plugins-cyconet (18.20201012+4) UNRELEASED; urgency=medium
+
+  * NOT RELEASED YET
+
+ -- Jan Wagner <waja@cyconet.org>  Thu, 22 Oct 2020 23:35:58 +0200
+
 monitoring-plugins-cyconet (18.20201012+3) restricted; urgency=medium
 
   * [e553414] Adding check_qnap_health
