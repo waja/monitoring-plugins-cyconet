@@ -1,3 +1,12 @@
+monitoring-plugins-cyconet (18.20201012+3) restricted; urgency=medium
+
+  * [e553414] Adding check_qnap_health
+  * [2914fcb] Adding link for check_qnap_health
+  * [216bbfb] d/control: Auto update
+  * [c900d80] d/copyright: Auto update
+
+ -- Jan Wagner <waja@cyconet.org>  Thu, 22 Oct 2020 21:13:17 +0200
+
 monitoring-plugins-cyconet (18.20201012+2) restricted; urgency=medium
 
   * [8db15a8] Fixing broken symlink
