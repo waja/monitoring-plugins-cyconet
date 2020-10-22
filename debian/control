@@ -44,6 +44,7 @@ Description: Plugins for nagios compatible monitoring systems
    * check_openvpn (20160803): plugin to check if an OpenVPN server runs on a given port
    * check_phpfpm_status (1.1): plugin to check the fpm-status page report from php-fpm
    * check_qnap3 (1.23.3): plugin to check NAS QNAP.
+   * check_qnap_health (1.00): plugin to check NAS QNAP.
    * check_redis (0.72): plugin that verifies redis server is working.
    * check_sentinel (0b8e0e3): plugin to monitor Redis sentinel
    * check_sieve (1.02): plugin checking for a running Sieve daemon
