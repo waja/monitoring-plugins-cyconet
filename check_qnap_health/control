@@ -1,0 +1,6 @@
+Homepage: https://github.com/Mikesch-mp/qnap_health
+Watch: https://raw.githubusercontent.com/Mikesch-mp/qnap_health/master/qnap_health plgVer=([0-9.]+)
+Uploaders: Jan Wagner <waja@cyconet.org>
+Description: plugin to check NAS QNAP.
+Recommends: snmp
+Version: 1.00
