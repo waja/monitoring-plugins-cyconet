@@ -292,6 +292,22 @@ https://github.com/nikband/check_qnap3.sh
 
 ------------------------------------------------------------------------------
 
+check_qnap_health:
+
+The plugin was downloaded from: 
+https://github.com/Mikesch-mp/qnap_health
+
+  Copyright (c) 2008 Shahid Iqbal
+  
+  License: GPL+
+  
+    On Debian systems, the complete text of the GNU General
+    Public License can be found in "/usr/share/common-licenses/GPL".
+  
+  
+
+------------------------------------------------------------------------------
+
 check_redis:
 
 The plugin was downloaded from: 
