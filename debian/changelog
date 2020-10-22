@@ -1,8 +1,11 @@
-monitoring-plugins-cyconet (17.20200917) UNRELEASED; urgency=medium
+monitoring-plugins-cyconet (18.20201011) restricted; urgency=medium
 
-  * 
+  * [5218397] Adding symlink for check_nwc_health
+  * [9ff9923] Adding check_qnap3
+  * [34e2aab] d/control: Auto update
+  * [79c1b18] d/copyright: Auto update
 
- -- Jan Wagner <waja@cyconet.org>  Thu, 17 Sep 2020 12:40:13 +0200
+ -- Jan Wagner <waja@cyconet.org>  Thu, 22 Oct 2020 15:50:16 +0200
 
 monitoring-plugins-cyconet (17.20200916) restricted; urgency=medium
 
