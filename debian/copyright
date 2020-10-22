@@ -276,6 +276,22 @@ https://raw.github.com/regilero/check_phpfpm_status/master/check_phpfpm_status.p
 
 ------------------------------------------------------------------------------
 
+check_qnap3:
+
+The plugin was downloaded from: 
+https://github.com/nikband/check_qnap3.sh
+
+  Copyright (c) 2008 Shahid Iqbal
+  
+  License: GPL+
+  
+    On Debian systems, the complete text of the GNU General
+    Public License can be found in "/usr/share/common-licenses/GPL".
+  
+  
+
+------------------------------------------------------------------------------
+
 check_redis:
 
 The plugin was downloaded from: 
