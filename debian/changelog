@@ -1,8 +1,10 @@
-monitoring-plugins-cyconet (18.20201012+4) UNRELEASED; urgency=medium
+monitoring-plugins-cyconet (18.20201012+4) restricted; urgency=medium
 
-  * NOT RELEASED YET
+  * [b052a86] Update check_qnap_health
+  * [8692bf3] Update Recommends for check_qnap_health
+  * [13dd9d8] d/control: Update
 
- -- Jan Wagner <waja@cyconet.org>  Thu, 22 Oct 2020 23:35:58 +0200
+ -- Jan Wagner <waja@cyconet.org>  Fri, 23 Oct 2020 13:46:46 +0200
 
 monitoring-plugins-cyconet (18.20201012+3) restricted; urgency=medium
 
