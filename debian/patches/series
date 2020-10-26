@@ -11,3 +11,4 @@ check_sieve/MonitoringPlugin
 check_sieve/BareWord
 check_tftp/epn
 check_tomcat/epn
+check_qnap_health/fix_strPart
