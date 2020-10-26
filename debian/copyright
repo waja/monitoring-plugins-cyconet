@@ -107,6 +107,50 @@ check_file:
 
 ------------------------------------------------------------------------------
 
+check_iftraffic64:
+
+The plugin was downloaded from: 
+https://exchange.nagios.org/directory/Plugins/Network-Connections%2C-Stats-and-Bandwidth/check_iftraffic64/details
+
+  Copyright (C) 2004 Gerd Mueller / Netways GmbH
+  
+  License: GPL+
+  
+    On Debian systems, the complete text of the GNU General
+    Public License can be found in "/usr/share/common-licenses/GPL".
+  
+  
+
+------------------------------------------------------------------------------
+
+check_interfaces:
+
+The plugin was downloaded from: 
+https://github.com/NETWAYS/check_interfaces
+
+  AUTHOR: NETWAYS GmbH, William Preston <support@netways.de>
+  License: GPL v2
+  
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License along
+  with this program; if not, write to the Free Software Foundation, Inc.,
+  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+  
+    On Debian systems, the complete text of the GNU General
+    Public License version 2 can be found in "/usr/share/common-licenses/GPL-2".
+  
+
+------------------------------------------------------------------------------
+
 check_iostat:
 
 The plugin was downloaded from: 
@@ -271,22 +315,6 @@ https://raw.github.com/regilero/check_phpfpm_status/master/check_phpfpm_status.p
   
     On Debian systems, the complete text of the GNU General
     Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
-  
-  
-
-------------------------------------------------------------------------------
-
-check_qnap3:
-
-The plugin was downloaded from: 
-https://github.com/nikband/check_qnap3.sh
-
-  Copyright (c) 2008 Shahid Iqbal
-  
-  License: GPL+
-  
-    On Debian systems, the complete text of the GNU General
-    Public License can be found in "/usr/share/common-licenses/GPL".
   
   
 
