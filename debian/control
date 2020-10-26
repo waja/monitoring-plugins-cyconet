@@ -9,7 +9,7 @@ Build-Depends: autotools-dev,
                python3,
                python3-debian,
                quilt (>= 0.46-7),
-               autotools-dev
+               autotools-dev, libsnmp-dev
 Standards-Version: 3.9.6
 Vcs-Git: git://github.com/waja/monitoring-plugins-cyconet
 Vcs-Browser: http://github.com/waja/monitoring-plugins-cyconet
@@ -17,7 +17,7 @@ Vcs-Browser: http://github.com/waja/monitoring-plugins-cyconet
 Package: monitoring-plugins-cyconet
 Architecture: any
 Depends: ${misc:Depends}
-Recommends: libdata-dump-perl, libweb-scraper-perl, libmonitoring-plugin-perl | libnagios-plugin-perl, libnet-snmp-perl, monitoring-plugins-common | nagios-plugins-common, libtime-modules-perl, sysstat, bc, fping, strongswan-starter | openswan, libdbd-mysql-perl, python3-minimal, libwww-perl, libpython-stdlib, libio-socket-ssl-perl, snmp, gawk | mawk, libredis-perl, ruby-redis, libio-socket-inet6-perl, libmonitoring-plugin-perl | libmonitoring-plugin-perl, perl-modules, libnet-tftp-perl, libxml-xpath-perl,
+Recommends: libdata-dump-perl, libweb-scraper-perl, libmonitoring-plugin-perl | libnagios-plugin-perl, libnet-snmp-perl, monitoring-plugins-common | nagios-plugins-common, libtime-modules-perl, libsnmp-perl, libnet-dns-perl, sysstat, bc, fping, strongswan-starter | openswan, libdbd-mysql-perl, python3-minimal, libwww-perl, libpython-stdlib, libio-socket-ssl-perl, gawk | mawk, snmp, libredis-perl, ruby-redis, libio-socket-inet6-perl, libmonitoring-plugin-perl | libmonitoring-plugin-perl, perl-modules, libnet-tftp-perl, libxml-xpath-perl,
             ${perl:Depends},
             ${python:Depends},
             ${shlibs:Depends}
@@ -31,6 +31,8 @@ Description: Plugins for nagios compatible monitoring systems
    * check_apache_balancer_members (8e1ad17): plugin to monitor Apache2 balancer_manager
    * check_bgp (0.4): plugin to check BGP peer status via SNMP.
    * check_file: plugin to check file count,  size and ages
+   * check_iftraffic64 (.77): plugin for checking network traffic by snmp.
+   * check_interfaces (1.4): This plugin uses the bulk-get mode of SNMPv2 by default
    * check_iostat (0.0.9): plugin shows the I/O usage of the specified disk.
    * check_iostats (0.1): plugin shows the I/O usage of the specified disk, perl implementation.
    * check_ipsec (2.0): plugin checking ipsec connections from open- or stongswan
@@ -43,7 +45,6 @@ Description: Plugins for nagios compatible monitoring systems
      of network components like switches and routers.
    * check_openvpn (20160803): plugin to check if an OpenVPN server runs on a given port
    * check_phpfpm_status (1.1): plugin to check the fpm-status page report from php-fpm
-   * check_qnap3 (1.23.3): plugin to check NAS QNAP.
    * check_qnap_health (1.00): plugin to check NAS QNAP.
    * check_redis (0.72): plugin that verifies redis server is working.
    * check_sentinel (0b8e0e3): plugin to monitor Redis sentinel
