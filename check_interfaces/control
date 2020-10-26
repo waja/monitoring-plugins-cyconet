@@ -1,0 +1,5 @@
+Homepage: https://github.com/NETWAYS/check_interfaces
+Uploaders: Jan Wagner <waja@cyconet.org>
+Description: This plugin uses the bulk-get mode of SNMPv2 by default
+Build-Depends: autotools-dev, libsnmp-dev
+Version: 1.4
