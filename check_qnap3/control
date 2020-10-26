@@ -1,6 +1,0 @@
-Homepage: https://github.com/nikband/check_qnap3.sh
-Watch: https://raw.githubusercontent.com/nikband/check_qnap3.sh/master/check_qnap3.sh #Version\ ([0-9.]+)
-Uploaders: Jan Wagner <waja@cyconet.org>
-Description: plugin to check NAS QNAP.
-Recommends: snmp
-Version: 1.23.3
