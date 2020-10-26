@@ -12,3 +12,4 @@ check_sieve/BareWord
 check_tftp/epn
 check_tomcat/epn
 check_qnap_health/fix_strPart
+check_iftraffic64/fix_traffic_file

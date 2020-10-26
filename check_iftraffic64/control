@@ -1,0 +1,5 @@
+Homepage: https://exchange.nagios.org/directory/Plugins/Network-Connections%2C-Stats-and-Bandwidth/check_iftraffic64/details
+Uploaders: Jan Wagner <waja@cyconet.org>
+Description: plugin for checking network traffic by snmp.
+Recommends: libsnmp-perl, libnet-dns-perl
+Version: .77
