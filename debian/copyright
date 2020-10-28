@@ -95,6 +95,27 @@ https://exchange.icinga.org/exchange/check_bgp
 
 ------------------------------------------------------------------------------
 
+check_esxi_hardware:
+
+The plugin was downloaded from: 
+https://github.com/Napsty/check_esxi_hardware
+
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  as published by the Free Software Foundation; either version 2
+  of the License, or (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, see <https://www.gnu.org/licenses/>
+  
+
+------------------------------------------------------------------------------
+
 check_file:
 
   Copyright 2007-2009, Tevfik Karagulle, ITeF!x Consulting (http://itefix.no)
@@ -102,6 +123,22 @@ check_file:
   
   On Debian systems, a copy of the Artistic License can be found in
   /usr/share/common-licenses/Artistic
+  
+  
+
+------------------------------------------------------------------------------
+
+check_iftraffic64:
+
+The plugin was downloaded from: 
+https://exchange.nagios.org/directory/Plugins/Network-Connections%2C-Stats-and-Bandwidth/check_iftraffic64/details
+
+  Copyright (C) 2004 Gerd Mueller / Netways GmbH
+  
+  License: GPL+
+  
+    On Debian systems, the complete text of the GNU General
+    Public License can be found in "/usr/share/common-licenses/GPL".
   
   
 
@@ -228,7 +265,7 @@ http://labs.consol.de/lang/en/nagios/check_nwc_health/
 check_openvpn:
 
 The plugin was downloaded from: 
-https://raw.github.com/liquidat/nagios-icinga-checks/master/check_openvpn
+https://raw.github.com/liquidat/nagios-icinga-openvpn/master/bin/check_openvpn
 
   Copyright 2013 Roland Wolters, credativ GmbH
   
@@ -276,22 +313,6 @@ https://raw.github.com/regilero/check_phpfpm_status/master/check_phpfpm_status.p
 
 ------------------------------------------------------------------------------
 
-check_qnap3:
-
-The plugin was downloaded from: 
-https://github.com/nikband/check_qnap3.sh
-
-  Copyright (c) 2008 Shahid Iqbal
-  
-  License: GPL+
-  
-    On Debian systems, the complete text of the GNU General
-    Public License can be found in "/usr/share/common-licenses/GPL".
-  
-  
-
-------------------------------------------------------------------------------
-
 check_qnap_health:
 
 The plugin was downloaded from: 
@@ -327,7 +348,7 @@ http://william.leibzon.org/nagios/
 check_sentinel:
 
 The plugin was downloaded from: 
-https://raw.github.com/reedox/check_sentinel/master/check_sentinel
+https://raw.github.com/tkhn/check_sentinel/master/check_sentinel
 
   Copyright Chris Boulton <chris@chrisboulton.com>
   
