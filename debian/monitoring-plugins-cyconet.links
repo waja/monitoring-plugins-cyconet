@@ -4,5 +4,5 @@ etc/monitoring-plugins/config etc/nagios-plugins/config/monitoring-plugins
 usr/lib/monitoring-plugins/check_iostat usr/lib/nagios/plugins/check_iostat
 usr/lib/monitoring-plugins/check_iostats usr/lib/nagios/plugins/check_iostats
 usr/lib/monitoring-plugins/check_nwc_health usr/lib/nagios/plugins/check_nwc_health
-usr/lib/monitoring-plugins/check_qnap3 usr/lib/nagios/plugins/check_qnap3
+usr/lib/monitoring-plugins/check_iftraffic64 usr/lib/nagios/plugins/check_iftraffic64
 usr/lib/monitoring-plugins/check_qnap_health usr/lib/nagios/plugins/check_qnap_health
