@@ -1,3 +1,17 @@
+monitoring-plugins-cyconet (18.20201028) restricted; urgency=medium
+
+  * [51da819] check_qnap3: remove in favout of check_qnap_health
+  * [2889ce6] Addingd/p/check_qnap_health/fix_strPart
+  * [aea814e] Adding check_iftraffic64
+  * [377dd27] Removing symlink for check_qnap3 and adding check_iftraffic64
+  * [e58c406] check_sentinel/control: Update Homepage and watch
+  * [634170a] check_openvpn/control: Update Homepage and watch
+  * [4dcc659] Adding check_esxi_hardware
+  * [4e5b96d] d/copyright: Auto update
+  * [74bdb31] d/control: Update
+
+ -- Jan Wagner <waja@cyconet.org>  Wed, 28 Oct 2020 09:53:01 +0100
+
 monitoring-plugins-cyconet (18.20201012+4) restricted; urgency=medium
 
   * [b052a86] Update check_qnap_health
