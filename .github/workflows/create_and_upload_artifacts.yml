@@ -1,4 +1,4 @@
-name: Build Packages
+name: Build and upload packages
 
 on:
   release:
