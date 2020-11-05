@@ -3,8 +3,6 @@ name: Build Packages
 on:
   release:
     types: [published, created, edited]
-  # Run tests for any PRs
-#  pull_request:
 
 env:
   SOURCE_DIR: ./
@@ -33,6 +31,4 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-#        releaseId: 'debian/18.20201012+4'
-#        releaseId: ${{ needs.create_release.outputs.id }}
         args: debian/build/release/*
