@@ -4,7 +4,7 @@
 # Uncomment this to turn on verbose mode.
 export DH_VERBOSE=1
 
-PLUGINS := $(shell find $(CURDIR) -mindepth 1 -maxdepth 1 -name .git -prune -o -name .pc -prune -o -name debian -prune -o -type d -printf '%f\n' | sort)
+PLUGINS := $(shell find $(CURDIR) -mindepth 1 -maxdepth 1 -name .git* -prune -o -name .pc -prune -o -name debian -prune -o -type d -printf '%f\n' | sort)
 PKGNAME = monitoring-plugins-cyconet
 
 %:
