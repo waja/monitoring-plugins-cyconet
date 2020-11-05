@@ -1,3 +1,9 @@
+monitoring-plugins-cyconet (18.20201029+1) restricted; urgency=medium
+
+  * [c912af1] Adding initial version of packaging test
+
+ -- Jan Wagner <waja@cyconet.org>  Fri, 06 Nov 2020 00:20:26 +0100
+
 monitoring-plugins-cyconet (18.20201028) restricted; urgency=medium
 
   * [51da819] check_qnap3: remove in favout of check_qnap_health
