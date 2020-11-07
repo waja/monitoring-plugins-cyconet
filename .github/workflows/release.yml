@@ -1,38 +1,33 @@
-name: Build Packages
-
 on:
-  release:
-    types: [published, created, edited]
-  # Run tests for any PRs
-#  pull_request:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'debian/*' # Push events to matching debian/*, i.e. debian/1.0-2, debian/20.15.10, debian/23.20020326
 
-env:
-  SOURCE_DIR: ./
-  ARTIFACTS_DIR: debian/build/release/
+name: Create Release
 
 jobs:
   build:
+    name: Create Release
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      env:
-        DEBIAN_FRONTEND: "noninteractive"
-    - name: Remove github artefacts
-      run: |
-        rm -rf .github/
-    - name: Adjust distibution in changelog file
-      run: |
-        sed -i '0,/restricted/s//stable/' debian/changelog
-    - name: Build Debian package
-      uses: pi-top/action-debian-package@v4
-      with:
-        artifacts_directory: debian/build/release/
-        target_architectures: "amd64,i386"
-    - name: Upload the artifacts
-      uses: skx/github-action-publish-binaries@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-#        releaseId: 'debian/18.20201012+4'
-#        releaseId: ${{ needs.create_release.outputs.id }}
-        args: debian/build/release/*
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install needed packages
+        run: |
+          sudo apt-get update && sudo apt-get install -y dpkg-dev
+      - name: Gather changelog
+        run: |
+          CHANGELOG="$(dpkg-parsechangelog | tail -n +8 > debian/changelog)"
+          echo "${CHANGELOG}"
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: ${CHANGELOG}
+          draft: false
+          prerelease: false
