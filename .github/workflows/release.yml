@@ -48,15 +48,19 @@ jobs:
         DEBIAN_FRONTEND: "noninteractive"
     - name: Remove github artefacts
       run: |
-        rm -rf .github/
+        rm -rf .git*
     - name: Adjust distibution in changelog file
       run: |
         sed -i '0,/restricted/s//stable/' debian/changelog
     - name: Build Debian package
-      uses: pi-top/action-debian-package@v4
+      uses: dawidd6/action-debian-package@v1
       with:
         artifacts_directory: debian/build/release/
-        target_architectures: "amd64,i386"
+#    - name: Build Debian package
+#      uses: pi-top/action-debian-package@v0.2.0
+#      with:
+#        artifacts_directory: debian/build/release/
+#        target_architectures: "amd64,i386"
     - name: Upload the artifacts
       uses: skx/github-action-publish-binaries@master
       env:
