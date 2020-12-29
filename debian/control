@@ -10,7 +10,7 @@ Build-Depends: autotools-dev,
                python3-debian,
                quilt (>= 0.46-7),
                autotools-dev
-Standards-Version: 3.9.6
+Standards-Version: 4.5.1
 Vcs-Git: git://github.com/waja/monitoring-plugins-cyconet
 Vcs-Browser: http://github.com/waja/monitoring-plugins-cyconet
 
