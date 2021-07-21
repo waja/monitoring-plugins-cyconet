@@ -10,14 +10,14 @@ Build-Depends: autotools-dev,
                python3-debian,
                quilt (>= 0.46-7),
                autotools-dev
-Standards-Version: 4.5.1
+Standards-Version: 3.9.6
 Vcs-Git: git://github.com/waja/monitoring-plugins-cyconet
 Vcs-Browser: http://github.com/waja/monitoring-plugins-cyconet
 
 Package: monitoring-plugins-cyconet
 Architecture: any
 Depends: ${misc:Depends}
-Recommends: libdata-dump-perl, libweb-scraper-perl, libmonitoring-plugin-perl | libnagios-plugin-perl, libnet-snmp-perl, monitoring-plugins-common | nagios-plugins-common, python3-minimal, python-pywbem, libtime-modules-perl, libsnmp-perl, libnet-dns-perl, sysstat, bc, fping, strongswan-starter | openswan, libdbd-mysql-perl, libwww-perl, libpython-stdlib, libio-socket-ssl-perl, gawk | mawk, snmp, libredis-perl, ruby-redis, libio-socket-inet6-perl, libmonitoring-plugin-perl | libmonitoring-plugin-perl, perl-modules, libnet-tftp-perl, libxml-xpath-perl,
+Recommends: libdata-dump-perl, libweb-scraper-perl, libmonitoring-plugin-perl | libnagios-plugin-perl, libnet-snmp-perl, monitoring-plugins-common | nagios-plugins-common, python3-minimal, python-pywbem, libtime-modules-perl, libsnmp-perl, libnet-dns-perl, sysstat, bc, fping, strongswan-starter | openswan, procps, libdbd-mysql-perl, libwww-perl, libpython-stdlib, libio-socket-ssl-perl, gawk | mawk, snmp, libredis-perl, ruby-redis, libio-socket-inet6-perl, libmonitoring-plugin-perl | libmonitoring-plugin-perl, perl-modules, libnet-tftp-perl, libxml-xpath-perl,
             ${perl:Depends},
             ${python:Depends},
             ${shlibs:Depends}
@@ -36,6 +36,7 @@ Description: Plugins for nagios compatible monitoring systems
    * check_iostat (0.0.9): plugin shows the I/O usage of the specified disk.
    * check_iostats (0.1): plugin shows the I/O usage of the specified disk, perl implementation.
    * check_ipsec (2.0): plugin checking ipsec connections from open- or stongswan
+   * check_keepalived (0.0.1): plugin checking keepalived status
    * check_mysql_slave (0.1.1): plugin that connects to a mysql replication slave and checks its status
    * check_nextcloud (b7e5755): Plugin script to monitor your nextcloud serverinfo API
    * check_nginx_status (0.20): plugin checking the nginx_status page report from nginx
