@@ -1,0 +1,4 @@
+Uploaders: Jan Wagner <waja@cyconet.org>
+Description: plugin checking keepalived status
+Recommends: procps
+Version: 0.0.1

@@ -1,0 +1,254 @@
+#!/bin/bash
+
+# Monitoring plugin to check the keepalived status
+usage(){
+	echo "Check: Is the keepalived service operate as it should.
+  --status | -s  <state> )		Target state of the system (MASTER, BACKUP)
+  --interface | -i  <interface> )	Interface for vrrp instance
+  --ha-ip | -ip  <ip> )			Vrrp-ip
+  --interface2 | -i2 <interface> )	Interface for 2nd vrrp instance
+  --ha-ip2 | -ip2  <ip> )		2nd vrrp-ip
+  --help | -h )				Usage
+	"
+}
+
+# Exit Codes
+OK=0
+WARNING=1
+CRITICAL=2
+UNKNOWN=3
+
+# Command definitions
+if [ -x "$(which cat)" ];                                                       
+then                                                                            
+        CAT="$(which cat)"                                                      
+fi                                                                              
+                                                                                
+if [ -x "$(which grep)" ];                                                      
+then                                                                            
+        GREP="$(which grep)"                                                    
+fi                                                                              
+                                                                                
+if [ -x "$(which ip)" ];                                                        
+then                                                                            
+        IP="$(which ip)"                                                        
+fi                                                                              
+
+if [ -x "$(which pgrep)" ];
+then
+        PG="$(which pgrep)"
+fi                                                                                
+                                                                                
+if [ -x "$(which wc)" ];                                                        
+then                                                                            
+        WC="$(which wc)"                                                        
+fi
+
+if [ "$1" = "" ]
+then
+        echo "CRITICAL: No arguments given. Take a look at the usage:"
+	usage
+        exit "${CRITICAL}"
+fi
+
+# shifting through our command line arguments and setting our values
+while [ "$1" != "" ]; do
+        case $1 in
+                --status | -s )                 shift
+                                                TARGET_STATE="$1"
+                                                ;;
+                --interface | -i )              shift
+                                                IFACE="$1"
+                                                ;;
+                --ha-ip | -ip )                 shift
+                                                HAIP="$1"
+                                                ;;
+                --interface2 | -i2 )            shift
+                                                IFACE2="$1"
+                                                SEC_IP=true
+                                                ;;
+                --ha-ip2 | -ip2 )               shift
+                                                HAIP2="$1"
+                                                ;;
+                --help | -h )                   usage
+                                                exit
+                                                ;;
+                * )                             usage
+						echo "CRITICAL: No valid arguments given. Take a look at the usage."
+                                                exit "${CRITICAL}"
+        esac
+        shift
+done
+
+# Config and commands
+STAT_FILE='/tmp/keepalived.status'
+PID_FILE='/run/keepalived.pid'
+PID=$("${CAT}" "${PID_FILE}" 2>/dev/null)
+SERVICE=$("${PG}" keepalived)
+STATUS=(MASTER BACKUP FAULT)
+CHECK_HAIP=$("${IP}" 2>/dev/null addr sh "${IFACE}" | "${GREP}" "${HAIP}" | "${WC}" -l)
+CHECK_HAIP2=$("${IP}" 2>/dev/null addr sh "${IFACE2}" | "${GREP}" "${HAIP2}" | "${WC}" -l)
+
+# Check files are valid
+if [ ! -e "${STAT_FILE}" ]
+then
+	echo "CRITICAL: Generated status file is missing. State could not be determined."
+	exit "${CRITICAL}"
+fi
+
+FILE_CONT=$("${CAT}" "${STAT_FILE}" 2>/dev/null)
+
+if [ ! -e "${PID_FILE}" ]
+then
+        echo "CRITICAL: PID file is missing, keepalived is not running."
+        exit "${CRITICAL}"
+fi
+
+# Check variables exists
+if [ -z "${TARGET_STATE}" ]
+then
+        echo "CRITICAL: Parameter 'status' not given. Check usage:"
+        usage
+        exit "${CRITICAL}"
+fi
+
+if [ -z "${IFACE}" ]
+then
+        echo "CRITICAL: Parameter 'interface' not given. Check usage:"
+        usage
+        exit "${CRITICAL}"
+fi
+
+if [ -z "${HAIP}" ]
+then
+        echo "CRITICAL: Parameter 'ha-ip' not given. Check usage:"
+        usage
+        exit "${CRITICAL}"
+fi
+
+# Check service is running
+if [[ ! "${SERVICE}" =~ ${PID} ]]
+then
+        echo "CRITICAL: keepalived is not running."
+        exit "${CRITICAL}"
+fi
+
+# Confirm valid STATUS
+if [[ ! "${STATUS[*]}" =~ ${FILE_CONT} ]]
+then
+        echo "CRITICAL: Status file contains unknown status or is empty. Take a look at ${STAT_FILE}."
+        exit "${CRITICAL}"
+fi
+
+# Check ha ip and status
+if [ "${TARGET_STATE}" = "${STATUS[0]}" ] # Machine is defined as MASTER
+then
+        case "${FILE_CONT}" in
+                        MASTER )                        STAT=ok
+                                                        ;;
+                        BACKUP )                        STAT=fail
+                                                        ;;
+			FAULT )				echo "CRITICAL: Machine status is FAULT."
+                                                        exit "${CRITICAL}"
+							;;
+                        * )                             echo "CRITICAL: Status file contains unknown status or is empty. Take a look at ${STAT_FILE}."
+                                                        exit "${CRITICAL}"
+        esac
+
+        if [ "${SEC_IP}" == "true" ] # 2nd ha instance
+        then
+                if [ "${CHECK_HAIP2}" == 0 ] && [ "${STAT}" == ok ]
+                then
+                        echo "CRITICAL: 2nd HA IP ${HAIP2} is not up but machine is MASTER according to ${STAT_FILE}."
+			STAT_SEC_IP=CRIT
+                elif [ "${CHECK_HAIP2}" == 0 ] && [ "${STAT}" == fail ]
+                then
+                        echo "CRITICAL: 2nd HA IP ${HAIP2} is not up, machine is BACKUP. Should be MASTER."
+                elif [ "${CHECK_HAIP2}" == 1 ] && [ "${STAT}" == fail ]
+                then
+                        echo "CRITICAL: 2nd HA IP ${HAIP2} is up, but machine is BACKUP according to ${STAT_FILE}. Should be MASTER."
+                else
+                        echo "OK: 2nd HA IP ${HAIP2} is up and machine is MASTER."
+                fi
+        fi
+
+        if [ "${CHECK_HAIP}" == 0 ] && [ "${STAT}" == ok ] # Target-actual comparison machine state; IP should be up
+        then
+		echo "CRITICAL: HA IP ${HAIP} is not up but machine is MASTER according to ${STAT_FILE}."
+		exit "${CRITICAL}"
+	elif [ "${CHECK_HAIP}" == 0 ] && [ "${STAT}" == fail ]
+	then
+                echo "CRITICAL: HA IP ${HAIP} is not up, machine is BACKUP. Should be MASTER."
+		exit "${CRITICAL}"
+        elif [ "${CHECK_HAIP}" == 1 ] && [ "${STAT}" == fail ]
+	then
+		echo "CRITICAL: HA IP ${HAIP} is up, but machine is BACKUP according to ${STAT_FILE}. Should be MASTER."
+		exit "${CRITICAL}"
+        else
+                echo "OK: HA IP ${HAIP} is up and machine is MASTER."
+                if [ "${STAT_SEC_IP}" == CRIT ]
+                then
+                        exit "${CRITICAL}"
+                else
+                        exit "${OK}"
+                fi
+
+        fi
+
+elif [ "${TARGET_STATE}" = "${STATUS[1]}" ] # Machine is defined as BACKUP
+then
+        case "${FILE_CONT}" in
+                        MASTER )                        STAT=fail
+                                                        ;;
+                        BACKUP )                        STAT=ok
+                                                        ;;
+                        FAULT )                         echo "CRITICAL: Machine status is FAULT."
+							exit "${CRITICAL}"
+							;;
+                        * )                             echo "CRITICAL: Status file contains unknown status or is empty."
+                                                        exit "${CRITICAL}"
+        esac
+
+        if [ "${SEC_IP}" == "true" ] # 2nd ha instance
+        then
+                if [ "${CHECK_HAIP2}" == 1 ] && [ "${STAT}" == ok ]
+                then
+                        echo "CRITICAL: 2nd HA IP ${HAIP2} is up but machine is BACKUP according to ${STAT_FILE}."
+			STAT_SEC_IP=CRIT
+                elif [ "${CHECK_HAIP2}" == 1 ] && [ "${STAT}" == fail ]
+                then
+                        echo "WARNING: 2nd HA IP ${HAIP2} is up, machine is MASTER. Should be BACKUP."
+                elif [ "${CHECK_HAIP2}" == 0 ] && [ "${STAT}" == fail ]
+                then
+                        echo "CRITICAL: 2nd HA IP ${HAIP2} is not up but machine is MASTER according to ${STAT_FILE}. Should be BACKUP."
+                else
+                        echo "OK: 2nd HA IP ${HAIP2} is not up and machine is BACKUP."
+                fi
+        fi
+
+        if [ "${CHECK_HAIP}" == 1 ] && [ "${STAT}" == ok ] # Target-actual comparison machine state; IP should be down
+        then
+                echo "CRITICAL: HA IP ${HAIP} is up but machine is BACKUP according to ${STAT_FILE}."
+                exit "${CRITICAL}"
+        elif [ "${CHECK_HAIP}" == 1 ] && [ "${STAT}" == fail ]
+	then
+                echo "WARNING: HA IP ${HAIP} is up, machine is MASTER. Should be BACKUP."
+                exit "${WARNING}"
+        elif [ "${CHECK_HAIP}" == 0 ] && [ "${STAT}" == fail ]
+        then
+		echo "CRITICAL: HA IP ${HAIP} is not up but machine is MASTER according to ${STAT_FILE}. Should be BACKUP."
+		exit "${CRITICAL}"
+        else
+                echo "OK: HA IP ${HAIP} is not up and machine is BACKUP."
+                if [ "${STAT_SEC_IP}" == CRIT ]
+                then
+                        exit "${CRITICAL}"
+                else
+                        exit "${OK}"
+                fi
+        fi
+
+else
+        echo "Unknown: Unknown status given. Check ${STAT_FILE} and script usage."
+	exit "${UNKNOWN}"
+fi
