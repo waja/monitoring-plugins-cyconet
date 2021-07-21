@@ -42,11 +42,11 @@ Description: Plugins for nagios compatible monitoring systems
    * check_nginx_status (0.20): plugin checking the nginx_status page report from nginx
      Tracking Active connections processes, request per second, connections per
      seconds, Connections status.
-   * check_nwc_health (7.12.1.3): This plugin checks the hardware health and interface metrics
+   * check_nwc_health (8.4): This plugin checks the hardware health and interface metrics
      of network components like switches and routers.
    * check_openvpn (20160803): plugin to check if an OpenVPN server runs on a given port
    * check_phpfpm_status (1.1): plugin to check the fpm-status page report from php-fpm
-   * check_qnap_health (1.00): plugin to check NAS QNAP.
+   * check_qnap_health (1.01): plugin to check NAS QNAP.
    * check_redis (0.72): plugin that verifies redis server is working.
    * check_sentinel (0b8e0e3): plugin to monitor Redis sentinel
    * check_sieve (1.02): plugin checking for a running Sieve daemon
