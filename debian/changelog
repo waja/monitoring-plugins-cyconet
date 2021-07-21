@@ -1,3 +1,16 @@
+monitoring-plugins-cyconet (19.20210721) restricted; urgency=medium
+
+  * [92f8650] d/control: Bump Standards-Version to 4.5.1, no changes needed
+  * [6660a85] d/source/options: Adding .github to diff ignore
+  * [9df31e7] Adding check_keepalived
+  * [088dc0d] Auto update of debian/control
+  * [ab5f0b8] check_qnap_health: Update to 1.01
+  * [bfd168f] Drop d/patches/check_qnap_health/fix_strPart
+  * [0ac7e5c] check_nwc_health: Update to 8.4
+  * [3c03495] Auto update of debian/control
+
+ -- Jan Wagner <waja@cyconet.org>  Wed, 21 Jul 2021 16:01:21 +0200
+
 monitoring-plugins-cyconet (18.20201029+1) restricted; urgency=medium
 
   * [c912af1] Adding initial version of packaging test
