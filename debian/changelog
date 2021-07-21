@@ -1,3 +1,9 @@
+monitoring-plugins-cyconet (19.20210722) UNRELEASED; urgency=medium
+
+  * NOT RELEASED YET
+
+ -- Jan Wagner <waja@cyconet.org>  Wed, 21 Jul 2021 17:02:30 +0200
+
 monitoring-plugins-cyconet (19.20210721) restricted; urgency=medium
 
   * [92f8650] d/control: Bump Standards-Version to 4.5.1, no changes needed
