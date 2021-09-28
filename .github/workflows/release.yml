@@ -62,7 +62,7 @@ jobs:
 #        artifacts_directory: debian/build/release/
 #        target_architectures: "amd64,i386"
     - name: Upload the artifacts
-      uses: skx/github-action-publish-binaries@release-0.15
+      uses: skx/github-action-publish-binaries@release-2.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
