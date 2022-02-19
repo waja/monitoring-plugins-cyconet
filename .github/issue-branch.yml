@@ -1,4 +1,4 @@
-mode: chatops
+mode: auto
 branchName: '${issue.number}-${issue.title[0,40]}'
 gitSafeReplacementChar: '-'
 branches:
@@ -18,3 +18,4 @@ copyIssueLabelsToPR: true
 copyIssueAssigneeToPR: true
 copyIssueProjectsToPR: false
 copyIssueMilestoneToPR: true
+autoCloseIssue: true
