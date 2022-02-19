@@ -18,4 +18,3 @@ copyIssueLabelsToPR: true
 copyIssueAssigneeToPR: true
 copyIssueProjectsToPR: false
 copyIssueMilestoneToPR: true
-autoCloseIssue: true
