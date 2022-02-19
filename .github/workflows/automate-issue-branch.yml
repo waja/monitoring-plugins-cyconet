@@ -20,6 +20,6 @@ jobs:
       security-events: none
     steps:
       - name: Create Issue Branch
-        uses: robvanderleek/create-issue-branch@main
+        uses: robvanderleek/create-issue-branch@V1.5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
