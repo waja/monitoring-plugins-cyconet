@@ -1,0 +1,130 @@
+#!/usr/bin/python3
+# check_vgfree - Nagios plugin to check free space on LVM volume group
+
+
+
+from __future__ import print_function, division
+import optparse
+import os
+import subprocess
+import sys
+
+
+
+# Subclass to return code 3 at error.
+class OptionParser(optparse.OptionParser):
+    def error(self, msg=None):
+        self.print_usage(sys.stderr)
+        self.exit(3, "%s: error: %s\n" % (self.get_prog_name(), msg))
+
+
+
+class NagiosStatus(Exception):
+    Label = ['OK', 'WARNING', 'CRITICAL', 'UNDEFINED']
+
+    def __init__(self, code, message):
+        self.code = code
+        self.message = message
+
+    def __str__(self):
+        return "%s - %s" % (NagiosStatus.Label[self.code], self.message)
+
+    def returnStatus(self):
+        print(self)
+        sys.exit(self.code)
+
+
+
+def parsecmdline():
+    "Parse command line options."
+    usage = 'Usage: %prog [options]\n  try: %prog --help'
+    optionparser = OptionParser(usage)
+    optionparser.add_option("-c", "--critical", type="float", default=0,
+        help="critical size limit")
+    optionparser.add_option("-C", "--critical-percent", type="float", dest="cp",
+        default=0, help="% critical limit")
+    optionparser.add_option("-g", "--volume-group", dest="vg", default="vg0",
+        help="volume group to check")
+    optionparser.add_option("-w", "--warning", type="float", default=0,
+        help="warning size limit")
+    optionparser.add_option("-W", "--warning-percent", type="float", dest="wp",
+        default=0, help="% warning limit")
+    optionparser.add_option("--units", type="choice", dest="unit", default="g",
+        choices=("b", "k", "m", "g", "t", "p", "e"),
+        help="size in these units: (b)ytes, (k)ilobytes, (m)egabytes, "
+        "*(g)igabytes (*DEFAULT), (t)erabytes, (p)etabytes, (e)xabytes")
+    options, args = optionparser.parse_args()
+    return options
+
+
+
+def pickvgscommand():
+    "Pick vgs command path"
+    command = "/sbin/vgs"
+    if not os.path.isfile(command):
+        command = "/usr" + command
+        if not os.path.isfile(command):
+            msg = 'vgs command not found (is lvm2 package installed?)'
+            raise NagiosStatus(3, msg)
+    return command
+
+
+
+def pickvgspace(vg, unit):
+    "Pick free space on volume group."
+    command = pickvgscommand()
+    command = [command, "--noheadings", "--nosuffix",
+        "--options=vg_size,vg_free", "--units=%s" % unit, vg]
+    environment = {"LANG": "C"}
+    process = subprocess.Popen(command, stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE, env=environment)
+    output, error = process.communicate()
+    if 0 < process.returncode:
+        error = error.split('\n')[0].strip()
+        raise NagiosStatus(3, error)
+    size, free = [float(x) for x in output.split()]
+    return size, free
+
+
+
+def checkstatus(free, percent, vg, critical, cp, warning, wp, unit):
+    "Check the limits."
+    result = "%g%sB (%g%%) free on volume group %s" % (free, unit.upper(),
+        percent, vg)
+    if 0 < critical and free <= critical or 0 < cp and percent <= cp:
+        return NagiosStatus(2, result)
+    elif 0 < warning and free <= warning or 0 < wp and percent <= wp:
+        return NagiosStatus(1, result)
+    else:
+        return NagiosStatus(0, result)
+
+
+
+def main():
+    # Parse command line options.
+    options = parsecmdline()
+
+    # Pick free space on volume group.
+    try:
+        size, free = pickvgspace(options.vg, options.unit)
+    except NagiosStatus as ns:
+        ns.returnStatus()
+    percent = 100 * free / size
+
+    # Check the limits.
+    ns = checkstatus(
+        free,
+        percent,
+        options.vg,
+        options.critical,
+        options.cp,
+        options.warning,
+        options.wp,
+        options.unit
+    )
+    ns.returnStatus()
+
+
+
+if __name__ == '__main__':
+    main()
