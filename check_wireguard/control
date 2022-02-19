@@ -1,0 +1,7 @@
+Homepage: https://gitlab.com/alasdairkeyes/nagios-plugin-check_wireguard
+Watch: https://gitlab.com/alasdairkeyes/nagios-plugin-check_wireguard/-/raw/master/check_wireguard \$VERSION\ =\ '([0-9.]+)'
+Recommends: wireguard-tools, libmonitoring-plugin-perl | libmonitoring-plugin-perl
+Version: 0.5.0
+Uploaders: Jan Wagner <waja@cyconet.org>
+Description: plugin checking for a running Sieve daemon
+ Check SIEVE connections as per rfc 5804 for Nagios

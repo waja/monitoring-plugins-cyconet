@@ -1,0 +1,129 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+use Monitoring::Plugin::Getopt;
+use Monitoring::Plugin::Functions;
+
+my $VERSION = '0.5.0';
+
+my $default_binary = '/usr/bin/wg';
+my $default_interfaces_expected = 1;
+my $default_seconds_connected = 300;
+
+    # Get Opts
+my $go = Monitoring::Plugin::Getopt->new(
+    usage       => "Usage: %s [ -b $default_binary ] [ -i $default_interfaces_expected ] [ -s $default_seconds_connected ]",
+    version     => $VERSION,
+    url         => 'https://gitlab.com/alasdairkeyes/nagios-plugin-check_wireguard',
+    blurb       => "Check wireguard server.",
+);
+
+$go->arg(
+    spec        => 'binary|b=s',
+    help        => "The full path to the wg executable. (default: $default_binary)",
+    required    => 0,
+    default     => $default_binary,
+);
+
+$go->arg(
+    spec        => 'interfaces|i=i',
+    help        => "The number of interfaces expected to be found. (default: $default_interfaces_expected)",
+    required    => 1,
+    default     => $default_interfaces_expected,
+);
+
+$go->arg(
+    spec        => 'seconds_connected|s=i',
+    help        => "A peer is considered connected if a handshake has been set within this many seconds. If set to 0 it will always be considered connected if at least one handshake has been sent. (default: $default_seconds_connected)",
+    required    => 1,
+    default     => $default_seconds_connected,
+);
+
+$go->getopts;
+my $binary = $go->binary;
+my $interfaces_expected = $go->interfaces;
+my $seconds_connected = $go->seconds_connected;
+
+    # Check binary is usable
+plugin_exit ( CRITICAL, "Path $binary is not executable")
+    unless (-x $binary);
+
+    # Execute
+my $output = `$binary show`;
+
+    # Parse and process wg output
+my $data = parse_output($output);
+process_output($data);
+
+
+sub parse_output {
+    my $output = shift;
+    my @lines = split(/\n/, $output);
+    my $data = {};
+    my $interface;
+    foreach my $line (@lines) {
+        if ($line =~ /^interface:\s+(.*)$/) {
+            $interface = $1;
+            $data->{ $interface }{ peers } = 0;
+            $data->{ $interface }{ connected } = 0;
+            next;
+        }
+            # Increment peer and connected counters
+        if ($line =~ /^peer:\s+(.*)$/) {
+            $data->{ $interface }{ peers }++;
+        } elsif ($line =~ /^\s+latest handshake:\s+(.*)$/) {
+            $data->{ $interface }{ connected }++
+                if (!$seconds_connected || (seconds_since_handshake($1) < $seconds_connected));
+        }
+    }
+    return $data;
+}
+
+sub seconds_since_handshake {
+    my $handshake_time_value = shift;
+
+    my $seconds = 0;
+    foreach my $time_section (split (/,\s?/, $handshake_time_value)) {
+        if ($time_section eq "Now") {
+            $seconds += 1;
+        } elsif ($time_section =~ /^(\d+)\s+(\w+)\b/) {
+            my $time_value = $1;
+            my $time_denomination = $2;
+
+                # Convert times into a single second value
+            if ($time_denomination =~ /^years?/) {
+                $seconds += $time_value * 60 * 60 * 24 * 365;
+            } elsif ($time_denomination =~ /^days?/) {
+                $seconds += $time_value * 60 * 60 * 24;
+            } elsif ($time_denomination =~ /^hours?/) {
+                $seconds += $time_value * 60 * 60;
+            } elsif ($time_denomination =~ /^minutes?/) {
+                $seconds += $time_value * 60;
+            } elsif ($time_denomination =~ /^seconds?/) {
+                $seconds += $time_value;
+            }
+        } else {
+            die "Unknown handshake value: $handshake_time_value";
+        }
+    }
+    return $seconds;
+}
+
+sub process_output {
+    my $data = shift;
+
+    my $number_of_interfaces = scalar(keys(%$data));
+
+    my $result_string = "Interfaces: Online:$number_of_interfaces Expected:$interfaces_expected";
+
+    foreach my $interface (sort(keys(%$data))) {
+        $result_string .= " $interface:$data->{ $interface }{ connected }/$data->{ $interface }{ peers }";
+    }
+
+    my $status = OK;
+    $status = CRITICAL
+        if ($number_of_interfaces != $interfaces_expected);
+
+    plugin_exit ( $status, $result_string);
+}
