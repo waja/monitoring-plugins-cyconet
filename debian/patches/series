@@ -1,8 +1,5 @@
 check_apache_balancer_members/NagiosPlugins
 check_apache_balancer_members/epn
-check_ipsec/10_pathes
-check_ipsec/15_fix_syntax
-check_ipsec/20_remove_gateway
 check_mysql_slave//epn
 check_nextcloud/shebang
 check_sieve/epn

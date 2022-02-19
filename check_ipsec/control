@@ -1,6 +1,0 @@
-Homepage: https://raw.githubusercontent.com/Inuits/monitoring-plugins/master/check_ipsec
-Watch: https://raw.githubusercontent.com/Inuits/monitoring-plugins/master/check_ipsec # Version: ([0-9.]+)
-Recommends: monitoring-plugins-common | nagios-plugins-common, fping, strongswan-starter | openswan
-Version: 2.0
-Uploaders: Jan Wagner <waja@cyconet.org>
-Description: plugin checking ipsec connections from open- or stongswan

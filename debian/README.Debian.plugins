@@ -31,9 +31,6 @@ check_iostat:
 check_iostats:
     Required Packages: sysstat
 
-check_ipsec:
-    Required Packages: monitoring-plugins-common | nagios-plugins-common, fping, strongswan-starter | openswan
-
 check_mysql_slave:
     Required Packages: libdbd-mysql-perl
 
