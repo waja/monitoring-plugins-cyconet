@@ -11,7 +11,7 @@ Build-Depends: autotools-dev,
                quilt (>= 0.46-7),
                autotools-dev
 Standards-Version: 3.9.6
-Vcs-Git: https://github.com/waja/monitoring-plugins-cyconet
+Vcs-Git: https://github.com/waja/monitoring-plugins-cyconet.git
 Vcs-Browser: https://github.com/waja/monitoring-plugins-cyconet
 
 Package: monitoring-plugins-cyconet
