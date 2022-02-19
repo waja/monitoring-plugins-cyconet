@@ -21,7 +21,7 @@ Recommends: libdata-dump-perl, libweb-scraper-perl, libmonitoring-plugin-perl | 
             ${perl:Depends},
             ${python:Depends},
             ${shlibs:Depends}
-Suggests: 
+Suggests:
 Enhances: nagios-plugins, nagios-plugins-basic, nagios-plugins-standard
 Description: Plugins for nagios compatible monitoring systems
  This package provides various plugins for Nagios compatible monitoring
