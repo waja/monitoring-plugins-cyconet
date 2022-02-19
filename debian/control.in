@@ -1,6 +1,6 @@
 Source: monitoring-plugins-cyconet
 Section: net
-Priority: extra
+Priority: optional
 Maintainer: Jan Wagner <waja@cyconet.org>
 Uploaders: #AUTO_UPDATE_Uploaders#
 Build-Depends: autotools-dev,

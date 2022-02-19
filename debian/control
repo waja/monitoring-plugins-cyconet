@@ -1,6 +1,6 @@
 Source: monitoring-plugins-cyconet
 Section: net
-Priority: extra
+Priority: optional
 Maintainer: Jan Wagner <waja@cyconet.org>
 Uploaders: Jan Wagner <waja@cyconet.org>
 Build-Depends: autotools-dev,
@@ -17,11 +17,11 @@ Vcs-Browser: http://github.com/waja/monitoring-plugins-cyconet
 Package: monitoring-plugins-cyconet
 Architecture: any
 Depends: ${misc:Depends}
-Recommends: libdata-dump-perl, libweb-scraper-perl, libmonitoring-plugin-perl | libnagios-plugin-perl, libnet-snmp-perl, monitoring-plugins-common | nagios-plugins-common, python3-minimal, python-pywbem, libtime-modules-perl, libsnmp-perl, libnet-dns-perl, sysstat, bc, fping, strongswan-starter | openswan, procps, libdbd-mysql-perl, libwww-perl, libpython-stdlib, libio-socket-ssl-perl, gawk | mawk, snmp, libredis-perl, ruby-redis, libio-socket-inet6-perl, libmonitoring-plugin-perl | libmonitoring-plugin-perl, perl-modules, libnet-tftp-perl, libxml-xpath-perl,
+Recommends: libdata-dump-perl, libweb-scraper-perl, libmonitoring-plugin-perl | libnagios-plugin-perl, libnet-snmp-perl, monitoring-plugins-common | nagios-plugins-common, curl, jshon | jq, python3-minimal, python-pywbem, libtime-modules-perl, libsnmp-perl, libnet-dns-perl, sysstat, bc, procps, libdbd-mysql-perl, libwww-perl, libpython-stdlib, libio-socket-ssl-perl, gawk | mawk, snmp, libredis-perl, ruby-redis, libio-socket-inet6-perl, libmonitoring-plugin-perl | libmonitoring-plugin-perl, perl-modules, libnet-tftp-perl, libxml-xpath-perl, lvm2, wireguard-tools,
             ${perl:Depends},
             ${python:Depends},
             ${shlibs:Depends}
-Suggests:
+Suggests: 
 Enhances: nagios-plugins, nagios-plugins-basic, nagios-plugins-standard
 Description: Plugins for nagios compatible monitoring systems
  This package provides various plugins for Nagios compatible monitoring
@@ -30,12 +30,12 @@ Description: Plugins for nagios compatible monitoring systems
  .
    * check_apache_balancer_members (8e1ad17): plugin to monitor Apache2 balancer_manager
    * check_bgp (0.4): plugin to check BGP peer status via SNMP.
+   * check_es_system (1.12.0): Plugin script to check the status of an ElasticSearch cluster node.
    * check_esxi_hardware (20200710): Plugin for checking global health of VMware ESX/ESXi host
    * check_file: plugin to check file count,  size and ages
    * check_iftraffic64 (.77): plugin for checking network traffic by snmp.
    * check_iostat (0.0.9): plugin shows the I/O usage of the specified disk.
    * check_iostats (0.1): plugin shows the I/O usage of the specified disk, perl implementation.
-   * check_ipsec (2.0): plugin checking ipsec connections from open- or stongswan
    * check_keepalived (0.0.1): plugin checking keepalived status
    * check_mysql_slave (0.1.1): plugin that connects to a mysql replication slave and checks its status
    * check_nextcloud (b7e5755): Plugin script to monitor your nextcloud serverinfo API
@@ -44,6 +44,7 @@ Description: Plugins for nagios compatible monitoring systems
      seconds, Connections status.
    * check_nwc_health (8.4): This plugin checks the hardware health and interface metrics
      of network components like switches and routers.
+   * check_oom (4f00775): Plugin script to check for Out of memory problems
    * check_openvpn (20160803): plugin to check if an OpenVPN server runs on a given port
    * check_phpfpm_status (1.1): plugin to check the fpm-status page report from php-fpm
    * check_qnap_health (1.01): plugin to check NAS QNAP.
@@ -51,9 +52,12 @@ Description: Plugins for nagios compatible monitoring systems
    * check_sentinel (0b8e0e3): plugin to monitor Redis sentinel
    * check_sieve (1.02): plugin checking for a running Sieve daemon
      Check SIEVE connections as per rfc 5804 for Nagios
-   * check_smart: plugin to check SMART status of ATA/SCSI disks
+   * check_smart (6.12.2): plugin to check SMART status of ATA/SCSI/NVMe drives, returning any usable metrics as perfdata.
    * check_tftp (0.11): plugin that verifies TFTP server is working.
    * check_tomcat (1.4): plugin to check the tomcat status page.
+   * check_vgfree (d5bdbba): Plugin script free space on LVM volume group
+   * check_wireguard (0.5.0): plugin checking for a running Sieve daemon
+     Check SIEVE connections as per rfc 5804 for Nagios
  .
  Some scripts and binaries need more packages installed to work, which is
  implemented as recommends.
