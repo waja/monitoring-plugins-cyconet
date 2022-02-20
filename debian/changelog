@@ -1,3 +1,9 @@
+monitoring-plugins-cyconet (20.20220221) UNRELEASED; urgency=medium
+
+  * 
+
+ -- Jan Wagner <waja@cyconet.org>  Sun, 20 Feb 2022 14:03:13 +0100
+
 monitoring-plugins-cyconet (20.20220220) restricted; urgency=medium
 
   * [56d37b5] build(deps): bump skx/github-action-publish-binaries
