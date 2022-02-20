@@ -22,14 +22,26 @@ check_apache_balancer_members:
 check_bgp:
     Required Packages: libnet-snmp-perl, monitoring-plugins-common | nagios-plugins-common
 
+check_es_system:
+    Required Packages: curl, jshon | jq
+
+check_esxi_hardware:
+    Required Packages: python3-minimal, python-pywbem
+
 check_file:
     Required Packages: libtime-modules-perl
+
+check_iftraffic64:
+    Required Packages: libsnmp-perl, libnet-dns-perl
 
 check_iostat:
     Required Packages: sysstat, bc
 
 check_iostats:
     Required Packages: sysstat
+
+check_keepalived:
+    Required Packages: procps
 
 check_mysql_slave:
     Required Packages: libdbd-mysql-perl
@@ -40,11 +52,17 @@ check_nextcloud:
 check_nginx_status:
     Required Packages: libwww-perl, monitoring-plugins-common | nagios-plugins-common
 
+check_oom:
+    Required Packages: python3-minimal
+
 check_openvpn:
     Required Packages: libpython-stdlib
 
 check_phpfpm_status:
     Required Packages: libio-socket-ssl-perl, libwww-perl, monitoring-plugins-common | nagios-plugins-common
+
+check_qnap_health:
+    Required Packages: bc, gawk | mawk, snmp
 
 check_redis:
     Required Packages: libredis-perl, monitoring-plugins-common | nagios-plugins-common
@@ -63,4 +81,10 @@ check_tftp:
 
 check_tomcat:
     Required Packages: libwww-perl, libxml-xpath-perl
+
+check_vgfree:
+    Required Packages: lvm2, python3-minimal
+
+check_wireguard:
+    Required Packages: wireguard-tools, libmonitoring-plugin-perl | libmonitoring-plugin-perl
 
