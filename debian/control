@@ -21,7 +21,7 @@ Recommends: libdata-dump-perl, libweb-scraper-perl, libmonitoring-plugin-perl | 
             ${perl:Depends},
             ${python:Depends},
             ${shlibs:Depends}
-Suggests:
+Suggests: 
 Enhances: nagios-plugins, nagios-plugins-basic, nagios-plugins-standard
 Description: Plugins for nagios compatible monitoring systems
  This package provides various plugins for Nagios compatible monitoring
@@ -31,7 +31,7 @@ Description: Plugins for nagios compatible monitoring systems
    * check_apache_balancer_members (8e1ad17): plugin to monitor Apache2 balancer_manager
    * check_bgp (0.4): plugin to check BGP peer status via SNMP.
    * check_es_system (1.12.0): Plugin script to check the status of an ElasticSearch cluster node.
-   * check_esxi_hardware (20200710): Plugin for checking global health of VMware ESX/ESXi host
+   * check_esxi_hardware (20210809): Plugin for checking global health of VMware ESX/ESXi host
    * check_file: plugin to check file count,  size and ages
    * check_iftraffic64 (.77): plugin for checking network traffic by snmp.
    * check_iostat (0.0.9): plugin shows the I/O usage of the specified disk.
@@ -42,7 +42,7 @@ Description: Plugins for nagios compatible monitoring systems
    * check_nginx_status (0.20): plugin checking the nginx_status page report from nginx
      Tracking Active connections processes, request per second, connections per
      seconds, Connections status.
-   * check_nwc_health (8.4): This plugin checks the hardware health and interface metrics
+   * check_nwc_health (10.1): This plugin checks the hardware health and interface metrics
      of network components like switches and routers.
    * check_oom (4f00775): Plugin script to check for Out of memory problems
    * check_openvpn (20160803): plugin to check if an OpenVPN server runs on a given port
@@ -55,7 +55,7 @@ Description: Plugins for nagios compatible monitoring systems
    * check_smart (6.12.2): plugin to check SMART status of ATA/SCSI/NVMe drives, returning any usable metrics as perfdata.
    * check_tftp (0.11): plugin that verifies TFTP server is working.
    * check_tomcat (1.4): plugin to check the tomcat status page.
-   * check_vgfree (d5bdbba): Plugin script free space on LVM volume group
+   * check_vgfree (0.3): Plugin script free space on LVM volume group
    * check_wireguard (0.5.0): plugin checking for a running Sieve daemon
      Check SIEVE connections as per rfc 5804 for Nagios
  .
