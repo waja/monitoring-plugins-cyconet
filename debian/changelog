@@ -1,8 +1,34 @@
-monitoring-plugins-cyconet (19.20210722) UNRELEASED; urgency=medium
+monitoring-plugins-cyconet (20.20220220) restricted; urgency=medium
 
-  * NOT RELEASED YET
+  * [56d37b5] build(deps): bump skx/github-action-publish-binaries
+  * [b487452] Adding automated issue branches
+  * [f476a6f] Switching to auto mode and close issues with PR
+  * [66b38cf] use dedicated version for create-issue-branch
+  * [bbf8984] Better not to autoclose PR
+  * [c175581] Adding check_oom
+  * [721aa2c] Fix version
+  * [8aaac36] check_smart: Update to new upstream
+  * [c874d99] check_ipsec: Remove from package
+  * [46c6a10] Version v1.5 is way to old
+  * [147a2a6] check_wireguard: Adding new plugin
+  * [1effd24] check_vgfree: Adding new plugin
+  * [a2422eb] check_es_system: Adding new plugin
+  * [8e5d8ec] Trim trailing whitespace.
+  * [91b1867] Change priority extra to priority optional.
+  * [8ce5619] Update renamed lintian tag names in lintian overrides.
+  * [6ac31e1] Use secure URI in Vcs control headers: Vcs-Browser, Vcs-Git.
+  * [023a659] Use canonical URL in Vcs-Git.
+  * [fe5636a] Trim trailing whitespace.
+  * [7661b7b] check_esxi_hardware: USe a more exact watch URL
+  * [9dc4113] check_esxi_hardware: Update to 20210809
+  * [5e1abd1] check_nwc_health: Update to 10.1
+  * [6bebf05] check_redis: Fix regular expression for watch
+  * [b5bb786] check_vgfree: Fix watch configuration and version in d/control
+  * [bdb03d8] Auto update of debian/copyright
+  * [6b2b9a3] Auto update of debian/cobtrol
+  * [c25f3f2] Auto update of debian/README.Debian.plugins
 
- -- Jan Wagner <waja@cyconet.org>  Wed, 21 Jul 2021 17:02:30 +0200
+ -- Jan Wagner <waja@cyconet.org>  Sun, 20 Feb 2022 12:46:23 +0100
 
 monitoring-plugins-cyconet (19.20210721) restricted; urgency=medium
 
