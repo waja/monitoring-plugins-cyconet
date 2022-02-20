@@ -1,6 +1,6 @@
 Source: monitoring-plugins-cyconet
 Section: net
-Priority: extra
+Priority: optional
 Maintainer: Jan Wagner <waja@cyconet.org>
 Uploaders: #AUTO_UPDATE_Uploaders#
 Build-Depends: autotools-dev,
@@ -11,8 +11,8 @@ Build-Depends: autotools-dev,
                quilt (>= 0.46-7),
                #AUTO_UPDATE_Build-Depends#
 Standards-Version: 3.9.6
-Vcs-Git: git://github.com/waja/monitoring-plugins-cyconet
-Vcs-Browser: http://github.com/waja/monitoring-plugins-cyconet
+Vcs-Git: https://github.com/waja/monitoring-plugins-cyconet.git
+Vcs-Browser: https://github.com/waja/monitoring-plugins-cyconet
 
 Package: monitoring-plugins-cyconet
 Architecture: any
