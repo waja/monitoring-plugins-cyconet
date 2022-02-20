@@ -1,6 +1,6 @@
 Uploaders: Jan Wagner <waja@cyconet.org>
 Recommends: lvm2, python3-minimal
-Version: d5bdbba
+Version: 0.3
 Homepage: https://github.com/alvfig/check_vgfree
-Watch: https://github.com/alvfig/check_vgfree <a class="commit-tease-sha"[^>]*>\s+([0-9a-f]+)\s+</a>
+Watch: https://github.com/alvfig/check_vgfree/tags .*/v?(\d\S+)\.tar\.gz
 Description: Plugin script free space on LVM volume group
