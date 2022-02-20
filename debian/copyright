@@ -95,6 +95,22 @@ https://exchange.icinga.org/exchange/check_bgp
 
 ------------------------------------------------------------------------------
 
+check_es_system:
+
+The plugin was downloaded from: 
+https://github.com/Napsty/check_es_system/
+
+  Copyright (c) Claudio Kuenzler <ck@claudiokuenzler.com>
+  
+  License: GPL v2
+  
+    On Debian systems, the complete text of the GNU General
+    Public License version 2 can be found in "/usr/share/common-licenses/GPL-2".
+  
+  
+
+------------------------------------------------------------------------------
+
 check_esxi_hardware:
 
 The plugin was downloaded from: 
@@ -164,17 +180,14 @@ https://github.com/dnsmichi/icinga-plugins/blob/master/scripts/check_iostats
 
 ------------------------------------------------------------------------------
 
-check_ipsec:
+check_keepalived:
 
-The plugin was downloaded from: 
-https://raw.githubusercontent.com/Inuits/monitoring-plugins/master/check_ipsec
-
-  Copyright (c) 2008 ml@nicole-haehnel.de
+  Copyright (C) 2021 Stella Sieber / TMT GmbH & Co. KG
   
-  License: N/A
+  License: GPL+
   
     On Debian systems, the complete text of the GNU General
-    Public License version 2 can be found in "/usr/share/common-licenses/GPL-2".
+    Public License can be found in "/usr/share/common-licenses/GPL".
   
   
 
@@ -258,6 +271,28 @@ http://labs.consol.de/lang/en/nagios/check_nwc_health/
   
     On Debian systems, the complete text of the GNU General
     Public License version 2 can be found in "/usr/share/common-licenses/GPL-2".
+  
+
+------------------------------------------------------------------------------
+
+check_oom:
+
+The plugin was downloaded from: 
+https://github.com/l13t/icinga2_check_oom
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  
   
 
 ------------------------------------------------------------------------------
@@ -394,7 +429,7 @@ https://raw.githubusercontent.com/alan-hicks/check_sieve/master/check_sieve.pl
 check_smart:
 
 The plugin was downloaded from: 
-https://exchange.icinga.org/exchange/check_smart+hwraid
+https://github.com/Napsty/check_smart
 
   Copyright (c) Kurt Yoder, Giles Westwood
   
@@ -425,6 +460,52 @@ The plugin was downloaded from:
 https://www.monitoringexchange.org/inventory/Check-Plugins/Software/Java/check_tomcat-pl
 
   Copyright (c) George Hansper <george@hansper.id.au>
+  
+  License: GPL v3
+  
+    On Debian systems, the complete text of the GNU General
+    Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
+  
+  
+
+------------------------------------------------------------------------------
+
+check_vgfree:
+
+The plugin was downloaded from: 
+https://github.com/alvfig/check_vgfree
+
+  MIT License
+  
+  Copyright (c) 2017 Alvaro Figueiredo
+  
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+  
+
+------------------------------------------------------------------------------
+
+check_wireguard:
+
+The plugin was downloaded from: 
+https://gitlab.com/alasdairkeyes/nagios-plugin-check_wireguard
+
+  Copyright (c) 2012 Alasdair Keyes <alasdair@akeyes.co.uk>
   
   License: GPL v3
   
