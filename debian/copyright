@@ -513,3 +513,17 @@ https://gitlab.com/alasdairkeyes/nagios-plugin-check_wireguard
     Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
   
   
+
+------------------------------------------------------------------------------
+
+ethMon:
+
+The plugin was downloaded from: 
+https://github.com/githubDante/ethMon
+
+  Copyright: (c) github@dante.tk
+  License: Apache License 2.0
+  
+  On Debian systems, a copy of the Apache License 2.0 can be found in
+  /usr/share/common-licenses/Apache-2.0
+  
