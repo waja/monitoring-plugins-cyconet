@@ -1,0 +1,6 @@
+Uploaders: Jan Wagner <waja@cyconet.org>
+Recommends: python3-minimal
+Version: 1.1.0
+Homepage: https://github.com/githubDante/ethMon
+Watch: https://github.com/githubDante/ethMon/tags .*/v?(\d\S+)\.tar\.gz
+Description: Plugin for network traffic monitoring on a specific interface
