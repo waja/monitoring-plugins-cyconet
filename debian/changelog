@@ -1,8 +1,17 @@
-monitoring-plugins-cyconet (20.20220221) UNRELEASED; urgency=medium
+monitoring-plugins-cyconet (21.20220322) restricted; urgency=medium
 
-  * 
+  [ Jan Wagner ]
+  * [b8eb749] check_sieve: disable epn
+  * [12e3504] check_nwc_health: Adding libjson-perl and libfile-slurp-perl as recommend
+  * [ed62d58] check_nwc_health: Also add libjson-xs-perl as new recommend
+  * [07aecaf] build(deps): bump actions/checkout from 2 to 3
+  * [c8ae2e0] Adding ethMon plugin
+  * [cd2b375] check_nwc_health: Update to 10.1.0.1
+  * [23dc31c] Auto update of debian/control
+  * [577b314] Auto update of debian/copyright
+  * [a1fcd78] Auto update of debian/README.Debian.plugins
 
- -- Jan Wagner <waja@cyconet.org>  Sun, 20 Feb 2022 14:03:13 +0100
+ -- Jan Wagner <waja@cyconet.org>  Tue, 22 Mar 2022 19:52:37 +0100
 
 monitoring-plugins-cyconet (20.20220220) restricted; urgency=medium
 
