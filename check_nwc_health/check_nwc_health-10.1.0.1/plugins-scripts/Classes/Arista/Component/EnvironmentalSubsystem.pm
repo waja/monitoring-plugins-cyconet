@@ -62,6 +62,10 @@ sub rebless {
 
 sub check_state {
   my ($self) = @_;
+  # An ifAdminStatus of 'up' is equivalent to setting the entStateAdmin
+  # object to 'unlocked'.  An ifAdminStatus of 'down' is equivalent to
+  # setting the entStateAdmin object to either 'locked' or
+  # 'shuttingDown', depending on a system's interpretation of 'down'.
   $self->add_info(sprintf "%s is %s (admin %s, oper %s)",
       $self->{entPhysicalDescr}, $self->{entStateUsage},
       $self->{entStateAdmin}, $self->{entStateOper});
@@ -81,6 +85,12 @@ sub check_state {
     } else {
       $self->add_unknown();
     }
+  } elsif ($self->{entStateAdmin} eq "locked") {
+    $self->add_ok(); # admin disabled, ignore
+  } elsif ($self->{entStateAdmin} eq "unknown" and $self->{entStateOper} eq "unknown" and $self->{entPhySensorOperStatus} eq "unavailable") {
+    # The value 'unavailable(2)' indicates that the agent presently cannot obtain the sensor value. The value 'nonoperational(3)' indicates that the agent believes the sensor is broken. The sensor could have a hard failure (disconnected wire), ...
+    # Ich will meine Ruhe, also unavailable=ok. Sonst waers ja nonoperational
+    $self->add_ok();
   } elsif ($self->{entStateOper} ne "enabled" and $self->{entStateStandby} eq "providingService" and exists $self->{entPhySensorValue} and $self->{entPhySensorValue}) {
     $self->add_critical();
   } else {

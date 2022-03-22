@@ -5,4 +5,4 @@ Uploaders: Jan Wagner <waja@cyconet.org>
 Description: This plugin checks the hardware health and interface metrics
  of network components like switches and routers.
 Build-Depends: autotools-dev
-Version: 10.1
+Version: 10.1.0.1
