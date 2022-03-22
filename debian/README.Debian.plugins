@@ -52,6 +52,9 @@ check_nextcloud:
 check_nginx_status:
     Required Packages: libwww-perl, monitoring-plugins-common | nagios-plugins-common
 
+check_nwc_health:
+    Required Packages: libjson-perl, libjson-xs-perl, libfile-slurp-perl
+
 check_oom:
     Required Packages: python3-minimal
 
@@ -87,4 +90,7 @@ check_vgfree:
 
 check_wireguard:
     Required Packages: wireguard-tools, libmonitoring-plugin-perl | libmonitoring-plugin-perl
+
+ethMon:
+    Required Packages: python3-minimal
 
