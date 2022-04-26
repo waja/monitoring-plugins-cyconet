@@ -1,23 +1,29 @@
 #!/usr/bin/python
 
 ###############################################################################################################
-# Language     :  Python (3.*)
+# Language     :  Python 3
 # Filename     :  check_nextcloud.py
 # Autor        :  https://github.com/BornToBeRoot
 # Description  :  Nagios/Centreon plugin for nextcloud serverinfo API (https://github.com/nextcloud/serverinfo)
 # Repository   :  https://github.com/BornToBeRoot/check_nextcloud
 ###############################################################################################################
 
-### Changelog #################################################################################################
-# ~~ Version 2.0 ~~
-# - Update to Python 3.*
-# - Check: Theme
-# - [not implemented yet] Check: App + Updates available
-# - [not implemented yet] Check: Cache/Filelocking
-# - [not implemented yet] Open pull requests...
-###############################################################################################################
+### Changelog ###
+#
+# ~~ Version 1.2 ~~
+# - Parameter "--ignore-sslcert" added. (Note: If you use an ip address as hostname... you need to add the ip
+# address as trusted domain in the config.php)
+# - Parameter "--perfdata-format" added [centreon|nagios] (default="centreon")
+#  ~~ Version 1.3 ~~
+# - Check for app updates added (Thanks @thinkl33t)
+#  ~~ Version 1.4 ~~
+# - Parameter "--nc-token" added (Thanks @sblatt)
+#  ~~ Version 2.0 ~~ 
+# - Migrated from Python 2.7 to 3 (Thanks @waja)
+#
+#################
 
-import urllib.parse, urllib.request, urllib.response, base64, xml.etree.ElementTree, sys, traceback, re
+import urllib.request, urllib.error, urllib.parse, base64, xml.etree.ElementTree, sys, traceback, ssl, re
 
 # Some helper functions
 def calc_size_suffix(num, suffix='B'):
@@ -41,35 +47,38 @@ def calc_size_nagios(num, suffix='B'):
 # Command line parser
 from optparse import OptionParser
 
-parser = OptionParser(usage='%prog -u username -p password -H cloud.example.com -c [system|theme|storage|shares|webserver|php|database|activeUsers|uploadFilesize]')
+parser = OptionParser(usage='%prog -u username -p password -H cloud.example.com -c [system|storage|shares|webserver|php|database|activeUsers|uploadFilesize|apps]')
 parser.add_option('-v', '--version', dest='version', default=False, action='store_true', help='Print the version of this script')
 parser.add_option('-u', '--username', dest='username', type='string', help='Username of the user with administrative permissions on the nextcloud server')
 parser.add_option('-p', '--password', dest='password', type='string', help='Password of the user')
+parser.add_option('-t', '--nc-token', dest='nc_token', type='string', help='Token to access the nextcloud serverinfo api. You can generate the token with "occ config:app:set serverinfo token --value yourtoken"; replaces username/password')
 parser.add_option('-H', '--hostname', dest='hostname', type='string', help='Nextcloud server address (make sure that the address is a trusted domain in the config.php)')
-parser.add_option('-c', '--check', dest='check', choices=['system','theme','storage','shares','webserver','php','database','activeUsers','uploadFilesize'], help='The thing you want to check [system|theme|storage|shares|webserver|php|database|activeUsers|uploadFilesize]')
-parser.add_option('--upload-filesize', dest='upload_filesize', default='512.0MiB', help='Filesize in MiB, GiB without spaces (default="512.0GiB")')
+parser.add_option('-c', '--check', dest='check', choices=['system','storage','shares','webserver','php','database','activeUsers','uploadFilesize','apps'], help='The thing you want to check [system|storage|shares|webserver|php|database|activeUsers|uploadFilesize|apps]')
+parser.add_option('--perfdata-format', dest='perfdata_format', default='centreon', choices=['centreon','nagios'], help='Format for the performance data [centreon|nagios] (default="centreon")')
+parser.add_option('--upload-filesize', dest='upload_filesize', default='512.0MiB', help='Filesize in MiB, GiB without spaces (default="512.0MiB")')
 parser.add_option('--protocol', dest='protocol', choices=['https', 'http'], default='https', help='Protocol you want to use [http|https] (default="https")')
-parser.add_option('--ignore-proxy', dest='ignore_proxy', default=False, action='store_true', help='Ignore any configured proxy server on this system for this request')
+parser.add_option('--ignore-proxy', dest='ignore_proxy', default=False, action='store_true', help='Ignore any configured proxy server on this system for this request (default="false")')
+parser.add_option('--ignore-sslcert', dest='ignore_sslcert', default=False, action='store_true', help='Ignore ssl certificate (default="false")')
 parser.add_option('--api-url', dest='api_url', type='string', default='/ocs/v2.php/apps/serverinfo/api/v1/info', help='Url of the api (default="/ocs/v2.php/apps/serverinfo/api/v1/info")')
 
 (options, args) = parser.parse_args()
 
 # Print the version of this script
 if options.version:
-    print('Version 2.0')
-    sys.exit(0)
+	print('Version 2.0')
+	sys.exit(0)
 
 # Validate the user input...
 if not options.username and not options.password and not options.hostname and not options.check:
 	parser.print_help()
 	sys.exit(3)
 
-if not options.username:
-	parser.error('Username is required, use parameter [-u|--username].')
+if not options.username and not options.nc_token:
+	parser.error('Username or nc-token is required, use parameter [-u|--username] or [--nc-token].')
 	sys.exit(3)
 
-if not options.password:
-	parser.error('Password is required, use parameter [-p|--password].')
+if not options.password and not options.nc_token:
+	parser.error('Password or nc-token is required, use parameter [-p|--password] or [--nc-token].')
 	sys.exit(3)
 
 if not options.hostname:
@@ -85,7 +94,7 @@ url_strip = re.compile(r"https?://")
 hostname = url_strip.sub('', options.hostname).split('/')[0]
 
 # Re-validate the api_url
-if options.api_url.startswith('/'):	
+if options.api_url.startswith('/'):
 	api_url = options.api_url
 else:
 	api_url = '/{0}'.format(options.api_url)
@@ -93,22 +102,44 @@ else:
 # Create the url to access the api
 url = '{0}://{1}{2}'.format(options.protocol, hostname, api_url)
 
-# Create the request
-request = urllib.request.Request(url)
-
-# Basic authentication...
+# Encode credentials as base64
 credential = base64.b64encode(bytes('%s:%s' % (options.username, options.password), 'ascii'))
-request.add_header("Authorization", "Basic %s" % credential.decode('utf-8'))
-
-request.add_header('OCS-APIRequest', 'true')
 
 try:
-	with urllib.request.urlopen(request) as response:	
-		content = response.read()
+	# Create the request
+	request = urllib.request.Request(url)
+
+	# Add the token header
+	if options.nc_token:
+ 		request.add_header('NC-Token',"%s" % options.nc_token)
+	else:
+	# Add the authentication and api request header
+		request.add_header("Authorization", "Basic %s" % credential.decode('utf-8'))
+		request.add_header('OCS-APIRequest','true')
+
+	# SSL/TLS certificate validation (see: https://stackoverflow.com/questions/19268548/python-ignore-certificate-validation-urllib2)
+	ctx = ssl.create_default_context()
+
+	if(options.ignore_sslcert):
+		ctx.check_hostname = False
+		ctx.verify_mode = ssl.CERT_NONE
+
+	# Proxy handler
+	if(options.ignore_proxy):
+		proxy_handler = urllib.request.ProxyHandler({})
+		ctx_handler = urllib.request.HTTPSHandler(context=ctx)
+		opener = urllib.request.build_opener(proxy_handler, ctx_handler)
+
+		response = opener.open(request)
+	else:
+		response = urllib.request.urlopen(request, context=ctx)
+
+	# Read the content
+	content = response.read()
 
 except urllib.error.HTTPError as error:      # User is not authorized (401)
-    print('UNKOWN - [WEBREQUEST] {0} {1}'.format(error.code, error.reason))
-    sys.exit(3)
+	print('UNKOWN - [WEBREQUEST] {0} {1}'.format(error.code, error.reason))
+	sys.exit(3)
 
 except urllib.error.URLError as error:	# Connection has timed out (wrong url / server down)
 	print('UNKOWN - [WEBREQUEST] {0}'.format(str(error.reason).split(']')[0].strip()))
@@ -139,25 +170,24 @@ except AttributeError:
 	print('UNKOWN - [XML] Content contains no or wrong xml data... check the url and if the api is reachable!')
 	sys.exit(3)
 
-# Get the nextcloud version... other informations about the system like RAM/CPU/DISK are nagios/centreon own checks - so we don't need them here...
+# Performance data format
+perfdata_format = ""							# nagios
+
+if(options.perfdata_format == 'centreon'):		# centreon
+	perfdata_format = ","
+
+# Get the nextcloud version...
+# [output]
 if options.check == 'system':
 	xml_system = xml_root.find('data').find('nextcloud').find('system')
 
-	xml_system_version = str(xml_system.find('version').text) 
+	xml_system_version = str(xml_system.find('version').text)
 
 	print('OK - Nextcloud version: {0}'.format(xml_system_version))
 	sys.exit(0)
 
-# Get the nextcloud theme
-if options.check == 'theme':
-	xml_system = xml_root.find('data').find('nextcloud').find('system')
-
-	xml_system_theme = str(xml_system.find('theme').text) 
-
-	print('OK - Nextcloud theme: {0}'.format(xml_system_theme))
-	sys.exit(0)
-
 # Get informations about the storage
+# [output + performance data]
 if options.check == 'storage':
 	xml_storage = xml_root.find('data').find('nextcloud').find('storage')
 
@@ -168,10 +198,11 @@ if options.check == 'storage':
 	xml_storage_storages_home = int(xml_storage.find('num_storages_home').text)
 	xml_storage_storages_other = int(xml_storage.find('num_storages_other').text)
 
-	print('OK - Users: {0}, files: {1}, storages: {2}, storages local: {3}, storages home: {4}, storages other: {5} | users={0}, files={1}, storages={2}, storages_local={3}, storages_home={4}, storage_other={5}'.format(xml_storage_users, xml_storage_files, xml_storage_storages, xml_storage_storages_local, xml_storage_storages_home, xml_storage_storages_other))
+	print('OK - Users: {1}, files: {2}, storages: {3}, storages local: {4}, storages home: {5}, storages other: {6} | users={1}{0} files={2}{0} storages={3}{0} storages_local={4}{0} storages_home={5}{0} storage_other={6}'.format(perfdata_format, xml_storage_users, xml_storage_files, xml_storage_storages, xml_storage_storages_local, xml_storage_storages_home, xml_storage_storages_other))
 	sys.exit(0)
 
 # Get informations about the shares
+# [output + performance data]
 if options.check == 'shares':
 	xml_shares = xml_root.find('data').find('nextcloud').find('shares')
 
@@ -183,10 +214,11 @@ if options.check == 'shares':
 	xml_shares_fed_shares_sent = int(xml_shares.find('num_fed_shares_sent').text)
 	xml_shares_fed_shares_received = int(xml_shares.find('num_fed_shares_received').text)
 
-	print('OK - Shares: {0}, shares user: {1}, shares groups: {2}, shares link: {3}, shares link no password: {4}, shares federation sent: {5}, shares federation received: {6} | shares={0}, shares_user={1}, shares_groups={2}, shares_link={3}, shares_link_no_password={4}, federation_shares_sent={5}, federation_shares_received={6}'.format(xml_shares_shares, xml_shares_shares_user, xml_shares_shares_groups, xml_shares_shares_link, xml_shares_shares_link_no_password, xml_shares_fed_shares_sent, xml_shares_fed_shares_received))
+	print('OK - Shares: {1}, shares user: {2}, shares groups: {3}, shares link: {4}, shares link no password: {5}, shares federation sent: {6}, shares federation received: {7} | shares={1}{0} shares_user={2}{0} shares_groups={3}{0} shares_link={4}{0} shares_link_no_password={5}{0} federation_shares_sent={6}{0} federation_shares_received={7}'.format(perfdata_format, xml_shares_shares, xml_shares_shares_user, xml_shares_shares_groups, xml_shares_shares_link, xml_shares_shares_link_no_password, xml_shares_fed_shares_sent, xml_shares_fed_shares_received))
 	sys.exit(0)
 
 # Get informations about the webserver
+# [output]
 if options.check == 'webserver':
 	xml_webserver = str(xml_root.find('data').find('server').find('webserver').text)
 
@@ -194,6 +226,7 @@ if options.check == 'webserver':
 	sys.exit(0)
 
 # Get informations about php
+# [output]
 if options.check == 'php':
 	xml_php = xml_root.find('data').find('server').find('php')
 
@@ -206,6 +239,7 @@ if options.check == 'php':
 	sys.exit(0)
 
 # Get informations about the database
+# [output + performance data]
 if options.check == 'database':
 	xml_database = xml_root.find('data').find('server').find('database')
 
@@ -217,6 +251,7 @@ if options.check == 'database':
 	sys.exit(0)
 
 # Check the active users
+# [output + performance data]
 if options.check == 'activeUsers':
 	xml_activeUsers = xml_root.find('data').find('activeUsers')
 
@@ -224,12 +259,12 @@ if options.check == 'activeUsers':
 	xml_activeUsers_last1hour = int(xml_activeUsers.find('last1hour').text)
 	xml_activeUsers_last24hours = int(xml_activeUsers.find('last24hours').text)
 
-	print('OK - Last 5 minutes: {0} user(s), last 1 hour: {1} user(s), last 24 hour: {2} user(s) | users_last_5_minutes={0}, users_last_1_hour={1}, users_last_24_hours={2}'.format(xml_activeUsers_last5minutes, xml_activeUsers_last1hour, xml_activeUsers_last24hours))
+	print('OK - Last 5 minutes: {1} user(s), last 1 hour: {2} user(s), last 24 hour: {3} user(s) | users_last_5_minutes={1}{0} users_last_1_hour={2}{0} users_last_24_hours={3}'.format(perfdata_format, xml_activeUsers_last5minutes, xml_activeUsers_last1hour, xml_activeUsers_last24hours))
 	sys.exit(0)
 
 if options.check == 'uploadFilesize':
 	xml_php = xml_root.find('data').find('server').find('php')
-	
+
 	# Get upload max filesize
 	xml_php_upload_max_filesize = int(xml_php.find('upload_max_filesize').text)
 
@@ -238,7 +273,25 @@ if options.check == 'uploadFilesize':
 
 	if options.upload_filesize == upload_max_filesize:
 		print('OK - Upload max filesize: {0}'.format(upload_max_filesize))
-		sys.exit(0)		
+		sys.exit(0)
 	else:
 		print('CRITICAL - Upload max filesize is set to {0}, but should be {1}'.format(upload_max_filesize, options.upload_filesize))
 		sys.exit(2)
+
+# Get informations about any app updates
+# [output]
+if options.check == 'apps':
+	xml_apps = xml_root.find('data').find('nextcloud').find('system').find('apps')
+
+	xml_apps_num_updates_available = int(xml_apps.find('num_updates_available').text)
+
+	if xml_apps_num_updates_available == 0:
+		print('OK - No apps requiring update')
+		sys.exit(0)
+	else:
+		xml_apps_updates = xml_apps.find('app_updates')
+		xml_apps_list = []
+		for app in xml_apps_updates:
+			xml_apps_list.append('{0}->{1}'.format(app.tag, app.text))
+		print('WARNING - {0} apps require update: {1}'.format(xml_apps_num_updates_available, ' ,'.join(xml_apps_list)))
+		sys.exit(1)
