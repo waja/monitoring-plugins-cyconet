@@ -1,3 +1,14 @@
+monitoring-plugins-cyconet (22.20220502) restricted; urgency=medium
+
+  * [7c99781] check_nextcloud: Update to 2.0
+  * [bd8a94b] check_nextcloud: adjust d/p/check_nextcloud/shebang
+  * [2e59122] check_nextcloud: Update watch and version information in control
+    file
+  * [caf760b] check_smart: Update to 6.13.0
+  * [f20f327] Auto update of debian/cobtrol
+
+ -- Jan Wagner <waja@cyconet.org>  Mon, 02 May 2022 14:06:57 +0200
+
 monitoring-plugins-cyconet (21.20220322) restricted; urgency=medium
 
   [ Jan Wagner ]
