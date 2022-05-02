@@ -38,7 +38,7 @@ Description: Plugins for nagios compatible monitoring systems
    * check_iostats (0.1): plugin shows the I/O usage of the specified disk, perl implementation.
    * check_keepalived (0.0.1): plugin checking keepalived status
    * check_mysql_slave (0.1.1): plugin that connects to a mysql replication slave and checks its status
-   * check_nextcloud (b7e5755): Plugin script to monitor your nextcloud serverinfo API
+   * check_nextcloud (2.0): Plugin script to monitor your nextcloud serverinfo API
    * check_nginx_status (0.20): plugin checking the nginx_status page report from nginx
      Tracking Active connections processes, request per second, connections per
      seconds, Connections status.
@@ -52,7 +52,7 @@ Description: Plugins for nagios compatible monitoring systems
    * check_sentinel (0b8e0e3): plugin to monitor Redis sentinel
    * check_sieve (1.02): plugin checking for a running Sieve daemon
      Check SIEVE connections as per rfc 5804 for Nagios
-   * check_smart (6.12.2): plugin to check SMART status of ATA/SCSI/NVMe drives, returning any usable metrics as perfdata.
+   * check_smart (6.13.0): plugin to check SMART status of ATA/SCSI/NVMe drives, returning any usable metrics as perfdata.
    * check_tftp (0.11): plugin that verifies TFTP server is working.
    * check_tomcat (1.4): plugin to check the tomcat status page.
    * check_vgfree (0.3): Plugin script free space on LVM volume group
