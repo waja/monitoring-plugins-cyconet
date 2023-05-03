@@ -81,7 +81,7 @@ while [ "$1" != "" ]; do
 done
 
 # Config and commands
-STAT_FILE='/tmp/keepalived.status'
+STAT_FILE='/var/run/keepalived.status'
 PID_FILE='/run/keepalived.pid'
 PID=$("${CAT}" "${PID_FILE}" 2>/dev/null)
 SERVICE=$("${PG}" keepalived)
@@ -92,8 +92,13 @@ CHECK_HAIP2=$("${IP}" 2>/dev/null addr sh "${IFACE2}" | "${GREP}" "${HAIP2}" | "
 # Check files are valid
 if [ ! -e "${STAT_FILE}" ]
 then
-	echo "CRITICAL: Generated status file is missing. State could not be determined."
-	exit "${CRITICAL}"
+	if [ -e /tmp/keepalived.status ]
+	then
+		STAT_FILE='/tmp/keepalived.status'
+	else
+		echo "CRITICAL: Generated status file is missing. State could not be determined."
+		exit "${CRITICAL}"
+	fi
 fi
 
 FILE_CONT=$("${CAT}" "${STAT_FILE}" 2>/dev/null)
