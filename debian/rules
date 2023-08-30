@@ -8,7 +8,7 @@ PLUGINS := $(shell find $(CURDIR) -mindepth 1 -maxdepth 1 -name .git* -prune -o 
 PKGNAME = monitoring-plugins-cyconet
 
 %:
-	dh $@ --with quilt,python3,autotools_dev --parallel
+	dh $@ --with quilt,autotools_dev --parallel
 
 # Here follows a small shell snipped to call dh_auto_* for all plugins
 # Currently
@@ -31,7 +31,7 @@ PACKAGING_HELPER = /usr/bin/python3 $(CURDIR)/debian/packaging-helper.py
 
 
 clean: $(PLUGINS:%=clean-%) debian/copyright debian/control
-	dh $@ --with quilt,python3,autotools_dev --parallel
+	dh $@ --with quilt,autotools_dev --parallel
 	rm -f debian/$(PKGNAME).install
 	rm -f debian/README.Debian.plugins
 
