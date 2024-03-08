@@ -1,3 +1,38 @@
+monitoring-plugins-cyconet (23.20240308) restricted; urgency=medium
+
+  [ Jan Wagner ]
+  * [701ad11] check_nwc_health: Update to 10.3
+  * [685fada] Updating build pipelines
+
+  [ dependabot[bot] ]
+  * [cfd4901] build(deps): bump dawidd6/action-debian-package from 1.4.0 to 1.4.2
+  * [98f3635] build(deps): bump dawidd6/action-debian-package from 1.4.2 to 1.4.4
+  * [f9ed6fd] check_qnap_health: Update to latest version
+  * [9a8a43b] build(deps): bump dawidd6/action-debian-package from 1.4.4 to 1.5.0
+  * [269c6a9] build(deps): bump dawidd6/action-debian-package from 1.4.0 to 1.4.2
+  * [bc49084] build(deps): bump dawidd6/action-debian-package from 1.4.2 to 1.4.4
+
+  [ ssieber ]
+  * [d27b9f4] check_keepalived: Add 2nd stat file location
+
+  [ dependabot[bot] ]
+  * [ab57752] build(deps): bump actions/checkout from 3 to 4
+  * [bdcf8f3] build(deps): bump dawidd6/action-debian-package from 1.5.0 to 1.6.0
+
+  [ Jan Wagner ]
+  * [f9a67f8] d/rules: Disable override_dh_python3
+
+  [ Bas Couwenberg ]
+  * [47225a2] Use dh-sequence-python3.
+
+  [ Jan Wagner ]
+  * [65f532c] check_es_system: Update to 1.12.1
+  * [713d3fe] check_esxi_hardware: Update to 20221230
+  * [cd031f5] check_nwc_health: Update to 11.2.4
+  * [8753386] check_smart: Update to 6.14.1
+
+ -- Jan Wagner <waja@cyconet.org>  Fri, 08 Mar 2024 14:20:53 +0000
+
 monitoring-plugins-cyconet (22.20220502) restricted; urgency=medium
 
   * [7c99781] check_nextcloud: Update to 2.0
