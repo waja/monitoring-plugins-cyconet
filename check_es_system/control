@@ -1,6 +1,6 @@
 Uploaders: Jan Wagner <waja@cyconet.org>
 Recommends: curl, jshon | jq
-Version: 1.12.0
+Version: 1.12.1
 Homepage: https://github.com/Napsty/check_es_system/
 Watch: https://github.com/Napsty/check_es_system/tags .*/v?(\d\S+)\.tar\.gz
 Description: Plugin script to check the status of an ElasticSearch cluster node.
