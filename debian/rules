@@ -91,9 +91,9 @@ override_dh_auto_install: $(PLUGINS:%=dh_auto_install-%)
 override_dh_auto_test:
 	# nothign to do right now.
 
-override_dh_python3:
-	dh_python3
-	dh_python3 usr/lib/nagios/plugins usr/lib/nagios/cronjobs
+#override_dh_python3:
+#	dh_python3
+#	dh_python3 usr/lib/nagios/plugins usr/lib/nagios/cronjobs
 
 CONTROL_FILES := $(shell for p in $(PLUGINS); do echo $$p/control; done)
 COPYRIGHT_FILES := $(shell for p in $(PLUGINS); do echo $$p/copyright; done)
