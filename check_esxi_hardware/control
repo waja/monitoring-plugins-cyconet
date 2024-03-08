@@ -1,6 +1,6 @@
 Uploaders: Jan Wagner <waja@cyconet.org>
 Recommends: python3-minimal, python-pywbem
-Version: 20210809
+Version: 20221230
 Homepage: https://github.com/Napsty/check_esxi_hardware
 Watch: https://github.com/Napsty/check_esxi_hardware/tags .*/v?(\d\S+)\.tar\.gz
 Description: Plugin for checking global health of VMware ESX/ESXi host
