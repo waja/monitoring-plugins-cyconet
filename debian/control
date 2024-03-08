@@ -8,7 +8,6 @@ Build-Depends: autotools-dev,
                dh-python,
                python3,
                python3-debian,
-               dh-sequence-python3,
                quilt (>= 0.46-7),
                autotools-dev
 Standards-Version: 3.9.6
