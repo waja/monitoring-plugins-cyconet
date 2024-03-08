@@ -1,6 +1,6 @@
 Homepage: https://github.com/Napsty/check_smart
 Uploaders: Jan Wagner <waja@cyconet.org>
 Watch: https://raw.githubusercontent.com/Napsty/check_smart/master/check_smart.pl \$revision\ =\ '([0-9.]+)'
-Version: 6.13.0
+Version: 6.14.1
 Description: plugin to check SMART status of ATA/SCSI/NVMe drives, returning any usable metrics as perfdata.
 Recommends: perl-modules, monitoring-plugins-common | nagios-plugins-common

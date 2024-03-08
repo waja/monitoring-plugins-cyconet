@@ -55,13 +55,18 @@
 # Dec 16, 2021: Lorenz Kaestle - Bugfix when interface parameter was missing in combination with -g (6.12.2)
 # Apr 27, 2022: Claudio Kuenzler - Allow skip temperature check (--skip-temp-check) (6.13.0)
 # Apr 27, 2022: Peter Newman - Better handling of missing or non-executable smartctl command (6.13.0)
+# Apr 29, 2023: Nick Bertrand - Show drive(s) causing UNKNOWN status using -g/--global check (6.14.0)
+# Apr 29, 2023: Claudio Kuenzler - Add possibility to hide serial number (--hide-sn) (6.14.0)
+# Apr 29, 2023: Claudio Kuenzler - Add default check on Load Cycle Count (ignore using --skip-load-cycles) (6.14.0)
+# Sep 20, 2023: Yannick Martin - Fix default Percent_Lifetime_Remain threshold handling when -w is given (6.14.1)
+# Sep 20, 2023: Claudio Kuenzler - Fix debug output for raw check list, fix --hide-serial in debug output (6.14.1)
 
 use strict;
 use Getopt::Long;
 use File::Basename qw(basename);
 
 my $basename = basename($0);
-my $revision = '6.13.0';
+my $revision = '6.14.1';
 
 # Standard Nagios return codes
 my %ERRORS=('OK'=>0,'WARNING'=>1,'CRITICAL'=>2,'UNKNOWN'=>3,'DEPENDENT'=>4);
@@ -71,7 +76,7 @@ my @sys_path = qw(/usr/bin /bin /usr/sbin /sbin /usr/local/bin /usr/local/sbin);
 $ENV{'BASH_ENV'}='';
 $ENV{'ENV'}='';
 
-use vars qw($opt_b $opt_d $opt_g $opt_debug $opt_h $opt_i $opt_e $opt_E $opt_r $opt_s $opt_v $opt_w $opt_q $opt_l $opt_skip_sa $opt_skip_temp);
+use vars qw($opt_b $opt_d $opt_g $opt_debug $opt_h $opt_i $opt_e $opt_E $opt_r $opt_s $opt_v $opt_w $opt_q $opt_l $opt_skip_sa $opt_skip_temp $opt_skip_load_cycles $opt_hide_sn);
 Getopt::Long::Configure('bundling');
 GetOptions(
                           "debug"         => \$opt_debug,
@@ -90,6 +95,8 @@ GetOptions(
         "l"   => \$opt_l, "ssd-lifetime"  => \$opt_l,
 			  "skip-self-assessment" => \$opt_skip_sa,
 			  "skip-temp-check" => \$opt_skip_temp,
+			  "skip-load-cycles" => \$opt_skip_load_cycles,
+			  "hide-sn" => \$opt_hide_sn,
 );
 
 if ($opt_v) {
@@ -223,7 +230,6 @@ my @raw_check_list_nvme = split /,/, $raw_check_list_nvme;
 
 # warning threshold list (for raw checks)
 my $warn_list = $opt_w // '';
-$warn_list = $opt_w // 'Percent_Lifetime_Remain=90' if $opt_l;
 my @warn_list = split /,/, $warn_list;
 my %warn_list;
 my $warn_key;
@@ -231,6 +237,9 @@ my $warn_value;
 foreach my $warn_element (@warn_list) {
   ($warn_key, $warn_value) = split /=/, $warn_element;
   $warn_list{ $warn_key } = $warn_value;
+}
+if ($opt_l && ! exists $warn_list{'Percent_Lifetime_Remain'}) {
+    $warn_list{'Percent_Lifetime_Remain'} = 90;
 }
 
 # For backward compatibility, add -b parameter to warning thresholds
@@ -242,6 +251,7 @@ my @drives_status_okay;
 my @drives_status_not_okay;
 my @drives_status_warning;
 my @drives_status_critical;
+my @drives_status_unknown;
 my $drive_details;
 
 foreach $device ( split("\\|",$device) ){
@@ -274,6 +284,7 @@ foreach $device ( split("\\|",$device) ){
 		warn "###########################################################\n\n\n" if $opt_debug;
 
 		my $full_command = "$smart_command -d $interface -Hi $device";
+		$full_command = "$smart_command -d $interface -Hi $device -q noserial" if $opt_hide_sn;
 		warn "(debug) executing:\n$full_command\n\n" if $opt_debug;
 
 		my @output = `$full_command`;
@@ -355,8 +366,13 @@ foreach $device ( split("\\|",$device) ){
 			}
 			if($line =~ /$line_serial_ata(.+)/){
 				warn "(debug) parsing line:\n$line\n\n" if $opt_debug;
-				$serial = $1;
-				$serial =~ s/^\s+|\s+$//g;
+				if($opt_hide_sn) {
+				  $serial = "<HIDDEN>";
+				  warn "(debug) Hiding serial number\n\n" if $opt_debug;
+				} else {
+				  $serial = $1;
+				  $serial =~ s/^\s+|\s+$//g;
+				}
 				warn "(debug) found serial number $serial\n\n" if $opt_debug;
 			}
 			if($line =~ /$line_serial_scsi(.+)/){
@@ -459,7 +475,7 @@ foreach $device ( split("\\|",$device) ){
 		@output = `$full_command`;
 		warn "(debug) output:\n@output\n\n" if $opt_debug;
 		my @perfdata = qw//;
-		warn "(debug) Raw Check List ATA: $raw_check_list\n" if $opt_debug;
+		warn "(debug) Raw Check List ATA: @raw_check_list\n" if $opt_debug;
 		warn "(debug) Raw Check List NVMe: $raw_check_list_nvme\n" if $opt_debug;
 		warn "(debug) Exclude List for Checks: ", join(",", @exclude_checks), "\n" if $opt_debug;
 		warn "(debug) Exclude List for Perfdata: ", join(",", @exclude_perfdata), "\n" if $opt_debug;
@@ -498,6 +514,19 @@ foreach $device ( split("\\|",$device) ){
 					warn "(debug) SMART Attribute $attribute_name was set to be ignored\n\n" if $opt_debug;
 					next;
 				} else {
+				# alert for high load cycles, generally up to 600K cycles are considered safe on HDDs
+				unless($opt_skip_load_cycles) {
+				  if ($attribute_number == 193) {
+					if ($raw_value > 600000) {
+					  warn "(debug) $attribute_name is above value considered safe (600K)\n\n" if $opt_debug;
+					  push(@error_messages, "$attribute_name is above 600K load cycles ($raw_value) causing possible performance and durability impact");
+					  escalate_status('CRITICAL');
+					} elsif ($raw_value < 600000 && $raw_value > 550000) {
+					  warn "(debug) $attribute_name is nearing 600K load cycles\n\n" if $opt_debug;
+				          push(@warning_messages, "$attribute_name is soon reaching 600K load cycles ($raw_value) causing possible performance and durability impact soon");
+					}
+				  }
+				}
 				# manual checks on raw values for certain attributes deemed significant
 				  if (grep {$_ eq $attribute_name} @raw_check_list) {
 				    if ($raw_value > 0) {
@@ -733,6 +762,8 @@ foreach $device ( split("\\|",$device) ){
 		    push @drives_status_warning, $status_string;
 		  } elsif ($exit_status_local eq 'CRITICAL') {
 		    push @drives_status_critical, $status_string;
+		  } elsif ($exit_status_local eq 'UNKNOWN') {
+		    push @drives_status_unknown, $status_string;
 		  }
 		}
 		else {
@@ -771,6 +802,10 @@ if (scalar(@drives_status_warning) > 0) {
   push @drives_status_not_okay, @drives_status_warning;
 }
 
+if (scalar(@drives_status_unknown) > 0) {
+  push @drives_status_not_okay, @drives_status_unknown;
+}
+
 if (@drives_status_not_okay) {
 	push @msg_list, grep { $_ } @drives_status_not_okay;
 }
@@ -804,7 +839,7 @@ sub print_revision {
 
 sub print_help {
         print_revision($basename,$revision);
-        print "\nUsage: $basename {-d=<block device>|-g=<block device glob>} -i=(auto|ata|scsi|3ware,N|areca,N|hpt,L/M/N|aacraid,H,L,ID|cciss,N|megaraid,N) [-r list] [-w list] [-b N] [-e list] [-E list] [--debug]\n\n";
+        print "\nUsage: $basename {-d=<block device>|-g=<block device glob>} -i=(auto|ata|scsi|3ware,N|areca,N|hpt,L/M/N|aacraid,H,L,ID|cciss,N|megaraid,N) [-r list] [-w list] [-b N] [-e list] [-E list] [-s] [-l] [--debug]\n\n";
         print "At least one of the below. -d supersedes -g\n";
         print "  -d/--device: a physical block device to be SMART monitored, eg /dev/sda. Pseudo-device /dev/bus/N is allowed.\n";
         print "  -g/--global: a glob pattern name of physical devices to be SMART monitored\n";
@@ -828,6 +863,8 @@ sub print_help {
         print "  -l/--ssd-lifetime: Check attribute 'Percent_Lifetime_Remain' available on some SSD drives\n";
         print "  --skip-self-assessment: Skip SMART self-assessment health status check\n";
         print "  --skip-temp-check: Skip temperature comparison current vs. drive max temperature\n";
+        print "  --skip-load-cycles: Do not alert on high load/unload cycle count (600K considered safe on hard drives)\n";
+        print "  --hide-sn: Do not show drive serial number in output\n";
         print "  -h/--help: this help\n";
         print "  -q/--quiet: When faults detected, only show faulted drive(s) (only affects output when used with -g parameter)\n";
         print "  --debug: show debugging information\n";
