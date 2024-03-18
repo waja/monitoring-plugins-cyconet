@@ -1,0 +1,4 @@
+Homepage: https://raw.githubusercontent.com/aswen/nagios-plugins/master/check_bond
+Uploaders: Jan Wagner <waja@cyconet.org>
+Description: plugin that checks for the status of bonding interfaces.
+Recommends: gawk
