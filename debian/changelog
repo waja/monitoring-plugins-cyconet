@@ -1,3 +1,11 @@
+monitoring-plugins-cyconet (24.20240318) restricted; urgency=medium
+
+  * [8f0f5b4] Adding check_bond
+  * [7399873] Autoupdate d/copyright
+  * [67dd95c] Autoupdate d/control
+
+ -- Jan Wagner <waja@cyconet.org>  Mon, 18 Mar 2024 13:09:29 +0000
+
 monitoring-plugins-cyconet (23.20240308+1) restricted; urgency=medium
 
   * [eaaddfa] Revert to use dh-sequence-python3.
