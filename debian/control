@@ -17,7 +17,7 @@ Vcs-Browser: https://github.com/waja/monitoring-plugins-cyconet
 Package: monitoring-plugins-cyconet
 Architecture: any
 Depends: ${misc:Depends}
-Recommends: libdata-dump-perl, libweb-scraper-perl, libmonitoring-plugin-perl | libnagios-plugin-perl, libnet-snmp-perl, monitoring-plugins-common | nagios-plugins-common, curl, jshon | jq, python3-minimal, python-pywbem, libtime-modules-perl, libsnmp-perl, libnet-dns-perl, sysstat, bc, procps, libdbd-mysql-perl, libwww-perl, libjson-perl, libjson-xs-perl, libfile-slurp-perl, libpython-stdlib, libio-socket-ssl-perl, gawk | mawk, snmp, libredis-perl, ruby-redis, libio-socket-inet6-perl, libmonitoring-plugin-perl | libmonitoring-plugin-perl, perl-modules, libnet-tftp-perl, libxml-xpath-perl, lvm2, wireguard-tools,
+Recommends: libdata-dump-perl, libweb-scraper-perl, libmonitoring-plugin-perl | libnagios-plugin-perl, libnet-snmp-perl, monitoring-plugins-common | nagios-plugins-common, gawk, curl, jshon | jq, python3-minimal, python-pywbem, libtime-modules-perl, libsnmp-perl, libnet-dns-perl, sysstat, bc, procps, libdbd-mysql-perl, libwww-perl, libjson-perl, libjson-xs-perl, libfile-slurp-perl, libpython-stdlib, libio-socket-ssl-perl, gawk | mawk, snmp, libredis-perl, ruby-redis, libio-socket-inet6-perl, libmonitoring-plugin-perl | libmonitoring-plugin-perl, perl-modules, libnet-tftp-perl, libxml-xpath-perl, lvm2, wireguard-tools,
             ${perl:Depends},
             ${python:Depends},
             ${shlibs:Depends}
@@ -30,8 +30,9 @@ Description: Plugins for nagios compatible monitoring systems
  .
    * check_apache_balancer_members (8e1ad17): plugin to monitor Apache2 balancer_manager
    * check_bgp (0.4): plugin to check BGP peer status via SNMP.
-   * check_es_system (1.12.0): Plugin script to check the status of an ElasticSearch cluster node.
-   * check_esxi_hardware (20210809): Plugin for checking global health of VMware ESX/ESXi host
+   * check_bond: plugin that checks for the status of bonding interfaces.
+   * check_es_system (1.12.1): Plugin script to check the status of an ElasticSearch cluster node.
+   * check_esxi_hardware (20221230): Plugin for checking global health of VMware ESX/ESXi host
    * check_file: plugin to check file count,  size and ages
    * check_iftraffic64 (.77): plugin for checking network traffic by snmp.
    * check_iostat (0.0.9): plugin shows the I/O usage of the specified disk.
@@ -42,7 +43,7 @@ Description: Plugins for nagios compatible monitoring systems
    * check_nginx_status (0.20): plugin checking the nginx_status page report from nginx
      Tracking Active connections processes, request per second, connections per
      seconds, Connections status.
-   * check_nwc_health (10.1.0.1): This plugin checks the hardware health and interface metrics
+   * check_nwc_health (11.2.4): This plugin checks the hardware health and interface metrics
      of network components like switches and routers.
    * check_oom (4f00775): Plugin script to check for Out of memory problems
    * check_openvpn (20160803): plugin to check if an OpenVPN server runs on a given port
@@ -52,7 +53,7 @@ Description: Plugins for nagios compatible monitoring systems
    * check_sentinel (0b8e0e3): plugin to monitor Redis sentinel
    * check_sieve (1.02): plugin checking for a running Sieve daemon
      Check SIEVE connections as per rfc 5804 for Nagios
-   * check_smart (6.13.0): plugin to check SMART status of ATA/SCSI/NVMe drives, returning any usable metrics as perfdata.
+   * check_smart (6.14.1): plugin to check SMART status of ATA/SCSI/NVMe drives, returning any usable metrics as perfdata.
    * check_tftp (0.11): plugin that verifies TFTP server is working.
    * check_tomcat (1.4): plugin to check the tomcat status page.
    * check_vgfree (0.3): Plugin script free space on LVM volume group
