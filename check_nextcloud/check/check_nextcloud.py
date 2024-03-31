@@ -59,7 +59,7 @@ parser.add_option('--upload-filesize', dest='upload_filesize', default='512.0MiB
 parser.add_option('--protocol', dest='protocol', choices=['https', 'http'], default='https', help='Protocol you want to use [http|https] (default="https")')
 parser.add_option('--ignore-proxy', dest='ignore_proxy', default=False, action='store_true', help='Ignore any configured proxy server on this system for this request (default="false")')
 parser.add_option('--ignore-sslcert', dest='ignore_sslcert', default=False, action='store_true', help='Ignore ssl certificate (default="false")')
-parser.add_option('--api-url', dest='api_url', type='string', default='/ocs/v2.php/apps/serverinfo/api/v1/info', help='Url of the api (default="/ocs/v2.php/apps/serverinfo/api/v1/info")')
+parser.add_option('--api-url', dest='api_url', type='string', default='/ocs/v2.php/apps/serverinfo/api/v1/info?skipApps=false&skipUpdate=false', help='Url of the api (default="/ocs/v2.php/apps/serverinfo/api/v1/info?skipApps=false&skipUpdate=false")')
 
 (options, args) = parser.parse_args()
 
@@ -283,7 +283,10 @@ if options.check == 'uploadFilesize':
 if options.check == 'apps':
 	xml_apps = xml_root.find('data').find('nextcloud').find('system').find('apps')
 
-	xml_apps_num_updates_available = int(xml_apps.find('num_updates_available').text)
+	if xml_apps is not None:
+		xml_apps_num_updates_available = int(xml_apps.find('num_updates_available').text)
+	else:
+		xml_apps_num_updates_available = 0
 
 	if xml_apps_num_updates_available == 0:
 		print('OK - No apps requiring update')
