@@ -1,3 +1,9 @@
+monitoring-plugins-cyconet (25.20240724) UNRELEASED; urgency=medium
+
+  * 
+
+ -- Jan Wagner <waja@cyconet.org>  Tue, 23 Jul 2024 08:19:48 +0200
+
 monitoring-plugins-cyconet (25.20240723) restricted; urgency=medium
 
   * [95224eb] check_nextcloud: Update to latest git version
