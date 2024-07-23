@@ -1,8 +1,9 @@
-monitoring-plugins-cyconet (24.20240319) UNRELEASED; urgency=medium
+monitoring-plugins-cyconet (25.20240723) restricted; urgency=medium
 
-  * NOT RELEASED YET
+  * [95224eb] check_nextcloud: Update to latest git version
+  * [839264b] check_smart: Update to 6.14.2
 
- -- Jan Wagner <waja@cyconet.org>  Mon, 18 Mar 2024 13:29:52 +0000
+ -- Jan Wagner <waja@cyconet.org>  Tue, 23 Jul 2024 08:14:41 +0200
 
 monitoring-plugins-cyconet (24.20240318) restricted; urgency=medium
 
