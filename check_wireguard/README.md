@@ -19,10 +19,14 @@ The output shows the following information
 WIREGUARD OK Interfaces: Online:2 Expected:2 wg0:1/2 wg1:0/2
 ```
 
+The plugin status will return OK as long as the number of online interfaces defined in `wg show` equals the number of interfaces the plugin expects to see. If this value is different a CRITICAL response is returned.
+
 * `Interfaces: Online:X Expected:Y` The number of interfaces found with `wg show` and the number expected (provided by the `-i` argument)
-* The available online interfaces are then listed in the format `wgX:<connected>/<total>`.
-    * `<connected>` is the number of interfaces that have a "latest handshake" value listed
+* The available online peers are then listed in the format `wgX:<connected>/<total>`.
+    * `<connected>` is the number of interfaces that have a "latest handshake" value less than the seconds defined by the `-s` argument)
     * `<total>` is the total number of peers defined for that interface
+
+The online peers section is not used to determine the return status of the plugin. It is informational only.
 
 ## Installation
 
@@ -61,6 +65,7 @@ check_wireguard -s 600
 
 ## Changelog
 
+* 2024-12-05 :: 0.6.0   :: Update plugin output with '- Peers:'
 * 2021-11-15 :: 0.5.0   :: Update function seconds_since_handshake() to handle string 'Now'
 * 2021-11-12 :: 0.4.0   :: Add extra output on error when failing to parse handshake value
 * 2018-08-31 :: 0.3.0   :: Add -s switch for connection timeout calculation
