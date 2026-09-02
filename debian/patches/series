@@ -1,7 +1,6 @@
 check_apache_balancer_members/NagiosPlugins
 check_apache_balancer_members/epn
 check_mysql_slave//epn
-check_nextcloud/shebang
 check_sieve/epn
 check_sieve/10_pathes
 check_sieve/MonitoringPlugin
