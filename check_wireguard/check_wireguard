@@ -5,7 +5,7 @@ use warnings;
 use Monitoring::Plugin::Getopt;
 use Monitoring::Plugin::Functions;
 
-my $VERSION = '0.5.0';
+my $VERSION = '0.6.0';
 
 my $default_binary = '/usr/bin/wg';
 my $default_interfaces_expected = 1;
@@ -115,7 +115,7 @@ sub process_output {
 
     my $number_of_interfaces = scalar(keys(%$data));
 
-    my $result_string = "Interfaces: Online:$number_of_interfaces Expected:$interfaces_expected";
+    my $result_string = "Interfaces: Online:$number_of_interfaces Expected:$interfaces_expected - Peers:";
 
     foreach my $interface (sort(keys(%$data))) {
         $result_string .= " $interface:$data->{ $interface }{ connected }/$data->{ $interface }{ peers }";
