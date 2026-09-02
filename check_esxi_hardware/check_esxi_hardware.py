@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 #
 # Script for checking global health of host running VMware ESX/ESXi
@@ -22,7 +22,7 @@
 # Copyright (c) 2008 David Ligeret
 # Copyright (c) 2009 Joshua Daniel Franklin
 # Copyright (c) 2010 Branden Schneider
-# Copyright (c) 2010-2022 Claudio Kuenzler
+# Copyright (c) 2010-2025 Claudio Kuenzler
 # Copyright (c) 2010 Samir Ibradzic
 # Copyright (c) 2010 Aaron Rogers
 # Copyright (c) 2011 Ludovic Hutin
@@ -36,22 +36,21 @@
 # Copyright (c) 2015 Andreas Gottwald
 # Copyright (c) 2015 Stanislav German-Evtushenko
 # Copyright (c) 2015 Stefan Roos
-# Copyright (c) 2018 Peter Newman
+# Copyright (c) 2018,2025 Peter Newman
 # Copyright (c) 2020 Luca Berra
 # Copyright (c) 2022 Marco Markgraf
 #
-# The VMware 4.1 CIM API is documented here:
-#   http://www.vmware.com/support/developer/cim-sdk/4.1/smash/cim_smash_410_prog.pdf
-#   http://www.vmware.com/support/developer/cim-sdk/smash/u2/ga/apirefdoc/
-#
-# The VMware 5.5 and above CIM API is documented here:
-#   https://code.vmware.com/apis/207/cim
+# The VMware CIM API is documented here (as of October 2024):
+#   https://docs.vmware.com/en/VMware-vSphere/7.0/vsphere-cim-smash-server-management-api-programming-guide/GUID-2725D01E-AE02-4EF2-9E98-5AB82AA0349A.html
+
+# The CIM classes are documented here (as of October 2024):
+#   https://vdc-download.vmware.com/vmwb-repository/dcr-public/27c1c014-7315-4d6b-8e6b-292130a79b3c/36aca268-99fa-4916-b993-a077de55cbf1/CIM_API_Reference/index.html
 #
 # This monitoring plugin is maintained and documented here:
 #   https://www.claudiokuenzler.com/monitoring-plugins/check_esxi_hardware.php
 #
 #@---------------------------------------------------
-#@ History
+#@ History / ChangeLog
 #@---------------------------------------------------
 #@ Date   : 20080820
 #@ Author : David Ligeret
@@ -293,17 +292,31 @@
 #@ Author : Claudio Kuenzler
 #@ Reason : Fix bug when missing S/N (issue #68)
 #@---------------------------------------------------
+#@ Date   : 20241129
+#@ Author : Claudio Kuenzler
+#@ Reason : Fix pkg_resources deprecation warning
+#           Remove python2 compatibility
+#           Remove pywbem 0.7.0 compatibility
+#@---------------------------------------------------
+#@ Date   : 20250221
+#@ Author : Claudio Kuenzler
+#@ Reason : Update to newer pywbem exception call, catch HTTPError
+#@ Attn   : Requires 'packaging' Python module from now on!
+#@---------------------------------------------------
+#@ Date   : 20250716
+#@ Author : Peter Newman
+#@ Reason : Adjust exit code -1 to 3 (Nagios UNKNOWN)
+#@---------------------------------------------------
 
-from __future__ import print_function
 import sys
 import time
 import pywbem
 import re
-import pkg_resources
 import json
 from optparse import OptionParser,OptionGroup
+from packaging.version import Version
 
-version = '20221230'
+version = '20250716'
 
 NS = 'root/cimv2'
 hosturl = ''
@@ -598,14 +611,14 @@ def getopts() :
   if len(sys.argv) < 2:
     print("no parameters specified\n")
     parser.print_help()
-    sys.exit(-1)
+    sys.exit(3)
   # if first argument starts with 'https://' we have old-style parameters, so handle in old way
   if re.match("https://",sys.argv[1]):
     # check input arguments
     if len(sys.argv) < 5:
       print("too few parameters\n")
       parser.print_help()
-      sys.exit(-1)
+      sys.exit(3)
     if len(sys.argv) > 5 :
       if sys.argv[5] == "verbose" :
         verbose = True
@@ -623,7 +636,7 @@ def getopts() :
       if not options.__dict__[m]:
         print("mandatory option '" + m + "' not defined. read usage in help.\n")
         parser.print_help()
-        sys.exit(-1)
+        sys.exit(3)
 
     hostname=options.host.lower()
     # if user has put "https://" in front of hostname out of habit, do the right thing
@@ -729,30 +742,22 @@ if not get_intrusion:
   ignore_list.append("System Chassis 1 Chassis Intru: Unknown")
 
 # connection to host
-verboseoutput("Connection to "+hosturl)
-# pywbem 0.7.0 handling is special, some patched 0.7.0 installations work differently
-try:
-  pywbemversion = pywbem.__version__
-except:
-  pywbemversion = pkg_resources.get_distribution("pywbem").version
-else:
-  pywbemversion = pywbem.__version__
+pywbemversion = pywbem.__version__
 verboseoutput("Found pywbem version "+pywbemversion)
+verboseoutput("Connection to "+hosturl)
+wbemclient = pywbem.WBEMConnection(hosturl, (user,password), NS, no_verification=True)
 
-if '0.7.' in pywbemversion:
-  try:
-    conntest = pywbem.WBEMConnection(hosturl, (user,password))
-    c = conntest.EnumerateInstances('CIM_Card')
-  except:
-    #raise
-    verboseoutput("Connection error, disable SSL certificate verification (probably patched pywbem)")
-    wbemclient = pywbem.WBEMConnection(hosturl, (user,password), no_verification=True)
-  else:
-    verboseoutput("Connection worked")
-    wbemclient = pywbem.WBEMConnection(hosturl, (user,password))
-# pywbem 0.8.0 and later
+# Backward compatibility for older pywbem exceptions, big thanks to Claire M.!
+if Version(pywbemversion) >= Version("1.0.0"):
+  verboseoutput("pywbem is 1.0.0 or newer")
+  import pywbem._cim_operations as PywbemCimOperations
+  import pywbem._cim_http as PywbemCimHttp
+  import pywbem._exceptions as PywbemExceptions
 else:
-  wbemclient = pywbem.WBEMConnection(hosturl, (user,password), NS, no_verification=True)
+  verboseoutput("pywbem is older than 1.0.0")
+  import pywbem.cim_operations as PywbemCimOperations
+  import pywbem.cim_http as PywbemCimHttp
+  import pywbem.exceptions as PywbemExceptions
 
 # Add a timeout for the script. When using with Nagios, the Nagios timeout cannot be < than plugin timeout.
 if on_windows == False and timeout > 0:
@@ -771,7 +776,7 @@ ExitMsg = ""
 if vendor=='auto':
   try:
     c=wbemclient.EnumerateInstances('CIM_Chassis')
-  except pywbem.cim_operations.CIMError as args:
+  except PywbemCimOperations.CIMError as args:
     if ( args[1].find('Socket error') >= 0 ):
       print("UNKNOWN: {}".format(args))
       sys.exit (ExitUnknown)
@@ -780,11 +785,15 @@ if vendor=='auto':
       sys.exit (ExitUnknown)
     else:
       verboseoutput("Unknown CIM Error: %s" % args)
-  except pywbem._exceptions.ConnectionError as args:
+  except PywbemExceptions.ConnectionError as args:
     GlobalStatus = ExitUnknown
     print("UNKNOWN: {}".format(args))
     sys.exit (GlobalStatus)
-  except pywbem.cim_http.AuthError as arg:
+  except PywbemExceptions.HTTPError as args:
+    GlobalStatus = ExitUnknown
+    print("UNKNOWN: {}".format(args))
+    sys.exit (GlobalStatus)
+  except PywbemCimHttp.AuthError as arg:
     verboseoutput("Global exit set to UNKNOWN")
     GlobalStatus = ExitUnknown
     print("UNKNOWN: Authentication Error")
@@ -806,7 +815,7 @@ for classe in ClassesToCheck :
   verboseoutput("Check classe "+classe)
   try:
     instance_list = wbemclient.EnumerateInstances(classe)
-  except pywbem._cim_operations.CIMError as args:
+  except PywbemCimOperations.CIMError as args:
     if ( args[1].find('Socket error') >= 0 ):
       print("UNKNOWN: {}".format(args))
       sys.exit (ExitUnknown)
@@ -815,11 +824,15 @@ for classe in ClassesToCheck :
       sys.exit (ExitUnknown)
     else:
       verboseoutput("Unknown CIM Error: %s" % args)
-  except pywbem._exceptions.ConnectionError as args:
+  except PywbemExceptions.ConnectionError as args:
     GlobalStatus = ExitUnknown
     print("UNKNOWN: {}".format(args))
     sys.exit (GlobalStatus)
-  except pywbem._cim_http.AuthError as arg:
+  except PywbemExceptions.HTTPError as args:
+    GlobalStatus = ExitUnknown
+    print("UNKNOWN: {}".format(args))
+    sys.exit (GlobalStatus)
+  except PywbemCimHttp.AuthError as arg:
     verboseoutput("Global exit set to UNKNOWN")
     GlobalStatus = ExitUnknown
     print("UNKNOWN: Authentication Error")
