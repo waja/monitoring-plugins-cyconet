@@ -1,6 +1,6 @@
 Uploaders: Jan Wagner <waja@cyconet.org>
 Recommends: python3-minimal
-Version: 2.0
+Version: 2.2
 Homepage: https://github.com/BornToBeRoot/check_nextcloud
 Watch: https://raw.githubusercontent.com/BornToBeRoot/check_nextcloud/refs/heads/main/check_nextcloud.py #  ~~ Version ([0-9.]+) ~~
 Description: Plugin script to monitor your nextcloud serverinfo API
