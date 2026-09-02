@@ -61,23 +61,37 @@
 # Sep 20, 2023: Yannick Martin - Fix default Percent_Lifetime_Remain threshold handling when -w is given (6.14.1)
 # Sep 20, 2023: Claudio Kuenzler - Fix debug output for raw check list, fix --hide-serial in debug output (6.14.1)
 # Mar 15, 2024: Yannick Martin - Fix nvme check when auto interface is given and device is nvme (6.14.2)
+# Sep 10, 2024: Claudio Kuenzler - Fix performance data format, missing perfdata in SCSI drives (6.14.3)
+# Jan 31, 2025: Tomas Barton - Ignore old age attributes due to its unrealiability. Check ATA error logs (6.15.0)
+# Jun 12, 2025: Alexander Kanevskiy - Add usbjmicron devices (6.16.0)
+# Dec 15, 2025: Florian Sager - Fix evaluating ATA Error Count: 0 as a warning (6.17.0)
+# Dec 15, 2025: Philippe Beaumont - Add areca devices (6.17.0)
+# Apr 21, 2026: Claudio Kuenzler - Fix sys path for sudo command. Detect NVME input/output error (6.18.0)
+# Apr 24, 2026: Claudio Kuenzler - Fix command injection vulnerability in interface parameter (6.18.1)
+# May 9, 2026: Claudio Kuenzler - Fix regression with symlink paths (6.18.2)
+# Aug 18, 2026: Arkadiusz Miskiewicz - Fix exit handling on smartctl error codes (6.18.3)
+# Aug 18, 2026: Michael Metz - Fix /dev/bus/ device path to support double-digits (6.18.3)
 
 use strict;
 use Getopt::Long;
 use File::Basename qw(basename);
+use Cwd qw(abs_path);
 
 my $basename = basename($0);
-my $revision = '6.14.2';
+my $revision = '6.18.3';
 
 # Standard Nagios return codes
 my %ERRORS=('OK'=>0,'WARNING'=>1,'CRITICAL'=>2,'UNKNOWN'=>3,'DEPENDENT'=>4);
+
+# Severity ranking, used to escalate the status without ever lowering it
+my %STATUS_RANK=('OK'=>0,'UNKNOWN'=>1,'WARNING'=>2,'CRITICAL'=>3);
 
 
 my @sys_path = qw(/usr/bin /bin /usr/sbin /sbin /usr/local/bin /usr/local/sbin);
 $ENV{'BASH_ENV'}='';
 $ENV{'ENV'}='';
 
-use vars qw($opt_b $opt_d $opt_g $opt_debug $opt_h $opt_i $opt_e $opt_E $opt_r $opt_s $opt_v $opt_w $opt_q $opt_l $opt_skip_sa $opt_skip_temp $opt_skip_load_cycles $opt_hide_sn);
+use vars qw($opt_b $opt_d $opt_g $opt_debug $opt_h $opt_i $opt_e $opt_E $opt_o $opt_r $opt_s $opt_v $opt_w $opt_q $opt_l $opt_skip_sa $opt_skip_temp $opt_skip_load_cycles $opt_skip_error_log $opt_hide_sn);
 Getopt::Long::Configure('bundling');
 GetOptions(
                           "debug"         => \$opt_debug,
@@ -88,6 +102,7 @@ GetOptions(
         "i=s" => \$opt_i, "interface=s"   => \$opt_i,
         "e=s" => \$opt_e, "exclude=s"     => \$opt_e,
         "E=s" => \$opt_E, "exclude-all=s" => \$opt_E,
+        "O"   => \$opt_o, "oldage"        => \$opt_o,
         "q"   => \$opt_q, "quiet"         => \$opt_q,
         "r=s" => \$opt_r, "raw=s"         => \$opt_r,
         "s"   => \$opt_s, "selftest"      => \$opt_s,
@@ -97,6 +112,7 @@ GetOptions(
 			  "skip-self-assessment" => \$opt_skip_sa,
 			  "skip-temp-check" => \$opt_skip_temp,
 			  "skip-load-cycles" => \$opt_skip_load_cycles,
+			  "skip-error-log" => \$opt_skip_error_log,
 			  "hide-sn" => \$opt_hide_sn,
 );
 
@@ -108,6 +124,24 @@ if ($opt_v) {
 if ($opt_h) {
         print_help();
         exit $ERRORS{'OK'};
+}
+
+my $sudo_command = '';
+my $smart_command = undef;
+
+foreach my $path (@sys_path) {
+	$sudo_command = "$path/sudo" if ($sudo_command eq '' && -x "$path/sudo");
+	$smart_command = "$path/smartctl" if (!defined($smart_command) && -x "$path/smartctl");
+	last if ($sudo_command ne '' && defined($smart_command));
+}
+
+if (!defined($smart_command)) {
+	print "UNKNOWN - Could not find executable smartctl in " . join(", ", @sys_path) . "\n";
+	exit $ERRORS{'UNKNOWN'};
+}
+
+if ($sudo_command ne '') {
+	$smart_command = "$sudo_command $smart_command";
 }
 
 my ($device, $interface) = qw// // '';
@@ -126,17 +160,25 @@ if ($opt_d || $opt_g ) {
             # normal mode - push opt_d on the list of devices
             push(@dev,$opt_d);
         } else {
-            # glob all devices - try '?' first 
+            # glob all devices - try '?' first
             @dev =glob($opt_g);
         }
 
         foreach my $opt_dl (@dev){
-            warn "Found $opt_dl\n" if $opt_debug;
-            if (-b $opt_dl || -c $opt_dl || $opt_dl =~ m/^\/dev\/bus\/\d$/) {
+            warn "(debug) Found $opt_dl\n" if $opt_debug;
+            if (-l $opt_dl) {
+                # Resolve symlink and use the real path to prevent command injection
+                my $real_path = abs_path($opt_dl);
+                if (defined($real_path) && (-b $real_path || -c $real_path)) {
+                    warn "(debug) $opt_dl is a symlink to block device $real_path, using resolved path\n" if $opt_debug;
+                    $device .= $real_path."|";
+                } else {
+                    warn "(debug) $opt_dl is a symlink not pointing to a valid block device, skipping\n" if $opt_debug;
+                }
+            } elsif (-b $opt_dl || -c $opt_dl || $opt_dl =~ m/^\/dev\/bus\/\d{1,2}$/) {
                 $device .= $opt_dl."|";
-
             } else {
-                warn "$opt_dl is not a valid block/character special device!\n\n" if $opt_debug;
+                warn "(debug) $opt_dl is not a valid block/character special device!\n\n" if $opt_debug;
             }
         }
 
@@ -148,8 +190,11 @@ if ($opt_d || $opt_g ) {
 
         # Allow all device types currently supported by smartctl
         # See http://www.smartmontools.org/wiki/Supported_RAID-Controllers
-
-        if ($opt_i =~ m/^(ata|scsi|3ware|areca|hpt|aacraid|cciss|megaraid|sat|auto|nvme)/) {
+        # Validate interface parameter strictly to prevent command injection
+        # Simple interfaces must match exactly; RAID interfaces allow device specifiers (see --help)
+        if ($opt_i =~ m/^(ata|scsi|sat|auto|nvme)$/ ||
+            $opt_i =~ m/^(3ware|areca|aacraid|cciss|megaraid|usbjmicron),(\d+|\[\d+-\d+\])$/ ||
+            $opt_i =~ m/^hpt,\d+\/\d+\/\d+$/) {
             $interface = $opt_i;
           if($interface =~ m/megaraid,\[(\d{1,2})-(\d{1,2})\]/) {
             $interface = "";
@@ -175,6 +220,18 @@ if ($opt_d || $opt_g ) {
               $interface .= "aacraid," . $k . "|";
             }
           }
+          elsif($interface =~ m/usbjmicron,\[(\d{1,2})-(\d{1,2})\]/) {
+            $interface = "";
+            for(my $k = $1; $k <= $2; $k++) {
+              $interface .= "usbjmicron," . $k . "|";
+            }
+          }
+          elsif($interface =~ m/areca,\[(\d{1,2})-(\d{1,2})\]/) {
+            $interface = "";
+            for(my $k = $1; $k <= $2; $k++) {
+              $interface .= "areca," . $k . "|";
+            }
+          }
           else {
             $interface .= "|";
           }
@@ -192,18 +249,6 @@ if ($device eq "") {
     exit $ERRORS{'UNKNOWN'};
 }
 
-my $smart_command = undef;
-foreach my $path (@sys_path) {
-	if (-x "$path/smartctl") {
-		$smart_command = "sudo $path/smartctl";
-		last;
-	}
-}
-
-if (!defined($smart_command)) {
-	print "UNKNOWN - Could not find executable smartctl in " . join(", ", @sys_path) . "\n";
-	exit $ERRORS{'UNKNOWN'};
-}
 
 my $exit_status = 'OK';
 my $exit_status_local = 'OK';
@@ -268,7 +313,7 @@ foreach $device ( split("\\|",$device) ){
 			# we had a pattern based on $opt_g
 			$tag   = $device;
 			$tag   =~ s/\Q$opt_g\E//;
-                        if($interface =~ qr/(?:megaraid|3ware|aacraid|cciss)/){
+                        if($interface =~ qr/(?:megaraid|3ware|aacraid|cciss|areca)/){
 			  $label = "[$interface] - "; 
                         } else {
 			  $label = "[$device] - ";
@@ -383,6 +428,11 @@ foreach $device ( split("\\|",$device) ){
 				$serial =~ s/^\s+|\s+$//g;
 				warn "(debug) found serial number $serial\n\n" if $opt_debug;
 			}
+			if($line =~ /NVME_IOCTL_ADMIN_CMD: Input\/output error/){
+				warn "(debug) NVMe I/O error detected:\n$line\n\n" if $opt_debug;
+				push(@error_messages, 'NVMe I/O error (possible drive failure)');
+				escalate_status('CRITICAL');
+			}
 
 		}
 
@@ -400,7 +450,7 @@ foreach $device ( split("\\|",$device) ){
 		warn "(debug) executing:\n$full_command\n\n" if $opt_debug;
 
 		system($full_command);
-		my $return_code = $?;
+		my $return_code = decoded_exit_code($?, \@error_messages);
 		warn "(debug) exit code:\n$return_code\n\n" if $opt_debug;
 
 		if ($return_code & 0x01) {
@@ -412,7 +462,7 @@ foreach $device ( split("\\|",$device) ){
 			escalate_status('UNKNOWN');
 		}
 		if ($return_code & 0x04) {
-			push(@warning_messages, 'Checksum failure');
+			push(@warning_messages, 'SMART command failed or checksum error in SMART data');
 			escalate_status('WARNING');
 		}
 		if ($return_code & 0x08) {
@@ -427,7 +477,7 @@ foreach $device ( split("\\|",$device) ){
 			push(@warning_messages, 'Disk may be close to failure');
 			escalate_status('WARNING');
 		}
-		if ($return_code & 0x40) {
+		if (($return_code & 0x40) && !$opt_skip_error_log) {
 			push(@warning_messages, 'Error log contains errors');
 			escalate_status('WARNING');
 		}
@@ -450,7 +500,7 @@ foreach $device ( split("\\|",$device) ){
 			warn "(debug) selftest log check activated\n\n" if $opt_debug;
 			$full_command = "$smart_command -d $interface -q silent -l selftest $device";
 			system($full_command);
-			my $return_code = $?;
+			my $return_code = decoded_exit_code($?, \@error_messages);
 			warn "(debug) exit code:\n$return_code\n\n" if $opt_debug;
 
 			if ($return_code > 0) {
@@ -472,7 +522,7 @@ foreach $device ( split("\\|",$device) ){
 		warn "(debug) plus, we can also use the information for perfdata/graphing\n" if $opt_debug;
 		warn "###########################################################\n\n\n" if $opt_debug;
 
-		$full_command = "$smart_command -d $interface -A $device";
+		$full_command = "$smart_command -d $interface -a $device";
 		warn "(debug) executing:\n$full_command\n\n" if $opt_debug;
 		@output = `$full_command`;
 		warn "(debug) output:\n@output\n\n" if $opt_debug;
@@ -489,6 +539,26 @@ foreach $device ( split("\\|",$device) ){
 		# Yeah - but megaraid is the same output as ata
 		if ($output_mode =~ "ata") {
 			foreach my $line(@output){
+				unless ($opt_skip_error_log) {
+					if ($line =~ /^ATA Error Count:\s(\d+)\s/) {
+						my ($attribute_name, $raw_value) = ('ata_errors', $1);
+						if ( $raw_value == 0) {
+							next;
+						} elsif ( ($warn_list{$attribute_name}) && ($raw_value >= $warn_list{$attribute_name}) ) {
+							warn "(debug) $attribute_name is non-zero ($raw_value)\n\n" if $opt_debug;
+							push(@warning_messages, "$attribute_name is non-zero ($raw_value)");
+							escalate_status('WARNING');
+						} elsif ( ($warn_list{$attribute_name}) && ($raw_value < $warn_list{$attribute_name}) ) {
+							warn "(debug) $attribute_name is non-zero ($raw_value) but less than $warn_list{$attribute_name}\n\n" if $opt_debug;
+							push(@notice_messages, "$attribute_name is non-zero ($raw_value) (but less than threshold $warn_list{$attribute_name})");
+						} else {
+							warn "(debug) $attribute_name is non-zero ($raw_value)\n\n" if $opt_debug;
+							push(@warning_messages, "$attribute_name is non-zero ($raw_value)");
+							escalate_status('WARNING');
+						}
+						push (@perfdata, "$attribute_name=$raw_value;;;;")
+					}
+				}
 				# get lines that look like this:
 				#    9 Power_On_Minutes        0x0032   241   241   000    Old_age   Always       -       113h+12m
 				next unless $line =~ /^\s*(\d+)\s(\S+)\s+(?:\S+\s+){6}(\S+)\s+(\d+)/;
@@ -498,9 +568,14 @@ foreach $device ( split("\\|",$device) ){
 					if (grep {$_ eq $attribute_number || $_ eq $attribute_name || $_ eq $when_failed} @exclude_checks) {
 					  warn "SMART Attribute $attribute_name failed at $when_failed but was set to be ignored\n" if $opt_debug;
 					} else {
-					push(@warning_messages, "Attribute $attribute_name failed at $when_failed");
-					escalate_status('WARNING');
-					warn "(debug) parsed SMART attribute $attribute_name with error condition:\n$when_failed\n\n" if $opt_debug;
+						if ($opt_o) {
+							if ($attribute_number == 202) { # Percent_Lifetime_Used might not be reliable health indicator
+								next;
+							}
+						}
+						push(@warning_messages, "Attribute $attribute_name failed at $when_failed");
+						escalate_status('WARNING');
+						warn "(debug) parsed SMART attribute $attribute_name with error condition:\n$when_failed\n\n" if $opt_debug;
 					}
 				}
 				# some attributes produce questionable data; no need to graph them
@@ -508,7 +583,7 @@ foreach $device ( split("\\|",$device) ){
 					next;
 				}
 				if (!grep {$_ eq $attribute_number || $_ eq $attribute_name} @exclude_perfdata) {
-					push (@perfdata, "$attribute_name=$raw_value") if $opt_d;
+					push (@perfdata, "$attribute_name=$raw_value;;;;") if $opt_d;
 				}
 
 				# skip attribute if it was set to be ignored in exclude_checks
@@ -569,7 +644,7 @@ foreach $device ( split("\\|",$device) ){
 				}
 				# create performance data unless defined in exclude_perfdata list
 				if (!grep {$_ eq $attribute_name} @exclude_perfdata) {
-					push (@perfdata, "$attribute_name=$raw_value") if $opt_d;
+					push (@perfdata, "$attribute_name=$raw_value;;;;") if $opt_d;
 				}
 
 				# skip attribute if it was set to be ignored in exclude_checks
@@ -593,8 +668,12 @@ foreach $device ( split("\\|",$device) ){
 				          escalate_status('WARNING');
 					}
 					elsif ($raw_value eq '0x04') {
-					  push(@warning_messages, "NVM subsystem reliability degraded");
-				          escalate_status('WARNING');
+						if ($opt_o) {
+							warn "(debug) $attribute_name = '0x04' was set to be ignored due to oldage flag\n\n" if $opt_debug;
+						} else {
+							push(@warning_messages, "NVM subsystem reliability degraded");
+									escalate_status('WARNING');
+						}
 					}
 					elsif ($raw_value eq '0x05') {
 					  push(@warning_messages, "Available spare below threshold and NVM subsystem reliability degraded");
@@ -688,7 +767,7 @@ foreach $device ( split("\\|",$device) ){
 					my $defectlist = $1;
 					# check for elements in grown defect list
 					if ($opt_b) {
-						push (@perfdata, "defect_list=$defectlist;;$opt_b") if $opt_d;
+						push (@perfdata, "defect_list=$defectlist;$opt_b;$opt_b;;") if $opt_d;
 						if (($defectlist > 0) && ($defectlist >= $opt_b)) {
 							push(@warning_messages, "$defectlist Elements in grown defect list (threshold $opt_b)");
 							escalate_status('WARNING');
@@ -701,20 +780,20 @@ foreach $device ( split("\\|",$device) ){
 					}
 					else {
 						if ($defectlist > 0) {
-							push (@perfdata, "defect_list=$defectlist") if $opt_d;
 							push(@warning_messages, "$defectlist Elements in grown defect list");
 							escalate_status('WARNING');
 							warn "(debug) Elements in grown defect list is non-zero ($defectlist)\n\n" if $opt_debug;
 						}
+						push (@perfdata, "defect_list=$defectlist;;;;") if $opt_d;
 					}
 				}
 				elsif ($line =~ /Blocks sent to initiator =\s+(\d+)/){
-					push (@perfdata, "sent_blocks=$1") if $opt_d;
+					push (@perfdata, "sent_blocks=$1;;;;") if $opt_d;
 				}
 			}
 			if($current_temperature){
 				if($max_temperature){
-					push (@perfdata, "temperature=$current_temperature;;$max_temperature") if $opt_d;
+					push (@perfdata, "temperature=$current_temperature;;$max_temperature;0;") if $opt_d;
 					unless($opt_skip_temp) {
 						if($current_temperature > $max_temperature){
 							warn "(debug) Disk temperature is greater than max ($current_temperature > $max_temperature)\n\n" if $opt_debug;
@@ -724,12 +803,12 @@ foreach $device ( split("\\|",$device) ){
 					}
 				}
 				else{
-					push (@perfdata, "temperature=$current_temperature") if $opt_d;
+					push (@perfdata, "temperature=$current_temperature;;;;") if $opt_d;
 				}
 			}
 			if($current_start_stop){
 				if($max_start_stop){
-					push (@perfdata, "start_stop=$current_start_stop;$max_start_stop") if $opt_d;
+					push (@perfdata, "start_stop=$current_start_stop;;;;$max_start_stop") if $opt_d;
 					if($current_start_stop > $max_start_stop){
 						warn "(debug) Disk start_stop is greater than max ($current_start_stop > $max_start_stop)\n\n" if $opt_debug;
 						push(@warning_messages, 'Disk start_stop is higher than maximum');
@@ -737,10 +816,11 @@ foreach $device ( split("\\|",$device) ){
 					}
 				}
 				else{
-					push (@perfdata, "start_stop=$current_start_stop") if $opt_d;
+					push (@perfdata, "start_stop=$current_start_stop;;;;") if $opt_d;
 				}
 			}
 		}
+
 		warn "(debug) gathered perfdata:\n@perfdata\n\n" if $opt_debug;
 		$perf_string = join(' ', @perfdata);
 		
@@ -866,24 +946,39 @@ sub print_help {
         print "  --skip-self-assessment: Skip SMART self-assessment health status check\n";
         print "  --skip-temp-check: Skip temperature comparison current vs. drive max temperature\n";
         print "  --skip-load-cycles: Do not alert on high load/unload cycle count (600K considered safe on hard drives)\n";
+        print "  --skip-error-log: Do not alert on errors found in ATA log (ATA Error Count)\n";
         print "  --hide-sn: Do not show drive serial number in output\n";
         print "  -h/--help: this help\n";
+        print "  -O/--oldage: Ignore old age attributes\n";
         print "  -q/--quiet: When faults detected, only show faulted drive(s) (only affects output when used with -g parameter)\n";
         print "  --debug: show debugging information\n";
         print "  -v/--version: Version number\n";
 }
 
+# Decode the wait status of system() into smartctl's exit code. Abnormal
+# termination returns 0 so that no exit status bit is read out of a signal.
+sub decoded_exit_code {
+        my ($wait_status, $messages) = @_;
+        if ($wait_status == -1) {
+                push(@$messages, "Failed to execute $smart_command");
+                escalate_status('UNKNOWN');
+                return 0;
+        }
+        if ($wait_status & 127) {
+                push(@$messages, sprintf('smartctl died with signal %d', $wait_status & 127));
+                escalate_status('UNKNOWN');
+                return 0;
+        }
+        return $wait_status >> 8;
+}
+
 # escalate an exit status IFF it's more severe than the previous exit status
 sub escalate_status {
         my $requested_status = shift;
-        # no test for 'CRITICAL'; automatically escalates upwards
-        if ($requested_status eq 'WARNING') {
-                return if ($exit_status|$exit_status_local) eq 'CRITICAL';
-        }
-        if ($requested_status eq 'UNKNOWN') {
-                return if ($exit_status|$exit_status_local) eq 'WARNING';
-                return if ($exit_status|$exit_status_local) eq 'CRITICAL';
-        }
-        $exit_status = $requested_status;
-        $exit_status_local = $requested_status;
+        # $exit_status covers all devices, $exit_status_local only the current
+        # one; raise either only when the requested status is actually worse
+        $exit_status = $requested_status
+                if $STATUS_RANK{$requested_status} > $STATUS_RANK{$exit_status};
+        $exit_status_local = $requested_status
+                if $STATUS_RANK{$requested_status} > $STATUS_RANK{$exit_status_local};
 }
