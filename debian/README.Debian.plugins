@@ -22,6 +22,9 @@ check_apache_balancer_members:
 check_bgp:
     Required Packages: libnet-snmp-perl, monitoring-plugins-common | nagios-plugins-common
 
+check_bond:
+    Required Packages: gawk
+
 check_es_system:
     Required Packages: curl, jshon | jq
 
@@ -63,6 +66,9 @@ check_openvpn:
 
 check_phpfpm_status:
     Required Packages: libio-socket-ssl-perl, libwww-perl, monitoring-plugins-common | nagios-plugins-common
+
+check_pve:
+    Required Packages: python3-minimal, python3-requests
 
 check_qnap_health:
     Required Packages: bc, gawk | mawk, snmp
