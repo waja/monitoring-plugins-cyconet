@@ -1,8 +1,27 @@
-monitoring-plugins-cyconet (25.20240724) UNRELEASED; urgency=medium
+monitoring-plugins-cyconet (26.20260902) restricted; urgency=medium
 
+  [ Jan Wagner ]
   * 
+  * [b84d82b] Fix install and don't change owner to root
+  * [3d6e5a8] Update check_smart to 6.18.3
+  * [82efac9] check_nextcloud: Fix Watch line
+  * [16e77e2] check_nextcloud: Update to 2.2
+  * [4f15347] check_es_system: Update to 1.13.0
+  * [1aa41af] check_esxi_hardware: Update to 20250716
+  * [e52e95d] check_nwc_health: Update to 12.10.1
+  * [b6e2837] Drop d/p/check_nextcloud/shebang
+  * [dff9e56] check_wireguard: Update to 0.6.0
+  * [796dd66] Adding check_pve
+  * [c387a91] check_pve: Adding python3-requests to Recommends
+  * [227131d] d/control: (Auto)-Update
+  * [d9fae02] d/copyright: (Auto)-Update
+  * [0b0e3ca] d/README.Debian.plugins: (Auto)-Update
 
- -- Jan Wagner <waja@cyconet.org>  Tue, 23 Jul 2024 08:19:48 +0200
+  [ dependabot[bot] ]
+  * [5768a2f] build(deps): bump actions/checkout from 4 to 6
+  * [2167872] build(deps): bump dawidd6/action-debian-package from 1.6.0 to 5
+
+ -- Jan Wagner <waja@cyconet.org>  Wed, 02 Sep 2026 11:00:47 +0000
 
 monitoring-plugins-cyconet (25.20240723) restricted; urgency=medium
 
