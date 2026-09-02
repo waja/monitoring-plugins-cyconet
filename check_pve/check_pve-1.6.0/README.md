@@ -1,0 +1,439 @@
+# check_pve
+Icinga check command for Proxmox VE via API
+
+![Linter](https://github.com/nbuchwitz/check_pve/actions/workflows/lint.yml/badge.svg)
+![Tests](https://github.com/nbuchwitz/check_pve/actions/workflows/test.yml/badge.svg)
+
+## Setup
+
+### Requirements
+
+This check command depends on **Python 3** and the following modules:
+ * requests
+ * argparse
+ * packaging
+
+**Installation on Debian / Ubuntu**
+```
+apt install python3 python3-requests python3-packaging
+```
+
+**Installation on Rocky / Alma Linux 9**
+```
+yum install python3 python3-requests python3-packaging
+```
+
+**Installation on FreeBSD**
+```
+pkg install python3 py39-requests py39-packaging
+```
+
+**Installation from requirements file**
+```
+pip3 install -r requirements.txt
+```
+
+**Installation as Docker container**
+```
+docker build -t check_pve .
+```
+After this, you can start the container like so:
+```
+docker run -d --name check_pve --rm check_pve
+```
+The container bundles the required dependencies and can run in environments where installing those packages is not possible.
+
+Running a check is as simple as:
+```
+docker exec check_pve python check_pve.py ....rest of the default arguments listed below....
+```
+
+### Create an API user on Proxmox VE
+
+Create a role named `Monitoring` and assign necessary privileges:
+
+```
+pveum roleadd Monitoring
+pveum rolemod Monitoring --privs Sys.Audit,Sys.Modify,Datastore.Audit,VM.Audit
+```
+
+**Important:** The `VM.Monitor` privilege was removed in Proxmox VE 9.0; on older versions it may still be required.
+
+Create a user named `monitoring` and set password:
+
+```
+pveum useradd monitoring@pve --comment "The ICINGA 2 monitoring user"
+```
+
+#### Use token-based authorization (recommended)
+
+Create an API token named `monitoring` for the user `monitoring` with backend `pve`:
+
+```
+pveum user token add monitoring@pve monitoring
+```
+
+Please save the token secret — it cannot be retrieved later.
+
+Assign role `Monitoring` to token `monitoring` and the user `monitoring@pve`:
+
+```
+pveum acl modify / --roles Monitoring --user 'monitoring@pve'
+pveum acl modify / --roles Monitoring --tokens 'monitoring@pve!monitoring'
+```
+
+You can now use the check command like this: `./check_pve.py -u monitoring@pve -t monitoring=abcdef12-3456-7890-abcd-deadbeef1234 ...`
+
+#### Use password-based authorization
+
+Set password for the user `monitoring`:
+
+```
+pveum passwd monitoring@pve
+```
+
+Assign the `Monitoring` role to the user `monitoring`:
+
+```
+pveum acl modify / --users monitoring@pve --roles Monitoring
+```
+
+For more information about the Proxmox VE privilege system, see the [documentation](https://pve.proxmox.com/pve-docs/pve-admin-guide.html#_strong_pveum_strong_proxmox_ve_user_manager).
+
+
+## Usage
+
+The `icinga2` folder contains the command definition and service examples for use with Icinga2.
+
+```
+usage: check_pve.py [-h] [--version] [-e API_ENDPOINT] [--api-port API_PORT] [-u API_USER] [-p API_PASSWORD |
+                    -P API_PASSWORD_FILE | -t API_TOKEN | -T API_TOKEN_FILE] [-k]
+                    [-m {cluster,version,cpu,memory,swap,storage,io_wait,io-wait,updates,services,subscription,vm,vm_status,vm-status,replication,disk-health,ceph-health,zfs-health,zfs-fragmentation,backup,snapshot-age,network-status,task-queue,certificate}]
+                    [-n NODE] [--name NAME] [--vmid VMID] [--expected-vm-status {running,stopped,paused}]
+                    [--ignore-vmid VMID] [--ignore-vm-status] [--ignore-service NAME] [--ignore-disk NAME]
+                    [--ignore-pools NAME] [--ignore-interface NAME] [--ignore-no-backup]
+                    [-w THRESHOLD_WARNING] [-c THRESHOLD_CRITICAL] [-M] [-V MIN_VERSION]
+                    [--unit {GB,MB,KB,GiB,MiB,KiB,B}]
+
+Check command for PVE hosts via API
+
+options:
+  -h, --help            show this help message and exit
+  --version             Show version of check command
+
+API Options:
+  -e, -H, --api-endpoint API_ENDPOINT
+                        PVE api endpoint hostname or IP address (no additional data like paths)
+  --api-port API_PORT   PVE api endpoint port
+  -u, --username API_USER
+                        PVE api user (e.g. icinga2@pve or icinga2@pam, depending on which backend you have chosen
+                        in proxmox)
+  -p, --password API_PASSWORD
+                        PVE API user password
+  -P, --password-file API_PASSWORD_FILE
+                        PVE API user password in a file
+  -t, --api-token API_TOKEN
+                        PVE API token (format: TOKEN_ID=TOKEN_SECRET)
+  -T, --api-token-file API_TOKEN_FILE
+                        PVE API token contained in a file (format: TOKEN_ID=TOKEN_SECRET)
+  -k, --insecure        Don't verify HTTPS certificate
+
+Check Options:
+  -m, --mode {cluster,version,cpu,memory,swap,storage,io_wait,io-wait,updates,services,subscription,vm,vm_status,vm-status,replication,disk-health,ceph-health,zfs-health,zfs-fragmentation,backup,snapshot-age,network-status,task-queue,certificate}
+                        Mode to use.
+  -n, --node NODE       Node to check (necessary for all modes except cluster, version and backup)
+  --name NAME           Name of storage, vm, or container
+  --vmid VMID           ID of virtual machine or container
+  --expected-vm-status {running,stopped,paused}
+                        Expected VM status
+  --ignore-vmid VMID    Ignore VM with vmid in checks
+  --ignore-vm-status    Ignore VM status in checks
+  --ignore-service NAME
+                        Ignore service NAME in checks
+  --ignore-disk NAME    Ignore disk NAME in health check
+  --ignore-pools NAME   Ignore VMs and containers in pool(s) NAME in checks
+  --ignore-interface NAME
+                        Ignore network interface NAME in network status check
+  -w, --warning THRESHOLD_WARNING
+                        Warning threshold for check value. Multiple thresholds with name:value,name:value
+  -c, --critical THRESHOLD_CRITICAL
+                        Critical threshold for check value. Multiple thresholds with name:value,name:value
+  -M                    Values are shown in the unit which is set with --unit (if available). Thresholds are also
+                        treated in this unit
+  -V, --min-version MIN_VERSION
+                        The minimum PVE version to check for. Any version lower than this will return CRITICAL.
+  --unit {GB,MB,KB,GiB,MiB,KiB,B}
+                        Unit which is used for performance data and other values
+```
+
+## Check examples
+
+
+**Check cluster health**
+```
+./check_pve.py -u <API_USER> -t <API_TOKEN> -e <API_ENDPOINT> -m cluster
+OK - Cluster 'proxmox1' is healthy'
+```
+
+**Check PVE version**
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m version -V 5.0.0
+OK - Your pve instance version '5.2' (0fcd7879) is up to date
+```
+
+**Check CPU load**
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m cpu -n node1
+OK - CPU usage is 2.4%|usage=2.4%;;
+```
+
+**Check memory usage**
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m memory -n node1
+OK - Memory usage is 37.44%|usage=37.44%;; used=96544.72MB;;;257867.91
+```
+
+**Check disk-health**
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m disk-health -n node1
+OK - All disks are healthy|wearout_sdb=96%;; wearout_sdc=96%;; wearout_sdd=96%;; wearout_sde=96%;;
+```
+
+**Check storage usage**
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m storage -n node1 --name local
+OK - Storage usage is 54.23%|usage=54.23%;; used=128513.11MB;;;236980.36
+
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m storage -n node1 --name vms-disx
+CRITICAL - Storage 'vms-disx' doesn't exist on node 'node01'
+```
+
+**Check subscription status**
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m subscription -n node1 -w 50 -c 10
+OK - Subscription of level 'Community' is valid until 2019-01-09
+```
+
+**Check VM status**
+
+Without specifying a node name:
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m vm --name test-vm
+OK - VM 'test-vm' is running on 'node1'|cpu=1.85%;; memory=8.33%;;
+```
+
+You can also pass a container name for the VM check:
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m vm --name test-lxc
+OK - LXC 'test-lxc' on node 'node1' is running|cpu=0.11%;; memory=13.99%;;
+```
+
+With memory thresholds:
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m vm --name test-vm -w 50 -c 80
+OK - VM 'test-vm' is running on 'node1'|cpu=1.85%;; memory=40.33%;50.0;80.0
+```
+
+With a specified node name, the check plugin verifies on which node the VM runs:
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m vm -n node1 --name test-vm
+OK - VM 'test-vm' is running on node 'node1'|cpu=1.85%;; memory=8.33%;;
+
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m vm -n node1 --name test-vm
+WARNING - VM 'test-vm' is running on node 'node2' instead of 'node1'|cpu=1.85%;; memory=8.33%;;
+```
+
+If you only want to gather metrics and don't care about the VM status, add the `--ignore-vm-status` flag:
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m vm --name test-vm --ignore-vm-status
+OK - VM 'test-vm' is not running
+```
+
+Specify the expected VM status:
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m vm --name test-vm --expected-vm-status stopped
+OK - VM 'test-vm' is not running
+
+```
+
+For host-alive checks without gathering performance data, use `vm_status` instead of `vm`. The parameters are the same as with `vm`.
+
+**Check swap usage**
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m swap -n pve
+OK - Swap usage is 0.0 %|usage=0.0%;; used=0.0MB;;;8192.0
+```
+
+**Check storage replication status**
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m replication -n node1
+OK - No failed replication jobs on node1
+```
+
+**Check Ceph cluster health**
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m ceph-health
+WARNING - Ceph Cluster is in warning state
+```
+
+**Check ZFS pool health**
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m zfs-health -n pve
+OK - All ZFS pools are healthy
+```
+
+Check for specific pool:
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m zfs-health -n pve --name rpool
+OK - ZFS pool 'rpool' is healthy
+```
+
+**Check ZFS pool fragmentation**
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m zfs-fragmentation -n pve -w 40 -c 60
+CRITICAL - 2 of 2 ZFS pools are above fragmentation thresholds:
+
+- rpool (71 %) is CRITICAL
+- diskpool (50 %) is WARNING
+|fragmentation_diskpool=50%;40.0;60.0 fragmentation_rpool=71%;40.0;60.0
+
+```
+
+Check for specific pool:
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m zfs-fragmentation -n pve --name diskpool -w 40 -c 60
+WARNING - Fragmentation of ZFS pool 'diskpool' is above thresholds: 50 %|fragmentation=50%;40.0;60.0
+```
+
+**Check VZDump Backups**
+
+Check task history on all nodes:
+
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m backup
+CRITICAL - 8 backup tasks successful, 3 backup tasks failed
+```
+
+Check for specific node and time frame:
+
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m backup -n pve -c 86400
+OK - 2 backup tasks successful, 0 backup tasks failed within the last 86400.0s
+```
+
+Ignore a VM by its ID in the backup check:
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m backup --ignore-vmid 123
+```
+
+Ignore any VM with unconfigured backup in the backup check:
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m backup --ignore-no-backup
+```
+
+**Check snapshot age**
+Check age of snapshots on all nodes (thresholds are specified in seconds):
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m snapshot-age -w 43200 -c 86400
+```
+You can filter by a specific node:
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m snapshot-age -n pve -w 43200 -c 86400
+```
+Or by VM/Container:
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m snapshot-age --name test-vm -w 43200 -c 86400
+```
+Or both:
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m snapshot-age -n pve --name test-vm -w 43200 -c 86400
+```
+You can also filter by VM/Container ID:
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m snapshot-age -n pve --vmid 123 -w 43200 -c 86400
+```
+
+**Check network interface status**
+
+Check all network interfaces on a node:
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m network-status -n node1
+OK - All network interfaces on node 'node1' are healthy
+```
+
+Check specific interface (e.g., bond):
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m network-status -n node1 --name bond0
+OK - Network interface 'bond0' is healthy
+```
+
+Degraded bond example (one member down):
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m network-status -n node1 --name bond0
+WARNING - Bond 'bond0' degraded: 1/2 members active (mode: 802.3ad)
+```
+
+Ignore specific interfaces:
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m network-status -n node1 --ignore-interface vmbr1
+OK - All network interfaces on node 'node1' are healthy
+```
+
+**Check task queue**
+
+Check cluster-wide task queue:
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m task-queue
+OK - Cluster: 2 tasks running (1 backup, 1 qmigrate)|running_tasks=2;; failed_tasks=0;;
+```
+
+Check task queue for specific node:
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m task-queue -n node1
+OK - Node 'node1': 1 tasks running (1 backup)|running_tasks=1;; failed_tasks=0;;
+```
+
+With thresholds for running tasks:
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m task-queue -w running:5 -c running:10
+WARNING - Cluster: 6 tasks running (3 backup, 2 qmigrate, 1 qmrestore)|running_tasks=6;5.0;10.0 failed_tasks=0;;
+```
+
+**Check SSL certificates**
+
+Check all cluster node certificates (checks pveproxy-ssl.pem if present, otherwise pve-ssl.pem):
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m certificate
+OK - All certificates on 3 node(s) are valid|days_left=180;30.0;7.0
+```
+
+Check specific node certificate:
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m certificate -n node1
+OK - Certificate on node 'node1' is valid|days_left=180;30.0;7.0
+```
+
+With custom thresholds (default: warning=30 days, critical=7 days):
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m certificate -w 60 -c 14
+WARNING - 1 certificate(s) expiring soon: node1/pveproxy-ssl.pem expires in 45 days|days_left=45;60.0;14.0
+```
+
+## FAQ
+
+### Individual thresholds per metric
+
+You can either specify a threshold for warning or critical which is applied to all metrics or define individual thresholds like this (`name:value,name:value,...`):
+
+```
+./check_pve.py -u <API_USER> -p <API_PASSWORD> -e <API_ENDPOINT> -m vm --name test-vm -w memory:50 -c cpu:50,memory:80
+OK - VM 'test-vm' is running on 'node1'|cpu=1.85%;50.0; memory=40.33%;50.0;80.0
+```
+
+### Could not connect to PVE API: Failed to resolve hostname
+
+Verify that your DNS server can resolve the Proxmox hostname. If DNS is working, check for proxy environment variables (HTTP_PROXY, HTTPS_PROXY), which may block connections to port 8006.
+
+## Contributors
+
+Thanks to everyone who contributes to `check_pve`: https://github.com/nbuchwitz/check_pve/graphs/contributors.
