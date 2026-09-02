@@ -29,30 +29,30 @@ all:: $(PLUGIN) $(MANPAGES) $(INIFILES) $(CRONJOBS)
 
 install::
 	install -d $(DESTDIR)$(PLUGINDIR)
-	install -m 755 -o root -g root $(PLUGIN) $(DESTDIR)$(PLUGINDIR)
+	install -m 755 $(PLUGIN) $(DESTDIR)$(PLUGINDIR)
 ifdef CONFIGFILES
 	install -d $(DESTDIR)$(CONFIGDIR)
-	install -m 644 -o root -g root $(CONFIGFILES) $(DESTDIR)$(CONFIGDIR)
+	install -m 644 $(CONFIGFILES) $(DESTDIR)$(CONFIGDIR)
 endif
 ifdef MANPAGES
 	set -e; for m in $(MANPAGES); do \
 		section=`echo $$m | sed 's,\.gz$$,,;s,.*\.,,'` ;\
 		mandir="/usr/share/man/man$${section}" ;\
 		install -d $(DESTDIR)$${mandir} ;\
-		install -m 644 -o root -g root $${m} $(DESTDIR)$${mandir} ;\
+		install -m 644 $${m} $(DESTDIR)$${mandir} ;\
 	done
 endif
 ifdef INIFILES
 	install -d $(DESTDIR)$(INIDIR)
-	install -m 644 -o root -g root $(INIFILES) $(DESTDIR)$(INIDIR)
+	install -m 644 $(INIFILES) $(DESTDIR)$(INIDIR)
 endif
 ifdef DOCFILES
 	install -d $(DESTDIR)$(DOCDIR)
-	install -m 644 -o root -g root $(DOCFILES) $(DESTDIR)$(DOCDIR)
+	install -m 644 $(DOCFILES) $(DESTDIR)$(DOCDIR)
 endif
 ifdef CRONJOBS
 	install -d $(DESTDIR)$(CRONJOBDIR)
-	install -m 755 -o root -g root $(CRONJOBS) $(DESTDIR)$(CRONJOBDIR)
+	install -m 755 $(CRONJOBS) $(DESTDIR)$(CRONJOBDIR)
 endif
 
 clean::
