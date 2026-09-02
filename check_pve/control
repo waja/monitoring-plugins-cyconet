@@ -1,0 +1,6 @@
+Uploaders: Jan Wagner <waja@cyconet.org>
+Recommends: python3-minimal
+Version: 1.6.0
+Homepage: https://github.com/nbuchwitz/check_pve
+Watch: https://github.com/nbuchwitz/check_pve/tags .*/v?(\d\S+)\.tar\.gz
+Description: Plugin script to monitor a Proxmox VE via API
